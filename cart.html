@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giỏ Hàng Của Bạn</title>
+    <link rel="stylesheet" href="./assets/client_style.css"> 
+    <link rel="stylesheet" href="./assets/client_checkout_user.css"> 
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo"><a href="index2.html"><h1>🍰 TIỆM BÁNH CAO CẤP</h1></a></div>
+        <nav class="main-nav">
+            <a href="index2.html">Trang Chủ</a>
+            <a href="product_list2.html">Sản Phẩm</a>
+            <a href="cart.html" class="cart-icon">🛒 Giỏ Hàng (<span id="cart-count">0</span>)</a> 
+                <span id="client-welcome-msg" style="display: none; margin-right: 5px; color: #333;"></span> 
+            <a href="login.html" id="client-auth-link">Đăng Nhập</a> 
+        </nav>
+    </header>
+    
+    <main class="cart-page-content">
+        <h2>🛒 GIỎ HÀNG CỦA BẠN</h2>
+        
+        <table class="cart-table">
+            <thead>
+                <tr>
+                    <th>Sản Phẩm</th>
+                    <th>Giá Bán</th>
+                    <th>Số Lượng</th>
+                    <th>Thành Tiền</th>
+                    <th>Xóa</th>
+                </tr>
+            </thead>
+            
+            <tbody id="cart-items-container">
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 50px;">Đang tải giỏ hàng...</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="cart-summary-box">
+            <h3>Tổng Cộng: <strong id="cart-total-amount">0 VNĐ</strong></h3>
+            <p style="color: #666;">(Chưa bao gồm phí vận chuyển)</p>
+            <a href="checkout.html" class="btn-primary" style="font-size: 1.1em;">TIẾN HÀNH THANH TOÁN</a>
+        </div>
+        
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Tiệm Bánh Cao Cấp. Số điện thoại liên hệ: 0938176419.</p>
+    </footer>
+    
+    <script src="./assets/client_auth.js"></script> 
+    <script src="./assets/cart_script.js"></script>
+
+    
+</body>
+</html>

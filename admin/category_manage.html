@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Loại Sản Phẩm - Admin</title>
+    <link rel="stylesheet" href="./assets/admin_style.css">
+</head>
+<body>
+    <header class="admin-header">
+        <h1>ADMIN DASHBOARD - Quản Lý Bánh</h1>
+        <a href="admin_login.html" class="btn-logout">Đăng Xuất</a>
+    </header>
+    
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <h3>Danh Mục Quản Trị</h3>
+            <ul>
+                <li><a href="admin_dashboard.html">📊 Dashboard</a></li>
+                <li><a href="user_list.html">👤 Quản Lý Người Dùng</a></li>
+                <li><a href="category_manage.html" class="active">🏷️ Quản Lý Loại SP</a></li>
+                <li><a href="product_manage.html">📦 Quản Lý Danh Mục SP</a></li>
+                <li><a href="import_list.html">📝 Quản Lý Nhập SP</a></li>
+                <li><a href="price_manage.html">💲 Quản Lý Giá Bán</a></li>
+                <li><a href="order_list.html">🧾 Quản Lý Đơn Đặt Hàng</a></li>
+                <li><a href="stock_manage.html">📈 Quản Lý Tồn Kho</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-content">
+            <h2>🏷️ Quản Lý Loại Sản Phẩm (Bánh)</h2>
+            
+            <div class="action-bar">
+                <button class="btn-primary" onclick="showForm()">+ Thêm Loại Sản Phẩm Mới</button>
+            </div>
+
+            <div id="category-form" class="edit-form" style="display: none;">
+                <h3>Thêm/Sửa Loại Sản Phẩm</h3>
+                <input type="text" placeholder="Tên Loại Sản Phẩm (ví dụ: Bánh Kem, Tart)">
+                <button class="btn-success">Lưu</button>
+                <button class="btn-secondary" onclick="hideForm()">Hủy</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã Loại</th>
+                        <th>Tên Loại</th>
+                        <th>Tình Trạng</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>LOAI01</td>
+                        <td>Bánh Kem</td>
+                        <td class="status-active">Hiển thị</td>
+                        <td>
+                            <button class="btn-secondary" onclick="showForm()">Sửa</button>
+                            <button class="btn-danger">Ẩn/Xóa</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>LOAI02</td>
+                        <td>Tart & Pie</td>
+                        <td class="status-active">Hiển thị</td>
+                        <td>
+                            <button class="btn-secondary">Sửa</button>
+                            <button class="btn-danger">Ẩn/Xóa</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+    
+    <script src="./assets/admin_script.js"></script>
+    <script>
+        function showForm() {
+            document.getElementById('category-form').style.display = 'block';
+        }
+        function hideForm() {
+            document.getElementById('category-form').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

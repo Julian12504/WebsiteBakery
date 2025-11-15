@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Giá Bán - Admin</title>
+    <link rel="stylesheet" href="./assets/admin_style.css">
+</head>
+<body>
+    <header class="admin-header">
+        <h1>ADMIN DASHBOARD - Quản Lý Bánh</h1>
+        <a href="admin_login.html" class="btn-logout">Đăng Xuất</a>
+    </header>
+    
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <h3>Danh Mục Quản Trị</h3>
+            <ul>
+                <li><a href="admin_dashboard.html">📊 Dashboard</a></li>
+                <li><a href="user_list.html">👤 Quản Lý Người Dùng</a></li>
+                <li><a href="category_manage.html">🏷️ Quản Lý Loại SP</a></li>
+                <li><a href="product_manage.html">📦 Quản Lý Danh Mục SP</a></li>
+                <li><a href="import_list.html">📝 Quản Lý Nhập SP</a></li>
+                <li><a href="price_manage.html" class="active">💲 Quản Lý Giá Bán</a></li>
+                <li><a href="order_list.html">🧾 Quản Lý Đơn Đặt Hàng</a></li>
+                <li><a href="stock_manage.html">📈 Quản Lý Tồn Kho</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-content">
+            <h2>💲 Quản Lý Giá Bán & Tỉ Lệ Lợi Nhuận</h2>
+            
+            <h3>1. Thiết Lập Tỉ Lệ Lợi Nhuận (%) Theo Loại Sản Phẩm</h3>
+            <table class="profit-rate-table">
+                <thead>
+                    <tr>
+                        <th>Loại Sản Phẩm</th>
+                        <th>Tỉ Lệ Lợi Nhuận Mặc Định (%)</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Bánh Kem</td>
+                        <td><input type="number" value="40" min="0" max="100"> %</td>
+                        <td><button class="btn-success">Cập nhật</button></td>
+                    </tr>
+                    <tr>
+                        <td>Tart & Pie</td>
+                        <td><input type="number" value="30" min="0" max="100"> %</td>
+                        <td><button class="btn-success">Cập nhật</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 30px;">2. Tra Cứu Giá Vốn, % Lợi Nhuận, Giá Bán Theo Sản Phẩm</h3>
+            <div class="filter-area">
+                <input type="text" placeholder="Nhập Mã/Tên sản phẩm">
+                <button class="btn-secondary">Tra Cứu</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã SP</th>
+                        <th>Tên SP</th>
+                        <th>Giá Vốn Gần Nhất</th>
+                        <th>% Lợi Nhuận Hiện Tại</th>
+                        <th>Giá Bán</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>BKD001</td>
+                        <td>Bánh Kem Dâu Tây</td>
+                        <td>250.000 VNĐ</td>
+                        <td>
+                            <input type="number" value="40" min="0"> % 
+                        </td>
+                        <td>350.000 VNĐ</td>
+                        <td><button class="btn-success">Áp Dụng/Lưu</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script src="./assets/admin_script.js"></script>
+</body>
+</html>

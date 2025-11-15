@@ -1,0 +1,125 @@
+/* client/assets/client_checkout_user.css */
+
+/* --- CART & CHECKOUT --- */
+.cart-page-content, .checkout-page-content {
+    padding: 20px 50px;
+}
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+.cart-table th, .cart-table td {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+.cart-table th {
+    background-color: #fce4ec;
+}
+.product-col {
+    display: flex;
+    align-items: center;
+}
+.product-col img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 4px;
+}
+.quantity-input input {
+    width: 60px;
+    margin: 0;
+    text-align: center;
+}
+.cart-summary-box {
+    text-align: right;
+    margin-top: 20px;
+}
+.cart-summary-box h3 {
+    font-size: 1.5em;
+    color: #c06085;
+}
+
+/* Checkout Page */
+.checkout-form {
+    display: flex;
+    gap: 30px;
+}
+.shipping-info, .payment-method, .order-summary {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+.total-final {
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #e53935;
+    border-top: 1px dashed #ccc;
+    padding-top: 10px;
+}
+.btn-place-order {
+    width: 100%;
+    margin-top: 15px;
+}
+
+/* --- AUTH (Login/Register) --- */
+.auth-body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #fce4ec;
+}
+.auth-container {
+    background: white;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* --- PROFILE --- */
+.profile-page-content {
+    padding: 20px 50px;
+}
+.profile-navigation {
+    margin-bottom: 20px;
+    border-bottom: 2px solid #ccc;
+}
+.profile-navigation a {
+    padding: 10px 15px;
+    display: inline-block;
+    border-bottom: 2px solid transparent;
+    font-weight: bold;
+}
+.profile-navigation a.active {
+    border-bottom-color: #c06085;
+    color: #c06085;
+}
+.profile-form {
+    background: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+
+/* --- ORDER HISTORY --- */
+.order-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+.order-history-table td, .order-history-table th {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+.status-new { color: #f90; font-weight: bold; }
+.status-shipped { color: #0a0; font-weight: bold; }
+.status-cancelled { color: #f00; font-weight: bold; }

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lịch Sử Đơn Hàng</title>
+    <link rel="stylesheet" href="./assets/client_style.css">
+    <link rel="stylesheet" href="./assets/client_checkout_user.css">  
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo"><a href="index.html"><h1>🍰 TIỆM BÁNH CAO CẤP</h1></a></div>
+        <nav class="main-nav">...</nav>
+    </header>
+
+    <main class="profile-page-content">
+        <h2>🧾 LỊCH SỬ ĐƠN HÀNG</h2>
+
+        <div class="profile-navigation">
+            <a href="user_profile.html">Thông tin tài khoản</a>
+            <a href="order_history.html" class="active">Lịch sử đơn hàng</a>
+        </div>
+        
+        <table class="order-history-table">
+            <thead>
+                <tr>
+                    <th>Mã Đơn Hàng</th>
+                    <th>Ngày Đặt</th>
+                    <th>Tổng Tiền</th>
+                    <th>Tình Trạng</th>
+                    <th>Chi Tiết</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>DH20251112-001</td>
+                    <td>12/11/2025</td>
+                    <td>910.000 VNĐ</td>
+                    <td class="status-new">Đang chờ xử lý</td>
+                    <td><a href="#">Xem Chi Tiết</a></td>
+                </tr>
+                <tr>
+                    <td>DH20251025-015</td>
+                    <td>25/10/2025</td>
+                    <td>500.000 VNĐ</td>
+                    <td class="status-shipped">Đã giao hàng</td>
+                    <td><a href="#">Xem Chi Tiết</a></td>
+                </tr>
+                <tr>
+                    <td>DH20250901-008</td>
+                    <td>01/09/2025</td>
+                    <td>1.250.000 VNĐ</td>
+                    <td class="status-cancelled">Đã hủy</td>
+                    <td><a href="#">Xem Chi Tiết</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+
+    <footer>...</footer>
+    <script src="./assets/client_script.js"></script>
+</body>
+</html>

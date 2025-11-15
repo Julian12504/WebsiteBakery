@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Admin</title>
+    <link rel="stylesheet" href="./assets/admin_style.css">
+</head>
+<body>
+    <header class="admin-header">
+        <h1>ADMIN DASHBOARD - Quản Lý Bánh</h1>
+        <a href="admin_login.html" class="btn-logout" id="logout-btn">Đăng Xuất</a>
+    </header>
+    
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <h3>Danh Mục Quản Trị</h3>
+            <ul>
+                <li><a href="admin_dashboard.html" class="active">📊 Dashboard</a></li>
+                <li><a href="user_list.html">👤 Quản Lý Người Dùng</a></li>
+                <li><a href="category_manage.html">🏷️ Quản Lý Loại SP</a></li>
+                <li><a href="product_manage.html">📦 Quản Lý Danh Mục SP</a></li>
+                <li><a href="import_list.html">📝 Quản Lý Nhập SP</a></li>
+                <li><a href="price_manage.html">💲 Quản Lý Giá Bán</a></li>
+                <li><a href="order_list.html">🧾 Quản Lý Đơn Đặt Hàng</a></li>
+                <li><a href="stock_manage.html">📈 Quản Lý Tồn Kho</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-content">
+            <h2>Tổng Quan Hệ Thống</h2>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>Tổng Đơn Hàng Mới</h3>
+                    <p>12</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Sản Phẩm Sắp Hết Hàng</h3>
+                    <p class="alert">5</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Doanh Thu Hôm Nay</h3>
+                    <p>8.500.000 VNĐ</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="./assets/admin_script.js"></script>
+    <script src="./assets/admin_login.js"></script>
+</body>
+</html>

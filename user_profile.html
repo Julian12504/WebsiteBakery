@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thông Tin Cá Nhân</title>
+    <link rel="stylesheet" href="./assets/client_style.css"> 
+    <link rel="stylesheet" href="./assets/client_checkout_user.css"> 
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo"><a href="index.html"><h1>🍰 TIỆM BÁNH CAO CẤP</h1></a></div>
+        <nav class="main-nav">
+            <a href="index.html">Trang Chủ</a>
+            <a href="cart.html" class="cart-icon">🛒 Giỏ Hàng (3)</a>
+            <div class="user-info">
+                <a href="user_profile.html">Xin Chào, Nguyễn Văn A</a> | <a href="login.html?action=logout">Đăng Xuất</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="profile-page-content">
+        <h2>🛠️ QUẢN LÝ TÀI KHOẢN</h2>
+
+        <div class="profile-navigation">
+            <a href="user_profile.html" class="active">Thông tin tài khoản</a>
+            <a href="order_history.html">Lịch sử đơn hàng</a>
+        </div>
+        
+        <form class="profile-form">
+            <h3>Thông tin chung (Xem / Sửa)</h3>
+            <label for="fullname">Họ và Tên:</label>
+            <input type="text" id="fullname" value="Nguyễn Văn A" required>
+
+            <label for="email">Email (Không sửa):</label>
+            <input type="email" id="email" value="anv@email.com" readonly>
+            
+            <label for="phone">Số điện thoại:</label>
+            <input type="tel" id="phone" value="0901234567">
+            
+            <label for="address">Địa chỉ mặc định:</label>
+            <textarea id="address" rows="3">123 Đường Bánh Kem, Phường 1, Quận 1, TP.HCM</textarea>
+
+            <button type="submit" class="btn-primary">Cập Nhật Thông Tin</button>
+            <a href="#change-password" class="btn-secondary">Đổi Mật Khẩu</a>
+        </form>
+    </main>
+
+    <footer>...</footer>
+    <script src="./assets/client_script.js"></script>
+</body>
+</html>

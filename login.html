@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập Khách Hàng</title>
+    <link rel="stylesheet" href="./assets/client_style.css"> 
+    <link rel="stylesheet" href="./assets/client_checkout_user.css"> 
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <h2>KHOẢNG KHẮC NGỌT NGÀO</h2>
+        <p style="text-align: center; color: #666; margin-bottom: 20px;">Đăng nhập để quản lý đơn hàng.</p>
+        
+        <form id="client-login-form">
+            
+            <div class="form-group">
+                <label for="client-username">Email/Tên đăng nhập:</label>
+                <input type="text" id="client-username" name="username" placeholder="example@email.com" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="client-password">Mật khẩu:</label>
+                <input type="password" id="client-password" name="password" required>
+            </div>
+            
+            <p id="login-error-message" class="error-message" style="color: #dc3545; display: none; text-align: center;">Tên đăng nhập hoặc mật khẩu không đúng.</p>
+
+            <button type="submit" class="btn-primary">Đăng Nhập</button>
+        </form>
+        
+        <p style="margin-top: 15px;">Chưa có tài khoản? <a href="register.html">Đăng Ký Ngay</a></p>
+        <p><a href="index.html">← Quay về Trang Chủ</a></p>
+    </div>
+
+    <script src="./assets/client_auth.js"></script> 
+</body>
+</html>

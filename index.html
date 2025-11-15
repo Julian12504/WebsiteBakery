@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tiệm Bánh Ngọt - Trang Chủ</title>
+    <link rel="stylesheet" href="./assets/client_style.css"> 
+    <link rel="stylesheet" href="./assets/client_product_list.css"> 
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo"><a href="index.html"><h1>🍰 TIỆM BÁNH CAO CẤP</h1></a></div>
+        <nav class="main-nav">
+            <a href="index.html" class="active">Trang Chủ</a>
+            <a href="product_list.html">Sản Phẩm</a>
+            
+            <a href="#" class="active"  onclick="addToCart()">
+                🛒 Giỏ Hàng 
+            </a>
+            
+            <span id="client-welcome-msg" style="display: none; margin-right: 5px; color: #333;"></span> 
+            <a href="login.html" id="client-auth-link">Đăng Nhập</a> 
+        </nav>
+    </header>
+
+    <div class="search-area">
+        <form class="advanced-search-form">
+            <input type="text" placeholder="Tìm kiếm nhanh: Bánh Kem Dâu, Tiramisu...">
+            <select>
+                <option value="">Loại Bánh</option>
+                <option value="kem">Bánh Kem</option>
+                <option value="tart">Tart & Pie</option>
+            </select>
+            <input type="number" placeholder="Giá từ">
+            <input type="number" placeholder="Giá đến">
+            <button type="submit" class="btn-primary">Tìm Kiếm</button>
+        </form>
+    </div>
+
+    <main class="main-content">
+        <div class="promo-banner">
+            <img src="./img/anhbanhmoi.jpg" alt="Bánh Kem Mới Ra Mắt" class="banner-image"> 
+            <div class="banner-text">
+                <h2>GIẢM GIÁ 15% CHO BỘ SƯU TẬP BÁNH KEM MÙA ĐÔNG</h2>
+                <p>Khám phá ngay các hương vị độc đáo, tươi mới mỗi ngày!</p>
+                <a href="product_list.html" class="btn-primary">Mua Ngay →</a>
+            </div>
+        </div>
+        
+        <section class="featured-products">
+            <h2>✨ Sản Phẩm Nổi Bật Tuần Này</h2>
+            <div class="product-grid">
+                
+                <div class="product-card">
+                    <img src="./img/IPOS-03.jpg" alt="Bánh Tiramisu">
+                    <h3><a href="product_detail.html?id=1">Tiramisu Ý Truyền Thống</a></h3>
+                    <p class="category">Loại: Mousse & Pudding</p>
+                    <p class="price">Giá: **180.000 VNĐ**</p>
+                    
+                    <button class="btn-add-to-cart" 
+                        onclick="addToCart()">
+                        Thêm vào Giỏ
+                    </button>
+                    <a href="login.html" class="btn-secondary">Mua Ngay</a>
+                </div>
+                
+                <div class="product-card">
+                    <img src="./img/IPOS-03.jpg" alt="Bánh Kem Dâu Tây">
+                    <h3><a href="product_detail.html?id=2">Bánh Kem Dâu Tây Thượng Hạng</a></h3>
+                    <p class="category">Loại: Bánh Kem</p>
+                    <p class="price">Giá: **350.000 VNĐ**</p>
+                    <button class="btn-add-to-cart" 
+                        onclick="addToCart()">
+                        Thêm vào Giỏ
+                    </button>
+                    <a href="login.html" class="btn-secondary">Mua Ngay</a>
+                </div>
+                
+                <div class="product-card">
+                    <img src="./img/IPOS-03.jpg" alt="Bánh Mousse Matcha">
+                    <h3><a href="product_detail.html?id=3">Mousse Matcha Trà Xanh</a></h3>
+                    <p class="category">Loại: Mousse & Pudding</p>
+                    <p class="price">Giá: **220.000 VNĐ**</p>
+                    
+                    <button class="btn-add-to-cart" 
+                        onclick="addToCart()">
+                        Thêm vào Giỏ
+                    </button>
+                    <a href="login.html" class="btn-secondary">Mua Ngay</a>
+                </div>
+                
+                <div class="product-card">
+                    <img src="./img/IPOS-03.jpg" alt="Bánh Mousse Matcha">
+                    <h3><a href="product_detail.html?id=4">Mousse Matcha Trà Xanh (2)</a></h3>
+                    <p class="category">Loại: Mousse & Pudding</p>
+                    <p class="price">Giá: **220.000 VNĐ**</p>
+                    
+                    <button class="btn-add-to-cart" 
+                        onclick="addToCart()">
+                        Thêm vào Giỏ
+                    </button>
+                    <a href="login.html" class="btn-secondary">Mua Ngay</a>
+                </div>
+                
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Tiệm Bánh Cao Cấp. Số điện thoại liên hệ: 0938176419.</p>
+    </footer>
+    
+    <script src="./assets/client_auth.js"></script> 
+    <script src="./assets/cart_script.js"></script>
+    <script src="./assets/client_script.js"></script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Đơn Hàng - Admin</title>
+    <link rel="stylesheet" href="./assets/admin_style.css">
+</head>
+<body>
+    <header class="admin-header">
+        <h1>ADMIN DASHBOARD - Quản Lý Bánh</h1>
+        <a href="admin_login.html" class="btn-logout">Đăng Xuất</a>
+    </header>
+    
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <h3>Danh Mục Quản Trị</h3>
+            <ul>
+                <li><a href="admin_dashboard.html">📊 Dashboard</a></li>
+                <li><a href="user_list.html">👤 Quản Lý Người Dùng</a></li>
+                <li><a href="category_manage.html">🏷️ Quản Lý Loại SP</a></li>
+                <li><a href="product_manage.html">📦 Quản Lý Danh Mục SP</a></li>
+                <li><a href="import_list.html">📝 Quản Lý Nhập SP</a></li>
+                <li><a href="price_manage.html">💲 Quản Lý Giá Bán</a></li>
+                <li><a href="order_list.html" class="active">🧾 Quản Lý Đơn Đặt Hàng</a></li>
+                <li><a href="stock_manage.html">📈 Quản Lý Tồn Kho</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-content">
+            <h2>👁️ Chi Tiết Đơn Hàng DH20251112-001</h2>
+
+            <div class="order-status-box">
+                Trạng thái hiện tại: <span class="status-new">Mới đặt</span>
+                
+                <form style="display: inline-block;">
+                    <label for="update_status">Cập nhật trạng thái:</label>
+                    <select id="update_status">
+                        <option value="processing">Đã xử lý</option>
+                        <option value="shipped">Đã giao</option>
+                        <option value="cancelled">Hủy</option>
+                    </select>
+                    <button type="submit" class="btn-success">Cập Nhật</button>
+                </form>
+            </div>
+
+            <section class="order-info">
+                <h3>Thông Tin Khách Hàng & Giao Hàng</h3>
+                <p><strong>Khách hàng:</strong> Nguyễn Văn A (KH001)</p>
+                <p><strong>Địa chỉ:</strong> 123 Đường Bánh Kem, Quận 1, TP.HCM</p>
+                <p><strong>Điện thoại:</strong> 090xxxxxx</p>
+                <p><strong>Ghi chú:</strong> Giao hàng sau 5 giờ chiều.</p>
+            </section>
+
+            <section class="order-items">
+                <h3>Danh Sách Sản Phẩm</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Mã SP</th>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Số Lượng</th>
+                            <th>Giá Bán</th>
+                            <th>Thành Tiền</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BKD001</td>
+                            <td>Bánh Kem Dâu Tây</td>
+                            <td>2</td>
+                            <td>350.000 VNĐ</td>
+                            <td>700.000 VNĐ</td>
+                        </tr>
+                        <tr>
+                            <td>TMT002</td>
+                            <td>Tiramisu Ý Truyền Thống</td>
+                            <td>1</td>
+                            <td>180.000 VNĐ</td>
+                            <td>180.000 VNĐ</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4" class="text-right">Tổng cộng (Đã bao gồm VAT, Phí Ship):</td>
+                            <td>**900.000 VNĐ**</td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script src="./assets/admin_script.js"></script>
+</body>
+</html>

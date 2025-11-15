@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Đơn Đặt Hàng - Admin</title>
+    <link rel="stylesheet" href="./assets/admin_style.css">
+</head>
+<body>
+    <header class="admin-header">
+        <h1>ADMIN DASHBOARD - Quản Lý Bánh</h1>
+        <a href="admin_login.html" class="btn-logout">Đăng Xuất</a>
+    </header>
+    
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <h3>Danh Mục Quản Trị</h3>
+            <ul>
+                <li><a href="admin_dashboard.html">📊 Dashboard</a></li>
+                <li><a href="user_list.html">👤 Quản Lý Người Dùng</a></li>
+                <li><a href="category_manage.html">🏷️ Quản Lý Loại SP</a></li>
+                <li><a href="product_manage.html">📦 Quản Lý Danh Mục SP</a></li>
+                <li><a href="import_list.html">📝 Quản Lý Nhập SP</a></li>
+                <li><a href="price_manage.html">💲 Quản Lý Giá Bán</a></li>
+                <li><a href="order_list.html" class="active">🧾 Quản Lý Đơn Đặt Hàng</a></li>
+                <li><a href="stock_manage.html">📈 Quản Lý Tồn Kho</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-content">
+            <h2>🧾 Quản Lý Đơn Đặt Hàng Khách Hàng</h2>
+
+            <div class="filter-area">
+                <label for="start_date">Từ Ngày:</label>
+                <input type="date" id="start_date">
+                
+                <label for="end_date">Đến Ngày:</label>
+                <input type="date" id="end_date">
+                
+                <label for="status">Tình trạng:</label>
+                <select id="status">
+                    <option value="">-- Tất cả --</option>
+                    <option value="new">Mới đặt</option>
+                    <option value="processing">Đã xử lý</option>
+                    <option value="shipped">Đã giao</option>
+                    <option value="cancelled">Hủy</option>
+                </select>
+                <button type="submit" class="btn-primary">Tra Cứu</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã ĐH</th>
+                        <th>Ngày Đặt</th>
+                        <th>Khách Hàng</th>
+                        <th>Tổng Tiền</th>
+                        <th>Tình Trạng</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>DH20251112-001</td>
+                        <td>12/11/2025</td>
+                        <td>Nguyễn Văn A</td>
+                        <td>900.000 VNĐ</td>
+                        <td class="status-new">Mới đặt</td>
+                        <td><a href="order_detail.html?id=001" class="btn-info">Xem Chi Tiết</a></td>
+                    </tr>
+                    <tr>
+                        <td>DH20251105-015</td>
+                        <td>05/11/2025</td>
+                        <td>Trần Thị B</td>
+                        <td>500.000 VNĐ</td>
+                        <td class="status-shipped">Đã giao</td>
+                        <td><a href="order_detail.html?id=015" class="btn-info">Xem Chi Tiết</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script src="./assets/admin_script.js"></script>
+</body>
+</html>

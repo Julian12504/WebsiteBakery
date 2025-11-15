@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm/Sửa Sản Phẩm - Admin</title>
+    <link rel="stylesheet" href="./assets/admin_style.css">
+</head>
+<body>
+    <header class="admin-header">
+        <h1>ADMIN DASHBOARD - Quản Lý Bánh</h1>
+        <a href="admin_login.html" class="btn-logout">Đăng Xuất</a>
+    </header>
+    
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <h3>Danh Mục Quản Trị</h3>
+            <ul>
+                <li><a href="admin_dashboard.html">📊 Dashboard</a></li>
+                <li><a href="user_list.html">👤 Quản Lý Người Dùng</a></li>
+                <li><a href="category_manage.html">🏷️ Quản Lý Loại SP</a></li>
+                <li><a href="product_manage.html" class="active">📦 Quản Lý Danh Mục SP</a></li>
+                <li><a href="import_list.html">📝 Quản Lý Nhập SP</a></li>
+                <li><a href="price_manage.html">💲 Quản Lý Giá Bán</a></li>
+                <li><a href="order_list.html">🧾 Quản Lý Đơn Đặt Hàng</a></li>
+                <li><a href="stock_manage.html">📈 Quản Lý Tồn Kho</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-content">
+            <h2>🛠️ Thêm / Sửa Sản Phẩm</h2>
+            
+            <form class="product-form">
+                <label for="id">Mã Sản Phẩm:</label>
+                <input type="text" id="id" value="BKD001" readonly> <label for="name">Tên Sản Phẩm:</label>
+                <input type="text" id="name" value="Bánh Kem Dâu Tây" required>
+
+                <label for="category">Loại Sản Phẩm:</label>
+                <select id="category" required>
+                    <option value="kem" selected>Bánh Kem</option>
+                    <option value="tart">Tart & Pie</option>
+                </select>
+
+                <label for="image">Hình Ảnh (File Upload):</label>
+                <input type="file" id="image" accept="image/*">
+                <img src="../img/cake_kemdau.jpg" alt="Hình ảnh hiện tại" style="max-width: 150px; margin-top: 10px;">
+
+                <label for="description">Mô Tả:</label>
+                <textarea id="description" rows="5">Bông lan mềm, kem tươi béo ngậy...</textarea>
+                
+                <label for="status">Tình Trạng:</label>
+                <select id="status">
+                    <option value="active" selected>Hiển thị</option>
+                    <option value="hidden">Ẩn</option>
+                </select>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn-success">Lưu Sản Phẩm</button>
+                    <a href="product_manage.html" class="btn-secondary">Hủy</a>
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="./assets/admin_script.js"></script>
+</body>
+</html>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Đăng Nhập Quản Trị - Tiệm Bánh</title>
+    <link rel="stylesheet" href="./assets/admin_style.css"> 
+</head>
+<body class="admin-login-body">
+    <div class="login-container">
+        <h2>HỆ THỐNG QUẢN TRỊ TIỆM BÁNH</h2>
+        
+        <form id="admin-login-form"> 
+            
+            <div class="form-group">
+                <label for="username">Tên đăng nhập:</label>
+                <input type="text" id="username" name="username" placeholder="admin" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Mật khẩu:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            
+            <p class="error-message" style="color: #dc3545; display: none;">Tên đăng nhập hoặc mật khẩu không đúng.</p>
+
+            <button type="submit" class="btn-primary">Đăng Nhập</button>
+        </form>
+        
+        <p class="back-to-site"><a href="../index.html">← Quay về trang khách hàng</a></p>
+    </div>
+    
+    <script src="./assets/admin_login.js"></script> 
+</body>
+</html>

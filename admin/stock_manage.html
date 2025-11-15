@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Tồn Kho - Admin</title>
+    <link rel="stylesheet" href="./assets/admin_style.css">
+</head>
+<body>
+    <header class="admin-header">
+        <h1>ADMIN DASHBOARD - Quản Lý Bánh</h1>
+        <a href="admin_login.html" class="btn-logout">Đăng Xuất</a>
+    </header>
+    
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <h3>Danh Mục Quản Trị</h3>
+            <ul>
+                <li><a href="admin_dashboard.html">📊 Dashboard</a></li>
+                <li><a href="user_list.html">👤 Quản Lý Người Dùng</a></li>
+                <li><a href="category_manage.html">🏷️ Quản Lý Loại SP</a></li>
+                <li><a href="product_manage.html">📦 Quản Lý Danh Mục SP</a></li>
+                <li><a href="import_list.html">📝 Quản Lý Nhập SP</a></li>
+                <li><a href="price_manage.html">💲 Quản Lý Giá Bán</a></li>
+                <li><a href="order_list.html">🧾 Quản Lý Đơn Đặt Hàng</a></li>
+                <li><a href="stock_manage.html" class="active">📈 Quản Lý Tồn Kho</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-content">
+            <h2>📈 Quản Lý Số Lượng Tồn Kho</h2>
+
+            <h3>1. Tra Cứu Số Lượng Tồn Kho Hiện Tại</h3>
+            <div class="filter-area">
+                <select>
+                    <option value="">-- Lọc theo Loại (Bánh Kem, Tart...) --</option>
+                </select>
+                <input type="text" placeholder="Tra cứu theo Mã/Tên sản phẩm">
+                <button class="btn-secondary">Tra Cứu</button>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã SP</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Loại</th>
+                        <th>Số Lượng Tồn</th>
+                        <th>Tình Trạng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>BKD001</td>
+                        <td>Bánh Kem Dâu Tây</td>
+                        <td>Bánh Kem</td>
+                        <td>**55**</td>
+                        <td class="status-safe">Tốt</td>
+                    </tr>
+                    <tr>
+                        <td>TTM005</td>
+                        <td>Tart Trứng Mật Ong</td>
+                        <td>Tart & Pie</td>
+                        <td>**8**</td>
+                        <td class="status-alert">Sắp hết hàng</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 30px;">2. Cảnh Báo Sản Phẩm Sắp Hết Hàng</h3>
+            <p>Các sản phẩm có số lượng tồn dưới **10** đơn vị:</p>
+            <ul>
+                <li>TTM005 - Tart Trứng Mật Ong (Tồn: 8) - **Cần nhập thêm**</li>
+            </ul>
+
+            <h3 style="margin-top: 30px;">3. Tra Cứu Nhập - Xuất - Tồn trong Khoảng Thời Gian</h3>
+            <div class="filter-area">
+                <input type="text" placeholder="Mã/Tên sản phẩm (ví dụ: BKD001)">
+                <label for="date_from">Từ Ngày:</label>
+                <input type="date" id="date_from">
+                <label for="date_to">Đến Ngày:</label>
+                <input type="date" id="date_to">
+                <button class="btn-primary">Tra Cứu</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="./assets/admin_script.js"></script>
+</body>
+</html>

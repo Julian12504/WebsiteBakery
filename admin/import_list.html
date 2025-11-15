@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Phiếu Nhập Hàng - Admin</title>
+    <link rel="stylesheet" href="./assets/admin_style.css">
+</head>
+<body>
+    <header class="admin-header">
+        <h1>ADMIN DASHBOARD - Quản Lý Bánh</h1>
+        <a href="admin_login.html" class="btn-logout">Đăng Xuất</a>
+    </header>
+    
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <h3>Danh Mục Quản Trị</h3>
+            <ul>
+                <li><a href="admin_dashboard.html">📊 Dashboard</a></li>
+                <li><a href="user_list.html">👤 Quản Lý Người Dùng</a></li>
+                <li><a href="category_manage.html">🏷️ Quản Lý Loại SP</a></li>
+                <li><a href="product_manage.html">📦 Quản Lý Danh Mục SP</a></li>
+                <li><a href="import_list.html" class="active">📝 Quản Lý Nhập SP</a></li>
+                <li><a href="price_manage.html">💲 Quản Lý Giá Bán</a></li>
+                <li><a href="order_list.html">🧾 Quản Lý Đơn Đặt Hàng</a></li>
+                <li><a href="stock_manage.html">📈 Quản Lý Tồn Kho</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-content">
+            <h2>📝 Quản Lý Phiếu Nhập Hàng</h2>
+
+            <div class="action-bar">
+                <a href="import_form.html" class="btn-primary">+ Thêm Phiếu Nhập Mới</a>
+            </div>
+
+            <div class="filter-area">
+                <label for="search_id">Mã Phiếu:</label>
+                <input type="text" id="search_id" placeholder="Tìm theo Mã Phiếu">
+                <button class="btn-secondary">Tìm</button>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Mã Phiếu</th>
+                        <th>Ngày Nhập</th>
+                        <th>Tổng Giá Trị</th>
+                        <th>Tình Trạng</th>
+                        <th>Thao Tác</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>PN20251112-001</td>
+                        <td>12/11/2025</td>
+                        <td>5.000.000 VNĐ</td>
+                        <td class="status-new">Chưa hoàn thành</td>
+                        <td>
+                            <a href="import_form.html?id=001" class="btn-secondary">Sửa & Hoàn Thành</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>PN20251105-015</td>
+                        <td>05/11/2025</td>
+                        <td>3.200.000 VNĐ</td>
+                        <td class="status-completed">Đã hoàn thành</td>
+                        <td>
+                            <button class="btn-info" disabled>Xem Chi Tiết</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+    </div>
+
+    <script src="./assets/admin_script.js"></script>
+</body>
+</html>
