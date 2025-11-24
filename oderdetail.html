@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chi Tiết Đơn Hàng</title>
+    <link rel="icon" type="image/png" href="img/cake.png">
+
+    <link rel="stylesheet" href="./assets/client_style.css"> 
+    <link rel="stylesheet" href="./assets/client_order_detail.css"> 
+</head>
+<body>
+    <header class="main-header">
+    <a href="index2.html" class="logo-wrap">
+    <img src="img/cake.png" alt="Logo Tiệm Bánh Cao Cấp" class="logo">
+    <h1>TIỆM BÁNH XYZ</h1>
+</a>
+        <nav class="main-nav">
+            <span id="client-welcome-msg" style="display: none; margin-right: 5px; color: #333;"></span> 
+                <a href="contact2.html" class="active">Liên Hệ</a>
+            <a href="index2.html">Trang Chủ</a>
+            <a href="product_list2.html" class="active">Sản Phẩm</a>
+            
+            <a href="cart.html" class="cart-icon">
+                Giỏ Hàng (<span id="cart-count">0</span>)
+            </a> 
+            <a href="user_profile.html">Hồ sơ</a>
+            <a href="login.html" id="client-auth-link">Đăng Nhập</a> 
+        </nav>
+    </header>
+
+    <main class="order-detail-container">
+        
+        <h2>Chi Tiết Đơn Hàng #DH123456</h2>
+        
+        <div class="order-summary-status">
+            <p>Trạng thái: <span class="status-badge status-shipping">Đang giao hàng</span></p>
+            <p>Ngày đặt hàng: <span>24/11/2025</span></p>
+            <p>Tổng tiền: <span class="total-price">570.000 VNĐ</span></p>
+        </div>
+
+        <div class="address-and-method-info">
+            <section class="shipping-address-box">
+                <h3>Địa Chỉ Nhận Hàng</h3>
+                <p><strong>Người nhận:</strong> Nguyễn Văn A</p>
+                <p><strong>Điện thoại:</strong> 0987 654 321</p>
+                <p><strong>Địa chỉ:</strong> Số 123, Đường ABC, Phường 10, Quận Tân Bình, TP. Hồ Chí Minh</p>
+            </section>
+            
+            <section class="payment-method-box">
+                <h3>Phương Thức Thanh Toán</h3>
+                <p>Thanh toán khi nhận hàng (COD)</p>
+                
+                <h3>Phương Thức Giao Hàng</h3>
+                <p>Giao hàng tiêu chuẩn (3-5 ngày)</p>
+            </section>
+        </div>
+
+        <section class="order-items-table">
+            <h3>Sản Phẩm Đã Đặt</h3>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Sản Phẩm</th>
+                        <th>Giá</th>
+                        <th>Số Lượng</th>
+                        <th>Thành Tiền</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tiramisu Ý Truyền Thống</td>
+                        <td>180.000 VNĐ</td>
+                        <td>2</td>
+                        <td>360.000 VNĐ</td>
+                    </tr>
+                    <tr>
+                        <td>Bánh Kem Dâu Tây Thượng Hạng</td>
+                        <td>350.000 VNĐ</td>
+                        <td>1</td>
+                        <td>350.000 VNĐ</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3" class="text-right">Tạm tính:</td>
+                        <td>710.000 VNĐ</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-right">Phí vận chuyển:</td>
+                        <td>30.000 VNĐ</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="text-right total-final">Tổng thanh toán:</td>
+                        <td class="total-final">740.000 VNĐ</td>
+                    </tr>
+                </tfoot>
+            </table>
+        </section>
+        
+        <div class="action-buttons">
+            <button class="btn-secondary" onclick="window.history.back()">Quay lại Lịch Sử Đơn Hàng</button>
+            <button class="btn-primary" onclick="window.location.href='contact2.html'">Liên hệ Hỗ trợ</button>
+        </div>
+
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Tiệm Bánh Cao Cấp.</p>
+    </footer>
+    
+    <script src="./assets/client_auth.js"></script> 
+    <script src="./assets/cart_script.js"></script> 
+</body>
+</html>

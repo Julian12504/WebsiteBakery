@@ -1,0 +1,104 @@
+/* client/assets/client_order_detail.css */
+
+.order-detail-container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.order-detail-container h2 {
+    color: #4CAF50; /* Màu xanh lá cây nổi bật */
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+/* Tóm tắt và Trạng thái */
+.order-summary-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f9f9f9;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 25px;
+}
+
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+}
+
+.status-shipping {
+    background-color: #FFC107; /* Vàng */
+}
+
+/* Địa chỉ và Phương thức */
+.address-and-method-info {
+    display: flex;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.shipping-address-box, .payment-method-box {
+    flex: 1;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+}
+
+.shipping-address-box h3, .payment-method-box h3 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+/* Bảng sản phẩm */
+.order-items-table {
+    margin-bottom: 30px;
+}
+
+.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.data-table th, .data-table td {
+    padding: 12px;
+    border: 1px solid #eee;
+    text-align: left;
+}
+
+.data-table th {
+    background-color: #f1f1f1;
+    color: #555;
+    font-weight: bold;
+}
+
+.data-table tfoot td {
+    border-top: 2px solid #ddd;
+    font-weight: 600;
+}
+
+.data-table tfoot .text-right {
+    text-align: right;
+}
+
+.data-table tfoot .total-final {
+    font-size: 1.1em;
+    color: #D81B60; /* Màu hồng */
+}
+
+/* Nút hành động */
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}

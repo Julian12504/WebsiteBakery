@@ -11,24 +11,24 @@
     <link rel="stylesheet" href="./assets/client_product_detail.css"> 
 </head>
 <body>
+
     <header class="main-header">
-<div >
-<a href="index.html" class="logo-wrap">
+        <a href="index2.html" class="logo-wrap">
     <img src="img/cake.png" alt="Logo Tiệm Bánh Cao Cấp" class="logo">
     <h1>TIỆM BÁNH XYZ</h1>
 </a>
-
-</div>
-        <nav class="main-nav">
-                <a href="contact.html" class="active">Liên Hệ</a>
-            <a href="index.html" class="active">Trang Chủ</a>
-            <a href="product_list.html">Sản Phẩm</a>
-            
-            <a href="#" class="active"  onclick="addToCart()">
-                Giỏ Hàng 
-            </a>
-            <a href="login.html" id="client-auth-link">Đăng Nhập</a> 
-        </nav>
+    <nav class="main-nav">
+    <span id="client-welcome-msg" style="display: none; margin-right: 5px; color: #333;"></span> 
+        <a href="contact2.html" class="active">Liên Hệ</a>
+    <a href="index2.html" class="active">Trang Chủ</a>
+    <a href="product_list2.html">Sản Phẩm</a>
+    
+    <a href="cart.html" class="cart-icon">
+    Giỏ Hàng (<span id="cart-count">0</span>)
+    </a>
+    <a href="user_profile.html">Hồ sơ</a>
+    <a href="login.html" id="client-auth-link">Đăng Nhập</a> 
+    </nav>
     </header>
 
     <main class="product-detail-page">
@@ -54,14 +54,15 @@
                     <label for="quantity">Số lượng:</label>
                     <input type="number" id="quantity" value="1" min="1" max="99">
                 </div>
-                
+             
                 <button class="btn-add-to-cart" 
-                        onclick="addToCart()">
+                        onclick="addToCart('9', 'Bánh mì nguyên cám', 120000)">
                         Thêm vào Giỏ
                 </button>
-                <button class="btn-add-to-oder" onclick="window.location.href='login.html'">
+                  <button class="btn-add-to-oder" 
+                onclick="buyNowAndCheckout(event, '9', 'Bánh mì nguyên cám', 120000)">
                 Mua ngay
-                </button>
+            </button>
             </div>
         </div>
 
@@ -82,9 +83,7 @@
         <div id="caption" class="caption">Bánh Kem Dâu Tây Thượng Hạng</div>
     </div>
     
-      <footer>
-        <p>&copy; 2025 Tiệm Bánh Cao Cấp. Số điện thoại liên hệ: 0938176419.</p>
-    </footer>
+
     <script src="./assets/client_auth.js"></script> 
     <script src="./assets/cart_script.js"></script>
     <script src="./assets/client_script.js"></script>

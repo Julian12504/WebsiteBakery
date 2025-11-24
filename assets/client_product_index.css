@@ -1,0 +1,72 @@
+/* client/assets/client_product_index.css */
+
+/* --- CSS CHỈ DÙNG TRÊN TRANG CHỦ (index.html) --- */
+
+.main-content {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* --- PROMO BANNER HAI CỘT --- */
+.promo-banner {
+    display: flex;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    align-items: center;
+    height: 350px;
+    margin-bottom: 40px;
+}
+.promo-banner .banner-image {
+    width: 50%;
+    height: 100%;
+    object-fit: cover;
+}
+.promo-banner .banner-text {
+    width: 50%;
+    padding: 30px;
+    background-color: #f7f7f7;
+    text-align: left;
+}
+.promo-banner .banner-text h2 {
+    color: #a03c3c;
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 2em;
+}
+
+/* --- SẢN PHẨM NỔI BẬT --- */
+.featured-products h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+
+/* --- FIX CĂN CHỈNH NÚT ACTIONS (Trang chủ) --- */
+/* (Vì bạn dùng class khác: btn-add-to-oder) */
+.product-card .btn-add-to-cart,
+.product-card .btn-add-to-oder {
+    display: block; /* Mặc định là block như code cũ */
+    margin-top: 10px;
+}
+/* Nếu bạn muốn 2 nút nằm ngang trên trang chủ, bạn cần sửa HTML và CSS tương tự như đã làm cho product_list.html. */
+
+
+/* --- MEDIA QUERIES (RESPONSIVE cho Promo Banner) --- */
+@media (max-width: 768px) {
+    .promo-banner {
+        flex-direction: column;
+        height: auto;
+    }
+    .promo-banner .banner-image,
+    .promo-banner .banner-text {
+        width: 100%;
+        height: auto;
+    }
+    .promo-banner .banner-text {
+        padding: 20px;
+        text-align: center;
+    }
+}

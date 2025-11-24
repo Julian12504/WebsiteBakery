@@ -1,5 +1,3 @@
-// client/assets/client_auth.js
-
 const USER_STORAGE_KEY = 'client_user_data'; 
 const AUTH_LINK_ID = 'client-auth-link'; // Bây giờ chỉ là link Đăng Nhập/Đăng Xuất
 
@@ -22,13 +20,16 @@ window.isClientLoggedIn = () => {
 
 // Hàm đăng nhập (Mô phỏng)
 window.clientLogin = (username, password) => {
-    // Logic xác thực mô phỏng (Dùng 'test@user.com' và '123')
-    if (username === 'test@user.com' && password === '123') {
+    // 💡 ĐIỀU KIỆN XÁC THỰC: user@gmail.com / 123
+    if (username === 'user@gmail.com' && password === '123') { 
         const userData = {
             id: 'user_123',
-            name: 'Khách hàng A', 
-            email: username,
-            token: 'fake_jwt_token_12345'
+            name: 'Lê Thanh Hùng', 
+            email: username, 
+            token: 'fake_jwt_token_12345', 
+            // THÔNG TIN MỚI ĐƯỢC THÊM VÀO LOCAL STORAGE
+            phone: '0987654321', // Số điện thoại thật
+            address: '1 An Dương Vương, Quận 5, TP.HCM' // Địa chỉ thật
         };
         localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
         return true;
@@ -51,11 +52,11 @@ window.updateAuthLink = () => {
             // Đã đăng nhập
             
             // 1. Cập nhật lời chào (SPAN)
-            welcomeMsg.textContent = `👋 Xin chào, ${user.name}`;
+            welcomeMsg.textContent = ` Xin chào, ${user.name}`;
             welcomeMsg.style.display = 'inline-block'; // Hiển thị lời chào
             
             // 2. Biến link Đăng Nhập thành link Đăng Xuất (A)
-            authLink.textContent = '(Đăng Xuất)';
+            authLink.textContent = 'Đăng Xuất';
             authLink.href = '#';
             authLink.style.color = '#c9302c';
             

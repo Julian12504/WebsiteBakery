@@ -4,49 +4,184 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thông Tin Cá Nhân</title>
+    <link rel="icon" type="image/png" href="img/cake.png">
+
     <link rel="stylesheet" href="./assets/client_style.css"> 
     <link rel="stylesheet" href="./assets/client_checkout_user.css"> 
+    <style>
+        /* CSS Cơ bản cho Modal (Có thể chuyển sang file .css nếu cần) */
+        .modal-overlay {
+            display: none; /* Ẩn mặc định */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            max-width: 450px;
+            width: 90%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+        }
+        .modal-content h3 {
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        .modal-content .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+            border: none;
+            background: none;
+        }
+        /* CSS cho Form Thông tin hiển thị tĩnh (chỉ hiển thị) */
+        .info-display-group {
+            margin-bottom: 15px;
+            padding: 10px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .info-display-group strong {
+            display: block;
+            color: #555;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+        .info-display-group span {
+            display: block;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <header class="main-header">
-        <div class="logo"><a href="index.html"><h1>🍰 TIỆM BÁNH CAO CẤP</h1></a></div>
+        <a href="index2.html" class="logo-wrap">
+            <img src="img/cake.png" alt="Logo Tiệm Bánh Cao Cấp" class="logo">
+            <h1>TIỆM BÁNH XYZ</h1>
+        </a>
         <nav class="main-nav">
-            <a href="index.html">Trang Chủ</a>
-            <a href="cart.html" class="cart-icon">🛒 Giỏ Hàng (3)</a>
-            <div class="user-info">
-                <a href="user_profile.html">Xin Chào, Nguyễn Văn A</a> | <a href="login.html?action=logout">Đăng Xuất</a>
-            </div>
+            <span id="client-welcome-msg" style="display: none; margin-right: 5px; color: #333;"></span> 
+                <a href="contact2.html" class="active">Liên Hệ</a>
+            <a href="index2.html">Trang Chủ</a>
+            <a href="product_list2.html">Sản Phẩm</a>
+            
+            <a href="cart.html" class="cart-icon">
+                 Giỏ Hàng (<span id="cart-count">0</span>)
+            </a> 
+            <a href="user_profile.html" class="active">Hồ sơ</a>
+            <a href="login.html" id="client-auth-link">Đăng Nhập</a> 
         </nav>
     </header>
 
-    <main class="profile-page-content">
-        <h2>🛠️ QUẢN LÝ TÀI KHOẢN</h2>
+<main class="profile-page-content">
+    <h2> QUẢN LÝ TÀI KHOẢN</h2>
 
-        <div class="profile-navigation">
-            <a href="user_profile.html" class="active">Thông tin tài khoản</a>
-            <a href="order_history.html">Lịch sử đơn hàng</a>
+    <div class="profile-navigation">
+        <a href="user_profile.html" class="active">Thông tin tài khoản</a>
+        <a href="order_history.html">Lịch sử đơn hàng</a>
+    </div>
+    
+    <div class="profile-form">
+        <h3>Thông tin cá nhân</h3>
+        
+        <div class="info-display-group">
+            <strong>Họ và Tên:</strong>
+            <span id="display-fullname">Lê Thanh Hùng</span>
         </div>
         
-        <form class="profile-form">
-            <h3>Thông tin chung (Xem / Sửa)</h3>
-            <label for="fullname">Họ và Tên:</label>
-            <input type="text" id="fullname" value="Nguyễn Văn A" required>
+        <div class="info-display-group">
+            <strong>Email:</strong>
+            <span id="display-email">user@email.com</span>
+        </div>
+        
+        <div class="info-display-group">
+            <strong>Số điện thoại:</strong>
+            <span id="display-phone">0938 176 419</span>
+        </div>
+        
+        <div class="info-display-group">
+            <strong>Địa chỉ mặc định:</strong>
+            <span id="display-address">D4/14, PK9, Tân Nhựt, Bình Chánh TP. HCM</span>
+        </div>
+        
+        <button type="button" class="btn-primary" onclick="showModal('updateInfoModal')">Cập Nhật Thông Tin</button>
+        <button type="button" class="btn-secondary" onclick="showModal('changePasswordModal')">Đổi Mật Khẩu</button>
+    </div>
+</main>
 
-            <label for="email">Email (Không sửa):</label>
-            <input type="email" id="email" value="anv@email.com" readonly>
+<div class="modal-overlay" id="updateInfoModal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="hideModal('updateInfoModal')">&times;</button>
+        <h3>Chỉnh Sửa Thông Tin Cá Nhân</h3>
+        
+        <form onsubmit="event.preventDefault(); alert('Đã gửi yêu cầu cập nhật thông tin.')">
+            <label for="edit-fullname">Họ và Tên:</label>
+            <input type="text" id="edit-fullname" value="Lê Thanh Hùng" required>
+            <label for="edit-email">Email:</label>
+            <input type="email" id="edit-email" value="khachhang@email.com" required>
+            <label for="edit-phone">Số điện thoại:</label>
+            <input type="tel" id="edit-phone" value="0938176419">
             
-            <label for="phone">Số điện thoại:</label>
-            <input type="tel" id="phone" value="0901234567">
+            <label for="edit-address">Địa chỉ mặc định:</label>
+            <textarea id="edit-address" rows="3">D4/14, PK9, Tân Nhựt, Bình Chánh TP. HCM</textarea> 
             
-            <label for="address">Địa chỉ mặc định:</label>
-            <textarea id="address" rows="3">123 Đường Bánh Kem, Phường 1, Quận 1, TP.HCM</textarea>
-
-            <button type="submit" class="btn-primary">Cập Nhật Thông Tin</button>
-            <a href="#change-password" class="btn-secondary">Đổi Mật Khẩu</a>
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <button type="button" class="btn-secondary" onclick="hideModal('updateInfoModal')">Hủy</button>
+                <button type="submit" class="btn-primary">Lưu Thay Đổi</button>
+            </div>
         </form>
-    </main>
+    </div>
+</div>
 
-    <footer>...</footer>
-    <script src="./assets/client_script.js"></script>
+<div class="modal-overlay" id="changePasswordModal">
+    <div class="modal-content">
+        <button class="close-btn" onclick="hideModal('changePasswordModal')">&times;</button>
+        <h3>Đổi Mật Khẩu</h3>
+        
+        <form onsubmit="event.preventDefault(); alert('Đã gửi yêu cầu đổi mật khẩu.')">
+            <label for="old-password">Mật khẩu cũ:</label>
+            <input type="password" id="old-password" required>
+
+            <label for="new-password">Mật khẩu mới:</label>
+            <input type="password" id="new-password" required>
+
+            <label for="confirm-password">Xác nhận mật khẩu mới:</label>
+            <input type="password" id="confirm-password" required>
+            
+            <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                <button type="button" class="btn-secondary" onclick="hideModal('changePasswordModal')">Hủy</button>
+                <button type="submit" class="btn-primary">Lưu Mật Khẩu</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    function showModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+    }
+
+    function hideModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+    }
+</script>
+
+<script src="./assets/client_auth.js"></script> 
+<script src="./assets/cart_script.js"></script>
+<script src="./assets/client_script.js"></script>
 </body>
 </html>
