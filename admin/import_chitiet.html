@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm/Sửa Phiếu Nhập - Admin</title>
+    <link rel="stylesheet" href="./assets/admin_style.css">
+</head>
+<body>
+    <header class="admin-header">
+        <h1>ADMIN DASHBOARD - Quản Lý Bánh</h1>
+        <a href="admin_login.html" class="btn-logout">Đăng Xuất</a>
+    </header>
+    
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <h3>Danh Mục Quản Trị</h3>
+            <ul>
+                <li><a href="admin_dashboard.html">Dashboard</a></li>
+                <li><a href="user_list.html">Quản Lý Người Dùng</a></li>
+                <li><a href="category_manage.html">Quản Lý Loại SP</a></li>
+                <li><a href="product_manage.html">Quản Lý Danh Mục SP</a></li>
+                <li><a href="import_list.html" class="active">Quản Lý Nhập SP</a></li>
+                <li><a href="price_manage.html">Quản Lý Giá Bán</a></li>
+                <li><a href="order_list.html">Quản Lý Đơn Đặt Hàng</a></li>
+                <li><a href="stock_manage.html">Quản Lý Tồn Kho</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-content">
+            <h2>Thêm / Sửa Phiếu Nhập Hàng</h2>
+            
+            <form class="import-form">
+                <label for="import_id">Mã Phiếu Nhập:</label>
+                <input type="text" id="import_id" value="PN20251112-001" readonly>
+
+                <label for="import_date">Ngày Nhập:</label>
+                <input type="date" id="import_date" value="2025-11-12" required>
+                
+                <h3>Danh Sách Sản Phẩm Nhập</h3>
+                <table class="detail-table">
+                    <thead>
+                        <tr>
+                            <th>Mã SP</th>
+                            <th>Tên Sản Phẩm</th>
+                            <th>Giá Nhập (VNĐ)</th>
+                            <th>Số Lượng Nhập</th>
+                            <th>Tổng</th>
+                            <th>Xóa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>BKD001</td>
+                            <td>Bánh Kem Dâu Tây</td>
+                            <td><input type="number" value="250000" min="1" required></td>
+                            <td><input type="number" value="10" min="1" required></td>
+                            <td>2.500.000 VNĐ</td>
+                            <td><button type="button" class="btn-remove">Xóa</button></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <select>
+                                    <option>-- Chọn SP --</option>
+                                    <option>Tiramisu Ý Truyền Thống</option>
+                                </select>
+                            </td>
+                            <td></td>
+                            <td><input type="number" placeholder="Giá nhập"></td>
+                            <td><input type="number" placeholder="SL"></td>
+                            <td></td>
+                            <td><button type="button" class="btn-add">Thêm</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="form-actions">
+                </div>
+            </form>
+        </main>
+    </div>
+
+    <script src="./assets/admin_script.js"></script>
+</body>
+</html>
