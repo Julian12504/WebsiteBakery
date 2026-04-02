@@ -1,92 +1,98 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Chi Tiết Bánh Kem Dâu Tây - Tiệm Bánh</title>
-    <link rel="icon" type="image/png" href="img/cake.png">
+    <link rel="icon" type="image/png" href="img/cake.png" />
 
-    <link rel="stylesheet" href="./assets/client_style.css">
-    <link rel="stylesheet" href="./assets/client_lightbox_modal.css">
-    <link rel="stylesheet" href="./assets/client_product_detail.css"> 
-</head>
-<body>
+    <link rel="stylesheet" href="./assets/client_style.css" />
+    <link rel="stylesheet" href="./assets/client_lightbox_modal.css" />
+    <link rel="stylesheet" href="./assets/client_product_detail.css" />
+  </head>
+  <body>
     <header class="main-header">
-<div >
-<a href="index.html" class="logo-wrap">
-    <img src="img/cake.png" alt="Logo Tiệm Bánh Cao Cấp" class="logo">
-    <h1>TIỆM BÁNH XYZ</h1>
-</a>
+      <div>
+        <a href="index.html" class="logo-wrap">
+          <img src="img/cake.png" alt="Logo Tiệm Bánh Cao Cấp" class="logo" />
+          <h1>TIỆM BÁNH XYZ</h1>
+        </a>
+      </div>
+      <nav class="main-nav">
+        <a href="contact.html" class="active">Liên Hệ</a>
+        <a href="index.html" class="active">Trang Chủ</a>
+        <a href="product_list.html">Sản Phẩm</a>
 
-</div>
-        <nav class="main-nav">
-                <a href="contact.html" class="active">Liên Hệ</a>
-            <a href="index.html" class="active">Trang Chủ</a>
-            <a href="product_list.html">Sản Phẩm</a>
-            
-            <a href="#" class="active"  onclick="addToCart()">
-                Giỏ Hàng 
-            </a>
-            <a href="login.html" id="client-auth-link">Đăng Nhập</a> 
-        </nav>
+        <a href="#" class="active" onclick="addToCart()"> Giỏ Hàng </a>
+        <a href="login.html" id="client-auth-link">Đăng Nhập</a>
+      </nav>
     </header>
 
     <main class="product-detail-page">
-        <p><a href="product_list.html">Quay lại danh sách sản phẩm</a></p>
-        
-        <div class="detail-container">
-            <div class="image-gallery">
-                <div class="img-magnifier-container">
-                    <img id="product-img" src="./img/IPOS-03.jpg" alt="Bánh Kem Dâu Tây Thượng Hạng">
-                  
-                </div>
-            </div>
+      <p><a href="product_list.html">Quay lại danh sách sản phẩm</a></p>
 
-            <div class="info-box">
-                <h2>Bánh Kem Dâu Tây Thượng Hạng</h2>
-                <p class="category">Loại: Bánh Kem | Mã SP: BKD001</p>
-                
-                <p class="price-display">350.000 VNĐ</p>
-                
-                <p>Tình trạng: Còn hàng</p>
-
-                <div class="quantity-control">
-                    <label for="quantity">Số lượng:</label>
-                    <input type="number" id="quantity" value="1" min="1" max="99">
-                </div>
-                
-                <button class="btn-add-to-cart" 
-                        onclick="addToCart()">
-                        Thêm vào Giỏ
-                </button>
-                <button class="btn-add-to-oder" onclick="window.location.href='login.html'">
-                Mua ngay
-                </button>
-            </div>
+      <div class="detail-container">
+        <div class="image-gallery">
+          <div class="img-magnifier-container">
+            <img
+              id="product-img"
+              src="./img/IPOS-03.jpg"
+              alt="Bánh Kem Dâu Tây Thượng Hạng"
+            />
+          </div>
         </div>
 
-        <section class="description-section">
-            <h3>Mô Tả Chi Tiết</h3>
-            <p>Bánh kem dâu tây cao cấp được làm từ bông lan vani mềm mịn, lớp kem tươi béo ngậy nhưng không ngán, kết hợp với dâu tây tươi Đà Lạt theo mùa. Sản phẩm lý tưởng cho các buổi tiệc sinh nhật sang trọng.</p>
-            <ul>
-                <li>Nguyên liệu: Kem tươi (30%), Bột mì, Trứng, Dâu tây tươi.</li>
-                <li>Khối lượng: 1.2 kg.</li>
-                <li>Bảo quản: Nhiệt độ lạnh (0°C - 5°C)</li>
-            </ul>
-        </section>
+        <div class="info-box">
+          <h2>Bánh Kem Dâu Tây Thượng Hạng</h2>
+          <p class="category">Loại: Bánh Kem | Mã SP: BKD001</p>
+
+          <p class="price-display">350.000 VNĐ</p>
+
+          <p>Tình trạng: Còn hàng</p>
+
+          <div class="quantity-control">
+            <label for="quantity">Số lượng:</label>
+            <input type="number" id="quantity" value="1" min="1" max="99" />
+          </div>
+
+          <button class="btn-add-to-cart" onclick="addToCart()">
+            Thêm vào Giỏ
+          </button>
+          <button
+            class="btn-add-to-oder"
+            onclick="window.location.href = 'login.html'"
+          >
+            Mua ngay
+          </button>
+        </div>
+      </div>
+
+      <section class="description-section">
+        <h3>Mô Tả Chi Tiết</h3>
+        <p>
+          Bánh kem dâu tây cao cấp được làm từ bông lan vani mềm mịn, lớp kem
+          tươi béo ngậy nhưng không ngán, kết hợp với dâu tây tươi Đà Lạt theo
+          mùa. Sản phẩm lý tưởng cho các buổi tiệc sinh nhật sang trọng.
+        </p>
+        <ul>
+          <li>Nguyên liệu: Kem tươi (30%), Bột mì, Trứng, Dâu tây tươi.</li>
+          <li>Khối lượng: 1.2 kg.</li>
+          <li>Bảo quản: Nhiệt độ lạnh (0°C - 5°C)</li>
+        </ul>
+      </section>
     </main>
 
     <div id="image-modal" class="modal">
-        <span class="close-btn">&times;</span>
-        <img class="modal-content" id="img-zoomed">
-        <div id="caption" class="caption">Bánh Kem Dâu Tây Thượng Hạng</div>
+      <span class="close-btn">&times;</span>
+      <img class="modal-content" id="img-zoomed" />
+      <div id="caption" class="caption">Bánh Kem Dâu Tây Thượng Hạng</div>
     </div>
-    
-      <footer>
-        <p>&copy; 2025 Tiệm Bánh Cao Cấp. Số điện thoại liên hệ: 0938176419.</p>
+
+    <footer>
+      <p>&copy; 2025 Tiệm Bánh Cao Cấp. Số điện thoại liên hệ: 0938176419.</p>
     </footer>
-    <script src="./assets/client_auth.js"></script> 
+    <script src="./assets/client_auth.js"></script>
     <script src="./assets/cart_script.js"></script>
     <script src="./assets/client_script.js"></script>
-</body>
+  </body>
 </html>

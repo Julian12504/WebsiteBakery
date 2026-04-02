@@ -1,81 +1,83 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lịch Sử Đơn Hàng</title>
-    <link rel="icon" type="image/png" href="img/cake.png">
+    <link rel="icon" type="image/png" href="img/cake.png" />
 
-    <link rel="stylesheet" href="./assets/client_style.css">
-    <link rel="stylesheet" href="./assets/client_checkout_user.css">  
-</head>
-<body>
+    <link rel="stylesheet" href="./assets/client_style.css" />
+    <link rel="stylesheet" href="./assets/client_checkout_user.css" />
+  </head>
+  <body>
     <header class="main-header">
-    <a href="index2.html" class="logo-wrap">
-    <img src="img/cake.png" alt="Logo Tiệm Bánh Cao Cấp" class="logo">
-    <h1>TIỆM BÁNH XYZ</h1>
-</a>
+      <a href="index2.html" class="logo-wrap">
+        <img src="img/cake.png" alt="Logo Tiệm Bánh Cao Cấp" class="logo" />
+        <h1>TIỆM BÁNH XYZ</h1>
+      </a>
 
-        <nav class="main-nav">
-            <span id="client-welcome-msg" style="display: none; margin-right: 5px; color: #333;"></span> 
-                <a href="contact2.html" class="active">Liên Hệ</a>
-            <a href="index2.html">Trang Chủ</a>
-            <a href="product_list2.html" class="active">Sản Phẩm</a>
-            
-            <a href="cart.html" class="cart-icon">
-                Giỏ Hàng (<span id="cart-count">0</span>)
-            </a> 
-            <a href="user_profile.html">Hồ sơ</a>
-            <a href="login.html" id="client-auth-link">Đăng Nhập</a> 
-        </nav>
+      <nav class="main-nav">
+        <span
+          id="client-welcome-msg"
+          style="display: none; margin-right: 5px; color: #333"
+        ></span>
+        <a href="contact2.html" class="active">Liên Hệ</a>
+        <a href="index2.html">Trang Chủ</a>
+        <a href="product_list2.html" class="active">Sản Phẩm</a>
+
+        <a href="cart.html" class="cart-icon">
+          Giỏ Hàng (<span id="cart-count">0</span>)
+        </a>
+        <a href="user_profile.html">Hồ sơ</a>
+        <a href="login.html" id="client-auth-link">Đăng Nhập</a>
+      </nav>
     </header>
 
     <main class="profile-page-content">
-        <h2>🧾 LỊCH SỬ ĐƠN HÀNG</h2>
+      <h2>🧾 LỊCH SỬ ĐƠN HÀNG</h2>
 
-        <div class="profile-navigation">
-            <a href="user_profile.html">Thông tin tài khoản</a>
-            <a href="order_history.html" class="active">Lịch sử đơn hàng</a>
-        </div>
-        
-        <table class="order-history-table">
-            <thead>
-                <tr>
-                    <th>Mã Đơn Hàng</th>
-                    <th>Ngày Đặt</th>
-                    <th>Tổng Tiền</th>
-                    <th>Tình Trạng</th>
-                    <th>Chi Tiết</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>DH20251112-001</td>
-                    <td>12/11/2025</td>
-                    <td>910.000 VNĐ</td>
-                    <td class="status-new">Đang chờ xử lý</td>
-                    <td><a href="oderdetail.html">Xem Chi Tiết</a></td>
-                </tr>
-                <tr>
-                    <td>DH20251025-015</td>
-                    <td>25/10/2025</td>
-                    <td>500.000 VNĐ</td>
-                    <td class="status-shipped">Đã giao hàng</td>
-                    <td><a href="oderdetail.html">Xem Chi Tiết</a></td>
-                </tr>
-                <tr>
-                    <td>DH20250901-008</td>
-                    <td>01/09/2025</td>
-                    <td>1.250.000 VNĐ</td>
-                    <td class="status-cancelled">Đã hủy</td>
-                    <td><a href="#">Xem Chi Tiết</a></td>
-                </tr>
-            </tbody>
-        </table>
+      <div class="profile-navigation">
+        <a href="user_profile.html">Thông tin tài khoản</a>
+        <a href="order_history.html" class="active">Lịch sử đơn hàng</a>
+      </div>
+
+      <table class="order-history-table">
+        <thead>
+          <tr>
+            <th>Mã Đơn Hàng</th>
+            <th>Ngày Đặt</th>
+            <th>Tổng Tiền</th>
+            <th>Tình Trạng</th>
+            <th>Chi Tiết</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>DH20251112-001</td>
+            <td>12/11/2025</td>
+            <td>910.000 VNĐ</td>
+            <td class="status-new">Đang chờ xử lý</td>
+            <td><a href="oderdetail.html">Xem Chi Tiết</a></td>
+          </tr>
+          <tr>
+            <td>DH20251025-015</td>
+            <td>25/10/2025</td>
+            <td>500.000 VNĐ</td>
+            <td class="status-shipped">Đã giao hàng</td>
+            <td><a href="oderdetail.html">Xem Chi Tiết</a></td>
+          </tr>
+          <tr>
+            <td>DH20250901-008</td>
+            <td>01/09/2025</td>
+            <td>1.250.000 VNĐ</td>
+            <td class="status-cancelled">Đã hủy</td>
+            <td><a href="#">Xem Chi Tiết</a></td>
+          </tr>
+        </tbody>
+      </table>
     </main>
 
-
     <script src="./assets/client_script.js"></script>
-    <script src="./assets/client_auth.js"></script> 
-</body>
+    <script src="./assets/client_auth.js"></script>
+  </body>
 </html>

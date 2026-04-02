@@ -1,75 +1,83 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Quản Lý Danh Mục Sản Phẩm - Admin</title>
-    <link rel="stylesheet" href="./assets/admin_style.css">
-</head>
-<body>
+    <link rel="stylesheet" href="./assets/admin_style.css" />
+  </head>
+  <body>
     <header class="admin-header">
-        <h1>ADMIN DASHBOARD - Quản Lý Bánh</h1>
-        <a href="admin_login.html" class="btn-logout">Đăng Xuất</a>
+      <h1>ADMIN DASHBOARD - Quản Lý Bánh</h1>
+      <a href="admin_login.html" class="btn-logout">Đăng Xuất</a>
     </header>
-    
+
     <div class="admin-layout">
-        <aside class="admin-sidebar">
-            <h3>Danh Mục Quản Trị</h3>
-            <ul>
-                <li><a href="admin_dashboard.html">Dashboard</a></li>
-                <li><a href="user_list.html">Quản Lý Người Dùng</a></li>
-                <li><a href="category_manage.html">Quản Lý Loại SP</a></li>
-                <li><a href="product_manage.html" class="active">Quản Lý Danh Mục SP</a></li>
-                <li><a href="import_list.html">Quản Lý Nhập SP</a></li>
-                <li><a href="price_manage.html">Quản Lý Giá Bán</a></li>
-                <li><a href="order_list.html">Quản Lý Đơn Đặt Hàng</a></li>
-                <li><a href="stock_manage.html">Quản Lý Tồn Kho</a></li>
-            </ul>
-        </aside>
+      <aside class="admin-sidebar">
+        <h3>Danh Mục Quản Trị</h3>
+        <ul>
+          <li><a href="admin_dashboard.html">Dashboard</a></li>
+          <li><a href="user_list.html">Quản Lý Người Dùng</a></li>
+          <li><a href="category_manage.html">Quản Lý Loại SP</a></li>
+          <li>
+            <a href="product_manage.html" class="active">Quản Lý Danh Mục SP</a>
+          </li>
+          <li><a href="import_list.html">Quản Lý Nhập SP</a></li>
+          <li><a href="price_manage.html">Quản Lý Giá Bán</a></li>
+          <li><a href="order_list.html">Quản Lý Đơn Đặt Hàng</a></li>
+          <li><a href="stock_manage.html">Quản Lý Tồn Kho</a></li>
+        </ul>
+      </aside>
 
-        <main class="admin-content">
-            <h2>Quản Lý Danh Mục Sản Phẩm</h2>
+      <main class="admin-content">
+        <h2>Quản Lý Danh Mục Sản Phẩm</h2>
 
-            <div class="action-bar">
-                <a href="product_form.html" class="btn-primary">+ Thêm Sản Phẩm Mới</a>
-            </div>
-            
-            <div class="filter-area">
-                <input type="text" placeholder="Tìm kiếm theo Mã/Tên sản phẩm">
-                <select><option>-- Lọc theo Loại --</option></select>
-                <button class="btn-secondary">Tìm</button>
-            </div>
+        <div class="action-bar">
+          <a href="product_form.html" class="btn-primary"
+            >+ Thêm Sản Phẩm Mới</a
+          >
+        </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Mã SP</th>
-                        <th>Tên Sản Phẩm</th>
-                        <th>Loại</th>
-                        <th>Giá Bán</th>
-                        <th>Hình ảnh</th>
-                        <th>Tình Trạng</th>
-                        <th>Thao Tác</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>BKD001</td>
-                        <td>Bánh Kem Dâu Tây</td>
-                        <td>Bánh Kem</td>
-                        <td>350.000 VNĐ</td>
-                        <td></td>
-                        <td class="status-active">Hiển thị</td>
-                        <td>
-                            <a href="product_form.html?id=BKD001" class="btn-secondary">Sửa</a>
-                            <button class="btn-danger">Ẩn/Xóa</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </main>
+        <div class="filter-area">
+          <input type="text" placeholder="Tìm kiếm theo Mã/Tên sản phẩm" />
+          <select>
+            <option>-- Lọc theo Loại --</option>
+          </select>
+          <button class="btn-secondary">Tìm</button>
+        </div>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Mã SP</th>
+              <th>Tên Sản Phẩm</th>
+              <th>Loại</th>
+              <th>Giá Bán</th>
+              <th>Hình ảnh</th>
+              <th>Tình Trạng</th>
+              <th>Thao Tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>BKD001</td>
+              <td>Bánh Kem Dâu Tây</td>
+              <td>Bánh Kem</td>
+              <td>350.000 VNĐ</td>
+              <td></td>
+              <td class="status-active">Hiển thị</td>
+              <td>
+                <a href="product_form.html?id=BKD001" class="btn-secondary"
+                  >Sửa</a
+                >
+                <button class="btn-danger">Ẩn/Xóa</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </main>
     </div>
 
     <script src="./assets/admin_script.js"></script>
-</body>
+  </body>
 </html>
