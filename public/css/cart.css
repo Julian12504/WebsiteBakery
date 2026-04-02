@@ -1,0 +1,145 @@
+:root {
+    --primary: #d81b60;
+    --bg: #f8f9fa;
+    --text: #333;
+    --border: #edf2f7;
+}
+
+.cart-container {
+    padding: 60px 0;
+    display: grid;
+    grid-template-columns: 1fr 350px; /* Chia 2 cột: Danh sách và Thanh toán */
+    gap: 30px;
+    align-items: start;
+}
+
+/* Tiêu đề giỏ hàng */
+.cart-header {
+    grid-column: 1 / -1;
+    margin-bottom: 20px;
+}
+
+.cart-header h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text);
+}
+
+/* Bảng sản phẩm */
+.cart-main {
+    background: #fff;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-table th {
+    text-align: left;
+    padding: 15px;
+    font-size: 14px;
+    color: #888;
+    border-bottom: 1px solid var(--border);
+}
+
+.cart-table td {
+    padding: 20px 15px;
+    border-bottom: 1px solid var(--border);
+}
+
+.cart-item-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.cart-item-info img {
+    width: 70px;
+    height: 70px;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.cart-item-name {
+    font-weight: 600;
+    color: var(--text);
+    text-decoration: none;
+}
+
+/* Input số lượng */
+.qty-input {
+    width: 50px;
+    height: 35px;
+    text-align: center;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+/* Giá và Thành tiền */
+.price-col { color: #555; }
+.subtotal-col { color: var(--primary); font-weight: 700; }
+
+.btn-remove {
+    color: #ff4d4f;
+    font-size: 18px;
+    transition: 0.3s;
+}
+.btn-remove:hover { transform: scale(1.2); }
+
+/* CỘT BÊN PHẢI: TỔNG TIỀN */
+.cart-sidebar {
+    background: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    position: sticky;
+    top: 20px;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    font-size: 16px;
+}
+
+.summary-total {
+    border-top: 2px dashed var(--border);
+    padding-top: 15px;
+    margin-top: 15px;
+    font-weight: 800;
+    font-size: 20px;
+    color: var(--primary);
+}
+
+.btn-checkout {
+    display: block;
+    width: 100%;
+    background: var(--primary);
+    color: #fff;
+    text-align: center;
+    padding: 15px;
+    border-radius: 10px;
+    font-weight: 700;
+    text-decoration: none;
+    margin-top: 20px;
+    transition: 0.3s;
+}
+
+.btn-checkout:hover {
+    background: #b0154b;
+    box-shadow: 0 5px 15px rgba(216, 27, 96, 0.3);
+}
+
+.continue-shopping {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    color: #888;
+    text-decoration: none;
+    font-size: 14px;
+}

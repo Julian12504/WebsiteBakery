@@ -1,0 +1,77 @@
+/* Container bao ngoài để căn giữa nội dung */
+.home-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 15px;
+}
+
+/* Tiêu đề mục (Sản phẩm mới, Được yêu thích...) */
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.section-header h2 {
+    font-size: 1.6rem;
+    color: #333;
+}
+
+/* Hệ thống lưới 4 cột */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* Chia đều 4 cột */
+    gap: 25px; /* Khoảng cách giữa các sản phẩm */
+}
+
+/* Card sản phẩm */
+.cake-card {
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.cake-img-wrapper {
+    width: 100%;
+    aspect-ratio: 3 / 4; /* Tỉ lệ ảnh dọc theo mẫu image_5ead65.jpg */
+    overflow: hidden;
+    background-color: #f0f0f0;
+    margin-bottom: 12px;
+}
+
+.cake-img-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Đảm bảo ảnh không bị méo */
+    transition: transform 0.5s ease;
+}
+
+.cake-card:hover img {
+    transform: scale(1.05);
+}
+
+.cake-info h3 {
+    font-size: 1rem;
+    color: #333;
+    margin: 8px 0;
+    font-weight: 600;
+}
+
+.cake-price {
+    color: #D4A373; /* Màu vàng đồng đặc trưng */
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+
+/* Điều hướng slider mẫu */
+.slider-nav {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-btn {
+    border: 1px solid #ddd;
+    background: #f8f8f8;
+    padding: 5px 10px;
+    cursor: pointer;
+}

@@ -1,0 +1,209 @@
+/* public/css/profile.css */
+.profile-container {
+    padding: 60px 20px;
+}
+
+.profile-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    gap: 30px;
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.profile-sidebar {
+    flex: 1;
+    text-align: center;
+    border-right: 1px solid #eee;
+    padding-right: 30px;
+}
+
+.avatar-circle {
+    width: 150px;
+    height: 150px;
+    background: #fce4ec;
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 60px;
+    color: #d81b60;
+    font-weight: bold;
+    border: 5px solid #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.user-name {
+    margin-bottom: 5px;
+    color: #333;
+}
+
+.join-date {
+    color: #888;
+    font-size: 14px;
+}
+
+.role-badge {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 5px 15px;
+    background: #d81b60;
+    color: #fff;
+    border-radius: 20px;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+
+.profile-main {
+    flex: 2;
+}
+
+.profile-title {
+    margin-bottom: 25px;
+    color: #d81b60;
+    border-bottom: 2px solid #fce4ec;
+    padding-bottom: 10px;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.info-item label {
+    display: block;
+    color: #888;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.info-item p {
+    font-weight: 500;
+    color: #333;
+    margin: 0;
+}
+
+.address-section {
+    margin-top: 20px;
+}
+
+.address-text {
+    line-height: 1.6;
+}
+
+.profile-actions {
+    margin-top: 40px;
+    display: flex;
+    gap: 10px;
+}
+
+.btn-edit {
+    padding: 10px 20px;
+    background: #eee;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.btn-logout-alt {
+    padding: 10px 20px;
+    background: #fff;
+    color: #ff4d4d;
+    border: 1px solid #ff4d4d;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.btn-edit:hover { background: #ddd; }
+.btn-logout-alt:hover { background: #ff4d4d; color: #fff; }
+/* CSS cho Modal */
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 9999; 
+    left: 0; top: 0;
+    width: 100%; height: 100%; 
+    background-color: rgba(0,0,0,0.5); 
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto; 
+    padding: 30px;
+    border-radius: 15px;
+    width: 400px;
+    position: relative;
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from {transform: translateY(-50px); opacity: 0;}
+    to {transform: translateY(0); opacity: 1;}
+}
+
+.close {
+    position: absolute;
+    right: 20px; top: 15px;
+    font-size: 28px; font-weight: bold; cursor: pointer; color: #aaa;
+}
+
+.close:hover { color: #d81b60; }
+
+.modal-content input, .modal-content textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Quicksand', sans-serif;
+}
+/* Tab đơn hàng */
+.order-tabs {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid #eee;
+    margin-top: 30px;
+    background: #fff;
+}
+
+.tab-item {
+    padding: 15px 10px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #666;
+    transition: 0.3s;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-item.active {
+    color: #d81b60;
+    border-bottom-color: #d81b60;
+}
+
+.order-item {
+    background: #f9f9f9;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btn-review {
+    background: #d81b60;
+    color: #fff;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 13px;
+}
