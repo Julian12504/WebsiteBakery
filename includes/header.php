@@ -16,6 +16,8 @@ if ($current_url == 'home'): ?>
 
 <?php elseif ($current_url == 'product'): ?>
     <link rel="stylesheet" href="css/shoppage.css"> 
+<?php elseif ($current_url == 'checkout'): ?>
+    <link rel="stylesheet" href="css/checkout.css"> 
 <?php elseif ($current_url == 'profile'): ?>
     <link rel="stylesheet" href="css/profile.css"> 
 <?php elseif ($current_url == 'detail'): ?>

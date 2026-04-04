@@ -16,48 +16,80 @@ class User {
     }
 
     // Hàm xử lý Đăng nhập
-    public function login($username, $password) {
-        // Truy vấn kiểm tra username và trạng thái hoạt động (status = 1)
-        $query = "SELECT * FROM " . $this->table_name . " WHERE username = :username AND status = 1 LIMIT 1";
-        
-        $stmt = $this->conn->prepare($query);
-        
-        // Làm sạch dữ liệu đầu vào
-        $username = htmlspecialchars(strip_tags($username));
-        $stmt->bindParam(':username', $username);
-        
-        $stmt->execute();
+// Hàm lấy thông tin chi tiết của 1 người dùng qua ID
+public function getUserById($id) {
+    $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id LIMIT 1";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+public function login($username, $password) {
+    $sql = "SELECT * FROM users WHERE username = :username";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['username' => $username]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($stmt->rowCount() > 0) {
-            $row = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            // Kiểm tra mật khẩu (Ở đây tui để so sánh trực tiếp vì data mẫu bạn nhập tay là text thuần)
-            // Lưu ý: Nếu sau này dùng password_hash() thì phải dùng password_verify()
-            if ($password == $row['password']) {
-                return $row; // Trả về toàn bộ thông tin người dùng
-            }
-        }
-        return false; // Sai tài khoản hoặc mật khẩu
+    // Dùng password_verify nếu bạn có mã hóa, hoặc so sánh trực tiếp nếu để text thuần
+    if ($user && $password == $user['password']) {
+        return $user; 
     }
+    return false;
+}
+public function checklogin($username, $password) {
+    $query = "SELECT * FROM " . $this->table_name . " WHERE username = :username LIMIT 1";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':username', $username);
+    $stmt->execute();
+    
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Hàm Đăng ký (Để dùng cho trang register sau này)
-    public function register($data) {
-        $query = "INSERT INTO " . $this->table_name . " 
-                (username, password, email, full_name, role, status) 
-                VALUES (:username, :password, :email, :full_name, 'customer', 1)";
-        
-        $stmt = $this->conn->prepare($query);
-        
-        $stmt->bindParam(':username', $data['username']);
-        $stmt->bindParam(':password', $data['password']);
-        $stmt->bindParam(':email', $data['email']);
-        $stmt->bindParam(':full_name', $data['full_name']);
-        
-        if($stmt->execute()) {
-            return true;
-        }
-        return false;
+    // Kiểm tra nếu có user và giải mã mật khẩu
+    if ($user && password_verify($password, $user['password'])) {
+        return $user; // Trả về mảng thông tin user nếu đúng
     }
+    return false; // Sai tài khoản hoặc mật khẩu
+}
+
+    // 1. Kiểm tra Email tồn tại
+public function emailExists($email) {
+    $query = "SELECT id FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':email', $email);
+    $stmt->execute();
+    return $stmt->rowCount() > 0;
+}
+
+// 2. Kiểm tra Số điện thoại tồn tại
+public function phoneExists($phone) {
+    $query = "SELECT id FROM " . $this->table_name . " WHERE phone = :phone LIMIT 1";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':phone', $phone);
+    $stmt->execute();
+    return $stmt->rowCount() > 0;
+}
+public function usernameExists($username) {
+    $query = "SELECT id FROM " . $this->table_name . " WHERE username = :username LIMIT 1";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':username', $username);
+    $stmt->execute();
+    return $stmt->rowCount() > 0;
+}
+// 3. Đăng ký người dùng mới
+public function register($full_name, $username, $email, $password, $phone) {
+    $query = "INSERT INTO " . $this->table_name . " (full_name, username, email, password, phone, role, status) 
+              VALUES (:full_name, :username, :email, :password, :phone, '0', 1)";
+    
+    $stmt = $this->conn->prepare($query);
+    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
+    $stmt->bindParam(':full_name', $full_name);
+    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':password', $hashed_password);
+    $stmt->bindParam(':phone', $phone);
+    return $stmt->execute();
+}
 // Hàm cập nhật thông tin người dùng vào Database
 public function update($data) {
     $query = "UPDATE " . $this->table_name . " 
@@ -81,5 +113,6 @@ public function update($data) {
     }
     return false;
 }
+
 }
 ?>

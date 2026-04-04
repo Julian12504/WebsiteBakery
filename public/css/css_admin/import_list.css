@@ -1,0 +1,42 @@
+/* Layout cho danh sách phiếu nhập */
+.import-list-container {
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.status-done {
+    background: #e1f7ec;
+    color: #27ae60;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.btn-add-import {
+    background: #3498db;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.btn-add-import:hover {
+    background: #2980b9;
+}
+
+.text-right { text-align: right; }
+.text-center { text-align: center; }

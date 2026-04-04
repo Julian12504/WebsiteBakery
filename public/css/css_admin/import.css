@@ -1,0 +1,163 @@
+/* Container tổng quát */
+.import-wrapper {
+    padding: 20px;
+    background-color: #f4f7f6;
+    min-height: 100vh;
+}
+
+.import-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+    overflow: hidden;
+}
+
+.card-header {
+    background: #ffffff;
+    padding: 15px 20px;
+    border-bottom: 1px solid #edf2f9;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #333;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.card-body {
+    padding: 20px;
+}
+
+/* Grid thông tin chung */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+/* Table chi tiết hàng nhập */
+.import-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.import-table th {
+    background: #f8f9fa;
+    color: #6c757d;
+    font-weight: 600;
+    text-align: left;
+    padding: 12px;
+    border-bottom: 2px solid #dee2e6;
+}
+
+.import-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+/* Input Styles */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #dcdfe6;
+    border-radius: 4px;
+    transition: border-color .2s;
+    box-sizing: border-box;
+}
+
+.form-control:focus {
+    border-color: #409eff;
+    outline: none;
+}
+
+/* Alert box công thức */
+.formula-alert {
+    background-color: #ecf5ff;
+    border: 1px solid #d9ecff;
+    color: #409eff;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+/* Button Group */
+.action-bar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+/* Container chứa các nút bấm */
+.action-bar {
+    display: flex;
+    justify-content: flex-end; /* Đẩy nút sang bên phải */
+    gap: 12px; /* Khoảng cách giữa 2 nút */
+    padding-top: 20px;
+    border-top: 1px solid #eee; /* Đường kẻ mờ ngăn cách phía trên */
+}
+
+/* Định dạng chung cho cả 2 nút */
+.btn-cancel, .btn-submit {
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    border: none;
+}
+
+/* Nút Hủy bỏ (Màu xám) */
+.btn-cancel {
+    background-color: #909399;
+    color: white;
+}
+
+.btn-cancel:hover {
+    background-color: #82848a;
+    box-shadow: 0 4px 12px rgba(144, 147, 153, 0.3);
+}
+
+/* Nút Xác nhận nhập kho (Màu xanh lá - đại diện cho sự hoàn tất) */
+.btn-submit {
+    background-color: #67c23a;
+    color: white;
+}
+
+.btn-submit:hover {
+    background-color: #5daf34;
+    box-shadow: 0 4px 12px rgba(103, 194, 58, 0.3);
+    transform: translateY(-1px); /* Hiệu ứng nổi lên nhẹ */
+}
+
+/* Hiệu ứng khi nhấn giữ nút */
+.btn-submit:active, .btn-cancel:active {
+    transform: translateY(0);
+}
+.btn-success { background-color: #67c23a; color: white; }
+.btn-secondary { background-color: #909399; color: white; text-decoration: none; }
+.btn:hover { opacity: 0.9; }

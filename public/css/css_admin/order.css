@@ -1,0 +1,74 @@
+/* Toolbar cho đơn hàng */
+.filter-form-orders {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.filter-input-group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+}
+
+.filter-input-group input[type="date"] {
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.filter-select {
+    padding: 7px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    min-width: 150px;
+}
+
+.btn-filter {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 7px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-filter:hover {
+    background-color: #2980b9;
+}
+
+/* Kiểu dáng cho Dropdown trạng thái trong bảng */
+.status-dropdown {
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 13px;
+    width: 100%;
+    cursor: pointer;
+}
+
+/* Màu sắc từng trạng thái */
+.status-style-0 { border-left: 4px solid #f39c12; background-color: #fef9e7; } /* Chờ xử lý - Cam */
+.status-style-1 { border-left: 4px solid #3498db; background-color: #ebf5fb; } /* Xác nhận - Xanh biển */
+.status-style-2 { border-left: 4px solid #27ae60; background-color: #eafaf1; } /* Đã giao - Xanh lá */
+.status-style-4 { border-left: 4px solid #e74c3c; background-color: #fdedec; } /* Đã hủy - Đỏ */
+
+.order-price {
+    font-weight: bold;
+    color: #e74c3c;
+}
+
+.btn-view-detail {
+    text-decoration: none;
+    color: #3498db;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.btn-view-detail:hover {
+    text-decoration: underline;
+}
