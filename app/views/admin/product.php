@@ -9,7 +9,7 @@
 </head>
 <body>
 
-<div class="sidebar">
+  <div class="sidebar">
     <div class="sidebar-header"><i class="fa-solid fa-user-shield"></i> Administrator</div>
     
     <a href="admin.php?url=dashboard" class="menu-item active"><i class="fa-solid fa-house"></i> Trang chủ Admin</a>
@@ -31,6 +31,9 @@
 
     <a href="admin.php?url=orders" class="menu-item"><i class="fa-solid fa-cart-shopping"></i> Đơn hàng</a>
     <a href="admin.php?url=users" class="menu-item"><i class="fa-solid fa-users"></i> Quản lý người dùng</a>
+    <a href="admin.php?url=import_product" class="menu-item">
+    <i class="fa-solid fa-truck-ramp-box"></i> Quản lý nhập hàng
+</a>
     <a href="admin_logout.php" class="menu-item" style="color: #e74c3c;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
 </div>
 
