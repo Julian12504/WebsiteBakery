@@ -15,6 +15,87 @@ class Product {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getImportQuantityInRange($product_id, $from_date, $to_date) {
+        $sql = "SELECT SUM(pd.quantity) as total_import
+                FROM purchase_details pd
+                JOIN purchase_receipts pr ON pd.receipt_id = pr.id
+                WHERE pd.product_id = :product_id
+                  AND pr.receipt_date BETWEEN :from_date AND :to_date";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->bindValue(':from_date', $from_date);
+        $stmt->bindValue(':to_date', $to_date);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)($row['total_import'] ?? 0);
+    }
+
+    public function getExportQuantityInRange($product_id, $from_date, $to_date) {
+        $sql = "SELECT SUM(od.quantity) as total_export
+                FROM order_details od
+                JOIN orders o ON od.order_id = o.id
+                WHERE od.product_id = :product_id
+                  AND o.order_date BETWEEN :from_date AND :to_date
+                  AND o.status = 2";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->bindValue(':from_date', $from_date);
+        $stmt->bindValue(':to_date', $to_date);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)($row['total_export'] ?? 0);
+    }
+
+    public function getImportQuantityAfter($product_id, $dateTime) {
+        $sql = "SELECT SUM(pd.quantity) as total_import
+                FROM purchase_details pd
+                JOIN purchase_receipts pr ON pd.receipt_id = pr.id
+                WHERE pd.product_id = :product_id
+                  AND pr.receipt_date > :dateTime";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->bindValue(':dateTime', $dateTime);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)($row['total_import'] ?? 0);
+    }
+
+    public function getExportQuantityAfter($product_id, $dateTime) {
+        $sql = "SELECT SUM(od.quantity) as total_export
+                FROM order_details od
+                JOIN orders o ON od.order_id = o.id
+                WHERE od.product_id = :product_id
+                  AND o.order_date > :dateTime
+                  AND o.status = 2";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':product_id', $product_id, PDO::PARAM_INT);
+        $stmt->bindValue(':dateTime', $dateTime);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)($row['total_export'] ?? 0);
+    }
+
+    public function getStockAtDateTime($product_id, $dateTime) {
+        $product = $this->getProductByIdAdmin($product_id);
+        if (!$product) {
+            return null;
+        }
+
+        $currentStock = (int)$product['stock'];
+        $importsAfter = $this->getImportQuantityAfter($product_id, $dateTime);
+        $exportsAfter = $this->getExportQuantityAfter($product_id, $dateTime);
+
+        return $currentStock - $importsAfter + $exportsAfter;
+    }
+
+    public function getLowStockProductsByThreshold($threshold) {
+        $sql = "SELECT * FROM products WHERE stock <= :threshold AND status = 1 ORDER BY stock ASC";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':threshold', $threshold, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getProductById($id) {
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = :id AND status = 1 LIMIT 1";
         $stmt = $this->conn->prepare($query);
@@ -48,14 +129,31 @@ class Product {
     // --- CÁC HÀM DÀNH CHO ADMIN SITE ---
 
     // Lấy sản phẩm có phân trang VÀ tìm kiếm (Gộp làm 1 hàm duy nhất)
-  public function getProductsPagedAdmin($offset, $limit, $search = '', $category_id = '') {
+  public function getProductsPagedAdmin($offset, $limit, $search = '', $category_id = '', $min_cost = '', $max_cost = '', $min_margin = '', $max_margin = '', $min_price = '', $max_price = '') {
     $sql = "SELECT p.*, c.name as category_name FROM products p 
             LEFT JOIN categories c ON p.category_id = c.id 
             WHERE p.name LIKE :search";
     
-    // Nếu có lọc theo danh mục thì nối thêm SQL
     if (!empty($category_id)) {
         $sql .= " AND p.category_id = :cat_id";
+    }
+    if ($min_cost !== '') {
+        $sql .= " AND p.gia_von >= :min_cost";
+    }
+    if ($max_cost !== '') {
+        $sql .= " AND p.gia_von <= :max_cost";
+    }
+    if ($min_margin !== '') {
+        $sql .= " AND p.loi_nhuan >= :min_margin";
+    }
+    if ($max_margin !== '') {
+        $sql .= " AND p.loi_nhuan <= :max_margin";
+    }
+    if ($min_price !== '') {
+        $sql .= " AND p.selling_price >= :min_price";
+    }
+    if ($max_price !== '') {
+        $sql .= " AND p.selling_price <= :max_price";
     }
 
     $sql .= " ORDER BY p.id DESC LIMIT :offset, :limit";
@@ -67,22 +165,76 @@ class Product {
     if (!empty($category_id)) {
         $stmt->bindValue(':cat_id', $category_id, PDO::PARAM_INT);
     }
+    if ($min_cost !== '') {
+        $stmt->bindValue(':min_cost', $min_cost);
+    }
+    if ($max_cost !== '') {
+        $stmt->bindValue(':max_cost', $max_cost);
+    }
+    if ($min_margin !== '') {
+        $stmt->bindValue(':min_margin', $min_margin);
+    }
+    if ($max_margin !== '') {
+        $stmt->bindValue(':max_margin', $max_margin);
+    }
+    if ($min_price !== '') {
+        $stmt->bindValue(':min_price', $min_price);
+    }
+    if ($max_price !== '') {
+        $stmt->bindValue(':max_price', $max_price);
+    }
     
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
     // Đếm tổng số sản phẩm có lọc theo tìm kiếm
-  public function countAllAdmin($search = '', $category_id = '') {
+  public function countAllAdmin($search = '', $category_id = '', $min_cost = '', $max_cost = '', $min_margin = '', $max_margin = '', $min_price = '', $max_price = '') {
     $sql = "SELECT COUNT(*) as total FROM products WHERE name LIKE :search";
     if (!empty($category_id)) {
         $sql .= " AND category_id = :cat_id";
+    }
+    if ($min_cost !== '') {
+        $sql .= " AND gia_von >= :min_cost";
+    }
+    if ($max_cost !== '') {
+        $sql .= " AND gia_von <= :max_cost";
+    }
+    if ($min_margin !== '') {
+        $sql .= " AND loi_nhuan >= :min_margin";
+    }
+    if ($max_margin !== '') {
+        $sql .= " AND loi_nhuan <= :max_margin";
+    }
+    if ($min_price !== '') {
+        $sql .= " AND selling_price >= :min_price";
+    }
+    if ($max_price !== '') {
+        $sql .= " AND selling_price <= :max_price";
     }
     
     $stmt = $this->conn->prepare($sql);
     $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
     if (!empty($category_id)) {
         $stmt->bindValue(':cat_id', $category_id, PDO::PARAM_INT);
+    }
+    if ($min_cost !== '') {
+        $stmt->bindValue(':min_cost', $min_cost);
+    }
+    if ($max_cost !== '') {
+        $stmt->bindValue(':max_cost', $max_cost);
+    }
+    if ($min_margin !== '') {
+        $stmt->bindValue(':min_margin', $min_margin);
+    }
+    if ($max_margin !== '') {
+        $stmt->bindValue(':max_margin', $max_margin);
+    }
+    if ($min_price !== '') {
+        $stmt->bindValue(':min_price', $min_price);
+    }
+    if ($max_price !== '') {
+        $stmt->bindValue(':max_price', $max_price);
     }
     
     $stmt->execute();
@@ -122,7 +274,7 @@ public function insertProduct($data) {
     $stmt->bindValue(':selling_price', $data['selling_price']);
     $stmt->bindValue(':stock', $data['stock']);
     $stmt->bindValue(':low_stock_threshold', $data['low_stock_threshold'] ?? 5);
-    $stmt->bindValue(':status', $data['status'] ?? 1);
+    $stmt->bindValue(':status', $data['status'] ?? 1, PDO::PARAM_INT);
     
     return $stmt->execute();
 }
@@ -130,8 +282,8 @@ public function insertProduct($data) {
     public function updateProduct($data) {
         $sql = "UPDATE products SET 
                 name = :name, category_id = :category_id, description = :description,
-                gia_von = :gia_von, loi_nhuan = :loi_nhuan, selling_price = :selling_price,
-                stock = :stock, image = :image, status = :status 
+                unit = :unit, gia_von = :gia_von, loi_nhuan = :loi_nhuan, selling_price = :selling_price,
+                stock = :stock, low_stock_threshold = :low_stock_threshold, image = :image, status = :status 
                 WHERE id = :id";
         $stmt = $this->conn->prepare($sql);
         return $stmt->execute($data);
@@ -151,11 +303,31 @@ public function delete($id) {
     return $stmt->execute();
 }
 
+public function hasPurchaseHistory($id) {
+    $query = "SELECT COUNT(*) as total FROM purchase_details WHERE product_id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row ? ((int)$row['total'] > 0) : false;
+}
+
+public function deleteProduct($id) {
+    return $this->delete($id);
+}
+
+public function deleteOrHideProduct($id) {
+    if ($this->hasPurchaseHistory($id)) {
+        return $this->updateStatus($id, 0);
+    }
+    return $this->delete($id);
+}
+
 // 2. Thay đổi trạng thái (Ẩn/Hiện)
 public function updateStatus($id, $status) {
     $query = "UPDATE " . $this->table_name . " SET status = :status WHERE id = :id";
     $stmt = $this->conn->prepare($query);
-    $stmt->bindParam(':status', $status);
+    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
     $stmt->bindParam(':id', $id);
     return $stmt->execute();
 }

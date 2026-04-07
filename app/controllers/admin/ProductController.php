@@ -8,15 +8,21 @@ class ProductController {
 
     // 1. Hiển thị danh sách sản phẩm (có tìm kiếm & phân trang)
     public function index() {
-        $search = $_GET['search'] ?? ''; 
+        $search = $_GET['search'] ?? '';
         $category_id = $_GET['category_id'] ?? ''; // Thêm lọc theo danh mục
+        $min_cost = isset($_GET['min_cost']) ? $_GET['min_cost'] : '';
+        $max_cost = isset($_GET['max_cost']) ? $_GET['max_cost'] : '';
+        $min_margin = isset($_GET['min_margin']) ? $_GET['min_margin'] : '';
+        $max_margin = isset($_GET['max_margin']) ? $_GET['max_margin'] : '';
+        $min_price = isset($_GET['min_price']) ? $_GET['min_price'] : '';
+        $max_price = isset($_GET['max_price']) ? $_GET['max_price'] : '';
         $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
         $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10; // Cho phép đổi số lượng hiển thị
         $offset = ($page - 1) * $limit;
 
         // Gọi Model lấy dữ liệu
-        $products = $this->productModel->getProductsPagedAdmin($offset, $limit, $search, $category_id);
-        $totalProducts = $this->productModel->countAllAdmin($search, $category_id); 
+        $products = $this->productModel->getProductsPagedAdmin($offset, $limit, $search, $category_id, $min_cost, $max_cost, $min_margin, $max_margin, $min_price, $max_price);
+        $totalProducts = $this->productModel->countAllAdmin($search, $category_id, $min_cost, $max_cost, $min_margin, $max_margin, $min_price, $max_price);
         $totalPages = ceil($totalProducts / $limit);
         
         $categories = $this->productModel->getAllCategories();
@@ -77,32 +83,35 @@ if (!empty($_FILES['image']['name'])) {
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $id = $_POST['id'];
-            $gia_von = $_POST['gia_von'];
-            $loi_nhuan = $_POST['loi_nhuan'];
+            $gia_von = (float)($_POST['gia_von'] ?? 0);
+            $loi_nhuan = (float)($_POST['loi_nhuan'] ?? 0);
             $selling_price = $gia_von + ($gia_von * $loi_nhuan / 100);
 
             // Giữ ảnh cũ hoặc thay ảnh mới
-            $image = $_POST['current_image'];
+            $image = $_POST['current_image'] ?? 'default.jpg';
             if (!empty($_FILES['image']['name'])) {
                 $image = time() . '_' . $_FILES['image']['name'];
-                move_uploaded_file($_FILES['image']['tmp_name'], "public/images/" . $image);
+                move_uploaded_file($_FILES['image']['tmp_name'], "images/" . $image);
             }
 
             $data = [
                 'id' => $id,
-                'name' => $_POST['name'],
-                'category_id' => $_POST['category_id'],
-                'description' => $_POST['description'],
+                'name' => $_POST['name'] ?? '',
+                'category_id' => $_POST['category_id'] ?? 0,
+                'description' => $_POST['description'] ?? '',
+                'unit' => $_POST['unit'] ?? 'Cái',
                 'gia_von' => $gia_von,
                 'loi_nhuan' => $loi_nhuan,
                 'selling_price' => $selling_price,
-                'stock' => $_POST['stock'],
-                'status' => $_POST['status'],
+                'stock' => (int)($_POST['stock'] ?? 0),
+                'low_stock_threshold' => (int)($_POST['low_stock_threshold'] ?? 5),
+                'status' => isset($_POST['status']) ? (int)$_POST['status'] : 0,
                 'image' => $image
             ];
 
             if ($this->productModel->updateProduct($data)) {
                 header("Location: admin.php?url=products&msg=update_success");
+                exit();
             }
         }
     }
@@ -110,7 +119,7 @@ if (!empty($_FILES['image']['name'])) {
     // 5. Xóa 1 sản phẩm
     public function delete() {
         $id = $_GET['id'] ?? 0;
-        if ($this->productModel->deleteProduct($id)) {
+        if ($this->productModel->deleteOrHideProduct($id)) {
             header("Location: admin.php?url=products&msg=delete_success");
         }
     }
@@ -123,12 +132,13 @@ if (!empty($_FILES['image']['name'])) {
         if (!empty($ids) && !empty($type)) {
             foreach ($ids as $id) {
                 if ($type === 'delete') {
-                    $this->productModel->deleteProduct($id);
+                    $this->productModel->deleteOrHideProduct($id);
                 } elseif ($type === 'hide') {
-                    $this->productModel->updateStatus($id, 0); // Giả sử model có hàm updateStatus
+                    $this->productModel->updateStatus($id, 0);
                 }
             }
             header("Location: admin.php?url=products&msg=bulk_success");
+            exit();
         }
     }
     // 7. Giao diện Nhập hàng All-in-one

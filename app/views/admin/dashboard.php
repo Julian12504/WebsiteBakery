@@ -33,6 +33,7 @@
     <a href="admin.php?url=import_product" class="menu-item">
     <i class="fa-solid fa-truck-ramp-box"></i> Quản lý nhập hàng
 </a>
+    <a href="admin.php?url=inventory" class="menu-item"><i class="fa-solid fa-boxes-stacked"></i> Tồn kho / Báo cáo</a>
     <a href="admin_logout.php" class="menu-item" style="color: #e74c3c;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
 </div>
 

@@ -114,5 +114,44 @@ public function update($data) {
     return false;
 }
 
+public function getAllUsers() {
+    $query = "SELECT id, full_name, username, email, phone, role, status FROM " . $this->table_name . " ORDER BY role DESC, id DESC";
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function createUser($full_name, $username, $email, $password, $phone, $role = 0) {
+    $query = "INSERT INTO " . $this->table_name . " (full_name, username, email, password, phone, role, status) 
+              VALUES (:full_name, :username, :email, :password, :phone, :role, 1)";
+    $stmt = $this->conn->prepare($query);
+    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+
+    $stmt->bindParam(':full_name', $full_name);
+    $stmt->bindParam(':username', $username);
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':password', $hashed_password);
+    $stmt->bindParam(':phone', $phone);
+    $stmt->bindParam(':role', $role, PDO::PARAM_INT);
+    return $stmt->execute();
+}
+
+public function resetPassword($id, $password) {
+    $query = "UPDATE " . $this->table_name . " SET password = :password WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $hashed_password = password_hash($password, PASSWORD_BCRYPT);
+    $stmt->bindParam(':password', $hashed_password);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    return $stmt->execute();
+}
+
+public function updateStatus($id, $status) {
+    $query = "UPDATE " . $this->table_name . " SET status = :status WHERE id = :id";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(':status', $status, PDO::PARAM_INT);
+    $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+    return $stmt->execute();
+}
+
 }
 ?>

@@ -34,6 +34,7 @@
     <a href="admin.php?url=import_product" class="menu-item">
     <i class="fa-solid fa-truck-ramp-box"></i> Quản lý nhập hàng
 </a>
+    <a href="admin.php?url=inventory" class="menu-item"><i class="fa-solid fa-boxes-stacked"></i> Tồn kho / Báo cáo</a>
     <a href="admin_logout.php" class="menu-item" style="color: #e74c3c;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
 </div>
 
@@ -81,14 +82,28 @@
     <i class="fa-solid fa-plus"></i> Thêm mới
 </button>
     </form>
+    <form action="admin.php" method="GET" style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:10px; padding:0 15px 15px;">
+        <input type="hidden" name="url" value="products">
+        <input type="number" name="min_cost" placeholder="Giá vốn từ" step="0.01" value="<?= htmlspecialchars($_GET['min_cost'] ?? '') ?>" class="form-control" style="width:120px;">
+        <input type="number" name="max_cost" placeholder="đến" step="0.01" value="<?= htmlspecialchars($_GET['max_cost'] ?? '') ?>" class="form-control" style="width:120px;">
+        <input type="number" name="min_margin" placeholder="% Lợi nhuận từ" step="0.01" value="<?= htmlspecialchars($_GET['min_margin'] ?? '') ?>" class="form-control" style="width:140px;">
+        <input type="number" name="max_margin" placeholder="đến" step="0.01" value="<?= htmlspecialchars($_GET['max_margin'] ?? '') ?>" class="form-control" style="width:120px;">
+        <input type="number" name="min_price" placeholder="Giá bán từ" step="0.01" value="<?= htmlspecialchars($_GET['min_price'] ?? '') ?>" class="form-control" style="width:120px;">
+        <input type="number" name="max_price" placeholder="đến" step="0.01" value="<?= htmlspecialchars($_GET['max_price'] ?? '') ?>" class="form-control" style="width:120px;">
+        <button type="submit" class="btn-submit" style="padding: 8px 16px;">Lọc</button>
+    </form>
 </div>
         <div class="table-container">
 <table>
     <thead>
         <tr>
             <th style="width: 30px;"><input type="checkbox"></th>
-            <th style="width: 80px;">Mã sản phẩm</th> <th>Danh mục</th>
+            <th style="width: 80px;">Mã sản phẩm</th>
+            <th>Danh mục</th>
             <th>Tiêu đề</th>
+            <th>Giá vốn</th>
+            <th>% Lợi nhuận</th>
+            <th>Giá bán</th>
             <th>Ảnh</th>
             <th>Hiển thị</th>
             <th>Tác vụ</th>
@@ -97,11 +112,14 @@
     <tbody>
         <?php if(!empty($products)): foreach($products as $p): ?>
         <tr>
-            <td><input type="checkbox"></td>
+            <td><input type="checkbox" value="<?= $p['id'] ?>"></td>
             <td style="font-weight: bold; color: #555;">#<?= $p['id'] ?></td> 
             
             <td class="text-left"><?= htmlspecialchars($p['category_name'] ?? 'Chưa phân loại') ?></td>
             <td class="text-left" style="color: #3498db; font-weight: 500;"><?= htmlspecialchars($p['name']) ?></td>
+            <td><?= number_format($p['gia_von'], 0, ',', '.') ?>đ</td>
+            <td><?= number_format($p['loi_nhuan'], 2) ?>%</td>
+            <td><?= number_format($p['selling_price'], 0, ',', '.') ?>đ</td>
             <td>
                 <?php if(!empty($p['image'])): ?>
                    <img src="images/<?= $p['image'] ?>" class="img-thumb">
@@ -158,6 +176,11 @@
             <input type="hidden" name="id" id="prod_id">
             <input type="hidden" name="current_image" id="prod_current_image">
 
+            <div class="form-group" id="prod_code_group" style="display:none;">
+                <label>Mã sản phẩm:</label>
+                <div id="prod_code" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #f8f9fa;"></div>
+            </div>
+
             <div class="form-group">
                 <label>Tên sản phẩm:</label>
                 <input type="text" name="name" id="prod_name" required class="form-control">
@@ -173,13 +196,41 @@
             </div>
 
             <div class="form-group">
+                <label>Mô tả:</label>
+                <textarea name="description" id="prod_description" class="form-control" rows="4"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Đơn vị tính:</label>
+                <input type="text" name="unit" id="prod_unit" class="form-control" placeholder="Cái" required>
+            </div>
+
+            <div class="form-group">
+                <label>Số lượng tồn ban đầu:</label>
+                <input type="number" name="stock" id="prod_stock" class="form-control" min="0" required>
+            </div>
+
+            <div class="form-group">
+                <label>Ngưỡng cảnh báo tồn kho:</label>
+                <input type="number" name="low_stock_threshold" id="prod_low_stock_threshold" class="form-control" min="0" value="5">
+            </div>
+
+            <div class="form-group">
                 <label>Giá vốn:</label>
-                <input type="number" name="gia_von" id="prod_gia_von" class="form-control" required>
+                <input type="number" name="gia_von" id="prod_gia_von" class="form-control" min="0" step="0.01" required>
             </div>
 
             <div class="form-group">
                 <label>Lợi nhuận (%):</label>
-                <input type="number" name="loi_nhuan" id="prod_loi_nhuan" class="form-control" required>
+                <input type="number" name="loi_nhuan" id="prod_loi_nhuan" class="form-control" min="0" step="0.01" required>
+            </div>
+
+            <div class="form-group">
+                <label>Hiện trạng:</label>
+                <select name="status" id="prod_status" class="form-control">
+                    <option value="1">Đang bán</option>
+                    <option value="0">Ẩn / Không bán</option>
+                </select>
             </div>
 
             <div class="form-group">
@@ -187,11 +238,11 @@
                 <input type="file" name="image" class="form-control">
                 <small id="img_preview_text"></small>
             </div>
-
+            
             <button type="submit" class="btn-add" style="width: 100%; justify-content: center;">Lưu sản phẩm</button>
         </form>
     </div>
-</div>
+</div> 
 </body>
 <script>
 function toggleProductMenu() {
@@ -240,7 +291,10 @@ function openAddModal() {
     form.action = "admin.php?url=save_product"; // Đường dẫn lưu mới
     form.reset(); // Xóa sạch dữ liệu cũ
     document.getElementById("prod_id").value = "";
+    document.getElementById("prod_current_image").value = "";
+    document.getElementById("prod_code_group").style.display = 'none';
     document.getElementById("img_preview_text").innerText = "";
+    document.getElementById("prod_status").value = '1';
     modal.style.display = "block";
 }
 
@@ -253,12 +307,40 @@ function openEditModal(prod) {
     document.getElementById("prod_id").value = prod.id;
     document.getElementById("prod_name").value = prod.name;
     document.getElementById("prod_category").value = prod.category_id;
+    document.getElementById("prod_description").value = prod.description || '';
+    document.getElementById("prod_unit").value = prod.unit || 'Cái';
+    document.getElementById("prod_stock").value = prod.stock || 0;
+    document.getElementById("prod_low_stock_threshold").value = prod.low_stock_threshold || 5;
     document.getElementById("prod_gia_von").value = prod.gia_von;
     document.getElementById("prod_loi_nhuan").value = prod.loi_nhuan;
+    document.getElementById("prod_status").value = prod.status;
     document.getElementById("prod_current_image").value = prod.image;
-    document.getElementById("img_preview_text").innerText = "Ảnh hiện tại: " + prod.image;
-
+    document.getElementById("prod_code_group").style.display = 'block';
+    document.getElementById("prod_code").innerText = '#' + prod.id;
+    document.getElementById("img_preview_text").innerText = prod.image ? 'Ảnh hiện tại: ' + prod.image : '';
     modal.style.display = "block";
+}
+
+function handleAction(event) {
+    const action = document.getElementsByName('action')[0].value;
+    if (!action) {
+        return true; // submit normal search/filter
+    }
+
+    event.preventDefault();
+    const selectedIds = Array.from(document.querySelectorAll('input[type="checkbox"]:checked'))
+                             .filter(cb => cb.value !== 'on')
+                             .map(cb => cb.value);
+
+    if (selectedIds.length === 0) {
+        alert("Vui lòng chọn ít nhất một sản phẩm!");
+        return false;
+    }
+
+    if (confirm(`Bạn có chắc chắn muốn thực hiện tác vụ này cho ${selectedIds.length} sản phẩm?`)) {
+        window.location.href = `admin.php?url=bulk_action&type=${action}&ids=${selectedIds.join(',')}`;
+    }
+    return false;
 }
 
 function closeModal() {

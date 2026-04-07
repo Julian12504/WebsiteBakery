@@ -43,6 +43,7 @@ if (!isset($dailyImports)) {
     <a href="admin.php?url=import_product" class="menu-item">
     <i class="fa-solid fa-truck-ramp-box"></i> Quản lý nhập hàng
 </a>
+    <a href="admin.php?url=inventory" class="menu-item"><i class="fa-solid fa-boxes-stacked"></i> Tồn kho / Báo cáo</a>
     <a href="admin_logout.php" class="menu-item" style="color: #e74c3c;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
 </div>
 
@@ -258,6 +259,15 @@ if (!isset($dailyImports)) {
         if (grandTotal <= 0) {
             document.getElementById('btn_submit_all').style.display = 'none';
         }
+    }
+
+    // 4. Hiển thị/ẩn menu quản lý sản phẩm
+    function toggleProductMenu() {
+        const submenu = document.getElementById('product-submenu');
+        const arrow = document.getElementById('arrow-icon');
+
+        submenu.classList.toggle('show');
+        arrow.classList.toggle('rotate');
     }
 </script>
 </body>
