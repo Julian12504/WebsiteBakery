@@ -13,7 +13,9 @@ if (!isset($dailyImports)) {
     <meta charset="UTF-8">
     <title>Tạo Phiếu Nhập Kho - WebsiteBakery</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="../public/css/css_admin/style.css"> <link rel="stylesheet" href="../public/css/css_admin/import.css"> </head>
+    <link rel="stylesheet" href="../public/css/css_admin/style.css"> 
+    <link rel="stylesheet" href="../public/css/css_admin/import.css">
+</head>
 <body>
 
   <div class="sidebar">
