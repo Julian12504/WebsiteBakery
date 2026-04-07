@@ -20,6 +20,7 @@
         <div class="sub-menu" id="product-submenu">
             <a href="admin.php?url=categories" class="menu-item" style="padding-left: 40px; font-size: 13px;"><i class="fa-solid fa-list"></i> Danh mục</a>
             <a href="admin.php?url=products" class="menu-item" style="padding-left: 40px; font-size: 13px;"><i class="fa-solid fa-box"></i> Tất cả sản phẩm</a>
+            <a href="admin.php?url=price_management" class="menu-item" style="padding-left: 40px; font-size: 13px;"><i class="fa-solid fa-tags"></i> Quản lý giá bán</a>
         </div>
 
         <a href="admin.php?url=orders" class="menu-item"><i class="fa-solid fa-cart-shopping"></i> Đơn hàng</a>
@@ -34,7 +35,6 @@
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; gap:20px; flex-wrap:wrap;">
                 <div>
                     <h2>Quản lý người dùng</h2>
-                    <p>Thêm tài khoản mới, reset mật khẩu và khoá/mở khoá tài khoản.</p>
                 </div>
             </div>
 

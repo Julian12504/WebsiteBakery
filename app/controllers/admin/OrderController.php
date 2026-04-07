@@ -43,7 +43,10 @@ class OrderController {
         exit();
     }
 
-    // 4. Load file giao diện (Đúng đường dẫn file bạn đã tạo)
+    // 4. Truyền biến vào view
+    extract(compact('order', 'orderItems'));
+    
+    // 5. Load file giao diện
     include '../app/views/admin/order_detail.php';
 }
 }

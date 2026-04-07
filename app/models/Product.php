@@ -289,6 +289,16 @@ public function insertProduct($data) {
         return $stmt->execute($data);
     }
 
+    public function updateProductPricing($id, $gia_von, $loi_nhuan, $selling_price) {
+        $sql = "UPDATE products SET gia_von = :gia_von, loi_nhuan = :loi_nhuan, selling_price = :selling_price WHERE id = :id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindValue(':gia_von', $gia_von);
+        $stmt->bindValue(':loi_nhuan', $loi_nhuan);
+        $stmt->bindValue(':selling_price', $selling_price);
+        $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
     public function getLowStockProducts($threshold) {
         $sql = "SELECT * FROM products WHERE stock <= :threshold AND status = 1";
         $stmt = $this->conn->prepare($sql);

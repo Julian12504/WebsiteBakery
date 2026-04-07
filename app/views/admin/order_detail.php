@@ -5,13 +5,14 @@
     <title>Chi tiết đơn hàng #<?= $order['id'] ?></title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="../public/css/css_admin/style.css">
+    <link rel="stylesheet" href="../public/css/css_admin/order.css">
 </head>
 <body>
 
  <div class="sidebar">
     <div class="sidebar-header"><i class="fa-solid fa-user-shield"></i> Administrator</div>
     
-    <a href="admin.php?url=dashboard" class="menu-item active"><i class="fa-solid fa-house"></i> Trang chủ Admin</a>
+    <a href="admin.php?url=dashboard" class="menu-item "><i class="fa-solid fa-house"></i> Trang chủ Admin</a>
 
     <div class="menu-item" onclick="toggleProductMenu()" style="cursor: pointer;">
         <i class="fa-solid fa-cake-candles"></i> 
@@ -26,10 +27,16 @@
         <a href="admin.php?url=products" class="menu-item" style="padding-left: 40px; font-size: 13px;">
             <i class="fa-solid fa-box"></i> Tất cả sản phẩm
         </a>
+        <a href="admin.php?url=price_management" class="menu-item" style="padding-left: 40px; font-size: 13px;">
+            <i class="fa-solid fa-tags"></i> Quản lý giá bán
+        </a>
     </div>
 
-    <a href="admin.php?url=orders" class="menu-item"><i class="fa-solid fa-cart-shopping"></i> Đơn hàng</a>
+    <a href="admin.php?url=orders" class="menu-item active"><i class="fa-solid fa-cart-shopping"></i> Đơn hàng</a>
     <a href="admin.php?url=users" class="menu-item"><i class="fa-solid fa-users"></i> Quản lý người dùng</a>
+    <a href="admin.php?url=import_product" class="menu-item">
+    <i class="fa-solid fa-truck-ramp-box"></i> Quản lý nhập hàng
+</a>
     <a href="admin.php?url=inventory" class="menu-item"><i class="fa-solid fa-boxes-stacked"></i> Tồn kho / Báo cáo</a>
     <a href="admin_logout.php" class="menu-item" style="color: #e74c3c;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
 </div>
@@ -37,11 +44,18 @@
 <div class="main-content">
     <div class="top-nav">
         <div><a href="admin.php?url=orders" style="color: #3498db;"><i class="fa-solid fa-arrow-left"></i> Quay lại danh sách</a></div>
-        <div>Chào, Admin</div>
+        
     </div>
 
     <div class="content-padding">
-        <h2 style="margin-bottom: 20px;">Chi Tiết Đơn Hàng #<?= $order['id'] ?></h2>
+        <?php if (!isset($order) || empty($order)): ?>
+            <div style="background: white; padding: 20px; border-radius: 8px; text-align: center; color: #e74c3c;">
+                <h3>Không tìm thấy đơn hàng</h3>
+                <p>Đơn hàng có thể đã bị xóa hoặc không tồn tại.</p>
+                <a href="admin.php?url=orders" style="color: #3498db;">Quay lại danh sách đơn hàng</a>
+            </div>
+        <?php else: ?>
+        <h2 style="margin-bottom: 20px;">Chi Tiết Đơn Hàng #<?= $order['id'] ?? 'N/A' ?></h2>
 
         <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 20px;">
 <div style="background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); height: fit-content;">
@@ -99,8 +113,28 @@
                 </table>
             </div>
         </div>
+        <?php endif; ?>
     </div>
 </div>
+
+<script>
+function toggleProductMenu() {
+    const submenu = document.getElementById("product-submenu");
+    const arrow = document.getElementById("arrow-icon");
+    submenu.classList.toggle("show");
+    arrow.classList.toggle("rotate");
+}
+
+window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentUrl = urlParams.get('url');
+
+    if (currentUrl === 'products' || currentUrl === 'categories' || currentUrl === 'price_management') {
+        document.getElementById("product-submenu").classList.add("show");
+        document.getElementById("arrow-icon").classList.add("rotate");
+    }
+}
+</script>
 
 </body>
 </html>

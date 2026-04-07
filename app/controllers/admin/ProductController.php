@@ -29,6 +29,40 @@ class ProductController {
         include '../app/views/admin/product.php';
     }
 
+    public function priceManagement() {
+        $search = $_GET['search'] ?? '';
+        $category_id = $_GET['category_id'] ?? '';
+        $min_cost = isset($_GET['min_cost']) ? $_GET['min_cost'] : '';
+        $max_cost = isset($_GET['max_cost']) ? $_GET['max_cost'] : '';
+        $min_margin = isset($_GET['min_margin']) ? $_GET['min_margin'] : '';
+        $max_margin = isset($_GET['max_margin']) ? $_GET['max_margin'] : '';
+        $min_price = isset($_GET['min_price']) ? $_GET['min_price'] : '';
+        $max_price = isset($_GET['max_price']) ? $_GET['max_price'] : '';
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $limit = isset($_GET['limit']) ? (int)$_GET['limit'] : 10;
+        $offset = ($page - 1) * $limit;
+
+        $products = $this->productModel->getProductsPagedAdmin($offset, $limit, $search, $category_id, $min_cost, $max_cost, $min_margin, $max_margin, $min_price, $max_price);
+        $totalProducts = $this->productModel->countAllAdmin($search, $category_id, $min_cost, $max_cost, $min_margin, $max_margin, $min_price, $max_price);
+        $totalPages = ceil($totalProducts / $limit);
+        $categories = $this->productModel->getAllCategories();
+        include '../app/views/admin/price_management.php';
+    }
+
+    public function updateProfit() {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $id = $_POST['id'] ?? 0;
+            $gia_von = (float)($_POST['gia_von'] ?? 0);
+            $loi_nhuan = (float)($_POST['loi_nhuan'] ?? 0);
+            $selling_price = $gia_von + ($gia_von * $loi_nhuan / 100);
+
+            if ($this->productModel->updateProductPricing($id, $gia_von, $loi_nhuan, $selling_price)) {
+                header("Location: admin.php?url=price_management&msg=profit_updated");
+                exit();
+            }
+        }
+    }
+
     // 2. Thêm sản phẩm mới
 public function add() {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -88,10 +122,18 @@ if (!empty($_FILES['image']['name'])) {
             $selling_price = $gia_von + ($gia_von * $loi_nhuan / 100);
 
             // Giữ ảnh cũ hoặc thay ảnh mới
-            $image = $_POST['current_image'] ?? 'default.jpg';
+            $currentImage = $_POST['current_image'] ?? 'default.jpg';
+            $image = $currentImage;
+            $removeImage = isset($_POST['remove_image']) && $_POST['remove_image'] === '1';
+
             if (!empty($_FILES['image']['name'])) {
                 $image = time() . '_' . $_FILES['image']['name'];
                 move_uploaded_file($_FILES['image']['tmp_name'], "images/" . $image);
+            } elseif ($removeImage) {
+                if (!empty($currentImage) && $currentImage !== 'default.jpg' && file_exists("images/" . $currentImage)) {
+                    @unlink("images/" . $currentImage);
+                }
+                $image = 'default.jpg';
             }
 
             $data = [

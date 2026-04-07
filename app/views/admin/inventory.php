@@ -8,24 +8,38 @@
      <link rel="stylesheet" href="../public/css/css_admin/inventory.css">
 </head>
 <body>
-    <div class="sidebar">
-        <div class="sidebar-header"><i class="fa-solid fa-user-shield"></i> Administrator</div>
-        <a href="admin.php?url=dashboard" class="menu-item"><i class="fa-solid fa-house"></i> Trang chủ Admin</a>
-        <div class="menu-item" onclick="toggleProductMenu()" style="cursor: pointer;">
-            <i class="fa-solid fa-cake-candles"></i>
-            Quản lý sản phẩm
-            <i class="fa-solid fa-chevron-down" id="arrow-icon" style="margin-left:auto; font-size: 10px; transition: 0.3s;"></i>
-        </div>
-        <div class="sub-menu" id="product-submenu">
-            <a href="admin.php?url=categories" class="menu-item" style="padding-left: 40px; font-size: 13px;"><i class="fa-solid fa-list"></i> Danh mục</a>
-            <a href="admin.php?url=products" class="menu-item" style="padding-left: 40px; font-size: 13px;"><i class="fa-solid fa-box"></i> Tất cả sản phẩm</a>
-        </div>
-        <a href="admin.php?url=orders" class="menu-item"><i class="fa-solid fa-cart-shopping"></i> Đơn hàng</a>
-        <a href="admin.php?url=users" class="menu-item"><i class="fa-solid fa-users"></i> Quản lý người dùng</a>
-        <a href="admin.php?url=import_product" class="menu-item"><i class="fa-solid fa-truck-ramp-box"></i> Quản lý nhập hàng</a>
-        <a href="admin.php?url=inventory" class="menu-item active"><i class="fa-solid fa-boxes-stacked"></i> Tồn kho / Báo cáo</a>
-        <a href="admin_logout.php" class="menu-item" style="color: #e74c3c;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+
+  <div class="sidebar">
+    <div class="sidebar-header"><i class="fa-solid fa-user-shield"></i> Administrator</div>
+    
+    <a href="admin.php?url=dashboard" class="menu-item"><i class="fa-solid fa-house"></i> Trang chủ Admin</a>
+
+    <div class="menu-item" onclick="toggleProductMenu()" style="cursor: pointer;">
+        <i class="fa-solid fa-cake-candles"></i> 
+        Quản lý sản phẩm 
+        <i class="fa-solid fa-chevron-down" id="arrow-icon" style="margin-left:auto; font-size: 10px; transition: 0.3s;"></i>
     </div>
+    
+    <div class="sub-menu" id="product-submenu">
+        <a href="admin.php?url=categories" class="menu-item" style="padding-left: 40px; font-size: 13px;">
+            <i class="fa-solid fa-list"></i> Danh mục
+        </a>
+        <a href="admin.php?url=products" class="menu-item" style="padding-left: 40px; font-size: 13px;">
+            <i class="fa-solid fa-box"></i> Tất cả sản phẩm
+        </a>
+        <a href="admin.php?url=price_management" class="menu-item" style="padding-left: 40px; font-size: 13px;">
+            <i class="fa-solid fa-tags"></i> Quản lý giá bán
+        </a>
+    </div>
+
+    <a href="admin.php?url=orders" class="menu-item"><i class="fa-solid fa-cart-shopping"></i> Đơn hàng</a>
+    <a href="admin.php?url=users" class="menu-item"><i class="fa-solid fa-users"></i> Quản lý người dùng</a>
+    <a href="admin.php?url=import_product" class="menu-item">
+    <i class="fa-solid fa-truck-ramp-box"></i> Quản lý nhập hàng
+</a>
+    <a href="admin.php?url=inventory" class="menu-item"><i class="fa-solid fa-boxes-stacked"></i> Tồn kho / Báo cáo</a>
+    <a href="admin_logout.php" class="menu-item" style="color: #e74c3c;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
+</div>
 
     <div class="main-content">
         <div class="top-nav">
@@ -151,8 +165,13 @@ function toggleProductMenu() {
 }
 
 window.onload = function() {
-    document.getElementById("product-submenu").classList.add("show");
-    document.getElementById("arrow-icon").classList.add("rotate");
+    const urlParams = new URLSearchParams(window.location.search);
+    const currentUrl = urlParams.get('url');
+
+    if (currentUrl === 'products' || currentUrl === 'categories' || currentUrl === 'price_management') {
+        document.getElementById("product-submenu").classList.add("show");
+        document.getElementById("arrow-icon").classList.add("rotate");
+    }
 }
 </script>
 </body>

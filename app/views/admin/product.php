@@ -12,7 +12,7 @@
   <div class="sidebar">
     <div class="sidebar-header"><i class="fa-solid fa-user-shield"></i> Administrator</div>
     
-    <a href="admin.php?url=dashboard" class="menu-item active"><i class="fa-solid fa-house"></i> Trang chủ Admin</a>
+    <a href="admin.php?url=dashboard" class="menu-item"><i class="fa-solid fa-house"></i> Trang chủ Admin</a>
 
     <div class="menu-item" onclick="toggleProductMenu()" style="cursor: pointer;">
         <i class="fa-solid fa-cake-candles"></i> 
@@ -24,8 +24,11 @@
         <a href="admin.php?url=categories" class="menu-item" style="padding-left: 40px; font-size: 13px;">
             <i class="fa-solid fa-list"></i> Danh mục
         </a>
-        <a href="admin.php?url=products" class="menu-item" style="padding-left: 40px; font-size: 13px;">
+        <a href="admin.php?url=products" class="menu-item active" style="padding-left: 40px; font-size: 13px;">
             <i class="fa-solid fa-box"></i> Tất cả sản phẩm
+        </a>
+        <a href="admin.php?url=price_management" class="menu-item" style="padding-left: 40px; font-size: 13px;">
+            <i class="fa-solid fa-tags"></i> Quản lý giá bán
         </a>
     </div>
 
@@ -38,6 +41,7 @@
     <a href="admin_logout.php" class="menu-item" style="color: #e74c3c;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
 </div>
 
+
     <div class="main-content">
         <div class="top-nav">
             <a href="index.php"><i class="fa-solid fa-share"></i> Vào trang web</a>
@@ -47,6 +51,10 @@
 
         <div class="breadcrumb">
             <i class="fa-solid fa-house"></i> Trang chủ  >  Danh mục  >  Quản lí sản phẩm
+        </div>
+        <div class="page-header" style="padding: 20px 15px 0 15px;">
+            <h1 style="margin: 0 0 8px; font-size: 24px; color: #2c3e50;">Quản lý sản phẩm</h1>
+            <p style="margin: 0; color: #555;">Thêm sản phẩm, sửa thông tin cơ bản và quản lý trạng thái ẩn/hiện. Sản phẩm đã nhập hàng sẽ bị ẩn khi xóa, không xóa hoàn toàn.</p>
         </div>
 <div class="toolbar">
     <form action="admin.php" method="GET" id="filterForm" style="display: flex; gap: 10px; align-items: center; width: 100%;">
@@ -82,7 +90,7 @@
     <i class="fa-solid fa-plus"></i> Thêm mới
 </button>
     </form>
-    <form action="admin.php" method="GET" style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:10px; padding:0 15px 15px;">
+    <!-- <form action="admin.php" method="GET" style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-top:10px; padding:0 15px 15px;">
         <input type="hidden" name="url" value="products">
         <input type="number" name="min_cost" placeholder="Giá vốn từ" step="0.01" value="<?= htmlspecialchars($_GET['min_cost'] ?? '') ?>" class="form-control" style="width:120px;">
         <input type="number" name="max_cost" placeholder="đến" step="0.01" value="<?= htmlspecialchars($_GET['max_cost'] ?? '') ?>" class="form-control" style="width:120px;">
@@ -91,19 +99,16 @@
         <input type="number" name="min_price" placeholder="Giá bán từ" step="0.01" value="<?= htmlspecialchars($_GET['min_price'] ?? '') ?>" class="form-control" style="width:120px;">
         <input type="number" name="max_price" placeholder="đến" step="0.01" value="<?= htmlspecialchars($_GET['max_price'] ?? '') ?>" class="form-control" style="width:120px;">
         <button type="submit" class="btn-submit" style="padding: 8px 16px;">Lọc</button>
-    </form>
+    </form> -->
 </div>
         <div class="table-container">
 <table>
     <thead>
         <tr>
-            <th style="width: 30px;"><input type="checkbox"></th>
+          
             <th style="width: 80px;">Mã sản phẩm</th>
             <th>Danh mục</th>
             <th>Tiêu đề</th>
-            <th>Giá vốn</th>
-            <th>% Lợi nhuận</th>
-            <th>Giá bán</th>
             <th>Ảnh</th>
             <th>Hiển thị</th>
             <th>Tác vụ</th>
@@ -112,14 +117,11 @@
     <tbody>
         <?php if(!empty($products)): foreach($products as $p): ?>
         <tr>
-            <td><input type="checkbox" value="<?= $p['id'] ?>"></td>
+           
             <td style="font-weight: bold; color: #555;">#<?= $p['id'] ?></td> 
             
             <td class="text-left"><?= htmlspecialchars($p['category_name'] ?? 'Chưa phân loại') ?></td>
             <td class="text-left" style="color: #3498db; font-weight: 500;"><?= htmlspecialchars($p['name']) ?></td>
-            <td><?= number_format($p['gia_von'], 0, ',', '.') ?>đ</td>
-            <td><?= number_format($p['loi_nhuan'], 2) ?>%</td>
-            <td><?= number_format($p['selling_price'], 0, ',', '.') ?>đ</td>
             <td>
                 <?php if(!empty($p['image'])): ?>
                    <img src="images/<?= $p['image'] ?>" class="img-thumb">
@@ -226,6 +228,11 @@
             </div>
 
             <div class="form-group">
+                <label>Giá bán dự kiến:</label>
+                <div id="prod_selling_price_preview" style="padding: 10px 12px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa; color: #e74c3c; font-weight: 600;">0đ</div>
+            </div>
+
+            <div class="form-group">
                 <label>Hiện trạng:</label>
                 <select name="status" id="prod_status" class="form-control">
                     <option value="1">Đang bán</option>
@@ -233,9 +240,16 @@
                 </select>
             </div>
 
+            <div class="form-group" id="current_image_group" style="display:none;">
+                <label>Ảnh hiện tại:</label>
+                <div id="current_image_preview" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #f8f9fa;"></div>
+                <div style="margin-top: 8px;">
+                    <label style="font-weight: normal;"><input type="checkbox" id="remove_image_checkbox" name="remove_image" value="1"> Xóa ảnh hiện tại</label>
+                </div>
+            </div>
             <div class="form-group">
                 <label>Ảnh sản phẩm:</label>
-                <input type="file" name="image" class="form-control">
+                <input type="file" name="image" class="form-control" id="prod_image_input">
                 <small id="img_preview_text"></small>
             </div>
             
@@ -293,8 +307,12 @@ function openAddModal() {
     document.getElementById("prod_id").value = "";
     document.getElementById("prod_current_image").value = "";
     document.getElementById("prod_code_group").style.display = 'none';
+    document.getElementById("current_image_group").style.display = 'none';
+    document.getElementById("current_image_preview").innerHTML = '';
+    document.getElementById("remove_image_checkbox").checked = false;
     document.getElementById("img_preview_text").innerText = "";
     document.getElementById("prod_status").value = '1';
+    updateSellingPricePreview();
     modal.style.display = "block";
 }
 
@@ -317,9 +335,27 @@ function openEditModal(prod) {
     document.getElementById("prod_current_image").value = prod.image;
     document.getElementById("prod_code_group").style.display = 'block';
     document.getElementById("prod_code").innerText = '#' + prod.id;
+    document.getElementById("current_image_group").style.display = 'block';
+    if (prod.image) {
+        document.getElementById("current_image_preview").innerHTML = '<img src="images/' + prod.image + '" style="max-width: 120px; max-height: 120px; display:block;">';
+    } else {
+        document.getElementById("current_image_preview").innerHTML = '<span style="color:#888;">Chưa có ảnh</span>';
+    }
+    document.getElementById("remove_image_checkbox").checked = false;
     document.getElementById("img_preview_text").innerText = prod.image ? 'Ảnh hiện tại: ' + prod.image : '';
+    updateSellingPricePreview();
     modal.style.display = "block";
 }
+
+function updateSellingPricePreview() {
+    const cost = parseFloat(document.getElementById('prod_gia_von').value) || 0;
+    const margin = parseFloat(document.getElementById('prod_loi_nhuan').value) || 0;
+    const preview = cost + (cost * margin / 100);
+    document.getElementById('prod_selling_price_preview').innerText = preview ? preview.toLocaleString('vi-VN', {maximumFractionDigits: 0}) + 'đ' : '0đ';
+}
+
+document.getElementById('prod_gia_von').addEventListener('input', updateSellingPricePreview);
+document.getElementById('prod_loi_nhuan').addEventListener('input', updateSellingPricePreview);
 
 function handleAction(event) {
     const action = document.getElementsByName('action')[0].value;
