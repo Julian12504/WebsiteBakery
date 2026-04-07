@@ -5,6 +5,52 @@
     min-height: 100vh;
 }
 
+.top-section {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+
+.left-panel,
+.right-panel {
+    flex: 1 1 420px;
+    min-width: 320px;
+}
+
+.history-section {
+    width: 100%;
+}
+
+.edit-card {
+    margin-bottom: 20px;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.history-table th,
+.history-table td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.table-actions {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+@media(max-width: 960px) {
+    .top-section {
+        flex-direction: column;
+    }
+}
+
 .import-card {
     background: #fff;
     border-radius: 8px;
@@ -209,6 +255,51 @@
 
 .btn-submit:active {
     transform: translateY(0);
+}
+/* Container tra cứu */
+.search-section {
+    display: flex;
+    align-items: flex-end;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+/* Bảng danh sách phía dưới */
+.history-section {
+    margin-top: 30px;
+}
+
+.history-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.history-table th {
+    background: #f8f9fa;
+    padding: 12px;
+    text-align: left;
+    font-size: 14px;
+    color: #555;
+    border-bottom: 2px solid #eee;
+}
+
+.history-table td {
+    padding: 12px;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 14px;
+}
+
+/* Hiệu ứng badge cho ngày */
+.date-badge {
+    background: #eef2f7;
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-weight: bold;
+    color: #3498db;
 }
 .btn-success { background-color: #67c23a; color: white; }
 .btn-secondary { background-color: #909399; color: white; text-decoration: none; }

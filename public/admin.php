@@ -81,20 +81,37 @@ case 'process_import':
         }
     }
     break;
-    case 'import_product': // <--- Thêm cái này
+
+case 'process_import_all':
     require_once '../app/controllers/admin/ProductController.php';
     $controller = new ProductController($productModel);
-    
-    if ($url == 'products')       $controller->index();
-    if ($url == 'save_product')   $controller->add();
-    if ($url == 'edit_product')   $controller->edit();
-    if ($url == 'update_product') $controller->update();
-    if ($url == 'delete_product') $controller->delete();
-    if ($url == 'import_product') {
-        $products = $productModel->getAllProductsAdmin(); // Lấy list sản phẩm để chọn
-        include '../app/views/admin/import_product.php';
-    }
+    $controller->process_import_all();
     break;
+
+case 'edit_import':
+    require_once '../app/controllers/admin/ProductController.php';
+    $controller = new ProductController($productModel);
+    $controller->editImport();
+    break;
+
+case 'update_import':
+    require_once '../app/controllers/admin/ProductController.php';
+    $controller = new ProductController($productModel);
+    $controller->updateImport();
+    break;
+
+case 'delete_import':
+    require_once '../app/controllers/admin/ProductController.php';
+    $controller = new ProductController($productModel);
+    $controller->deleteImport();
+    break;
+
+case 'import_product':
+    require_once '../app/controllers/admin/ProductController.php';
+    $controller = new ProductController($productModel);
+    $controller->import_product();
+    break;
+
     default:
         echo "<h2 style='text-align:center; color:red; margin-top:50px;'>404 - Trang bạn tìm không tồn tại!</h2>";
         echo "<p style='text-align:center;'>URL hiện tại: " . htmlspecialchars($url) . "</p>";
