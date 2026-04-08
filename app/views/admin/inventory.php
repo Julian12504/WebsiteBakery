@@ -235,7 +235,7 @@
     //     document.getElementById("product-submenu").classList.add("show");
     //     document.getElementById("arrow-icon").classList.add("rotate");
     //   }
-    }
+    //}
   </script>
 </body>
 </html>

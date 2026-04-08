@@ -165,8 +165,16 @@ case 'remove_cart':
         $username = trim($_POST['username']);
         $password = $_POST['password'];
         $confirm_password = $_POST['confirm_password'];
+        $address_default = trim($_POST['address_default']);
 
-        if ($password !== $confirm_password) {
+        $province = trim($_POST['province']);
+        $ward = trim($_POST['ward']);
+        $address_detail = trim($_POST['address_detail']);
+        $address_default = trim($_POST['address_default']);
+
+        if (empty($province) || empty($ward) || empty($address_detail)) {
+            $error = "Vui lòng nhập đầy đủ địa chỉ giao hàng mặc định!";
+        } elseif ($password !== $confirm_password) {
             $error = "Mật khẩu nhập lại không chính xác!";
         } elseif ($userModel->emailExists($email)) {
             $error = "Email này đã được sử dụng!";
@@ -177,7 +185,7 @@ case 'remove_cart':
         } else {
             // Truyền $full_name vào đây
         $username = trim($_POST['username']);
-            if ($userModel->register($full_name, $username, $email, $password, $phone)) {
+            if ($userModel->register($full_name, $username, $email, $password, $phone, $address_default)) {
                 echo "<script>alert('Đăng ký thành công!'); window.location.href='index.php?url=login';</script>";
                 exit;
             } else {

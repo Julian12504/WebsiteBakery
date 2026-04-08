@@ -9,6 +9,8 @@ class User {
     public $password;
     public $email;
     public $full_name;
+    public $phone;
+    public $address_default;
     public $role;
 
     public function __construct($db) {
@@ -76,9 +78,9 @@ public function usernameExists($username) {
     return $stmt->rowCount() > 0;
 }
 // 3. Đăng ký người dùng mới
-public function register($full_name, $username, $email, $password, $phone) {
-    $query = "INSERT INTO " . $this->table_name . " (full_name, username, email, password, phone, role, status) 
-              VALUES (:full_name, :username, :email, :password, :phone, '0', 1)";
+public function register($full_name, $username, $email, $password, $phone, $address_default) {
+    $query = "INSERT INTO " . $this->table_name . " (full_name, username, email, password, phone, address_default, role, status) 
+              VALUES (:full_name, :username, :email, :password, :phone, :address_default, '0', 1)";
     
     $stmt = $this->conn->prepare($query);
     $hashed_password = password_hash($password, PASSWORD_BCRYPT);
@@ -88,6 +90,7 @@ public function register($full_name, $username, $email, $password, $phone) {
     $stmt->bindParam(':email', $email);
     $stmt->bindParam(':password', $hashed_password);
     $stmt->bindParam(':phone', $phone);
+    $stmt->bindParam(':address_default', $address_default);
     return $stmt->execute();
 }
 // Hàm cập nhật thông tin người dùng vào Database
