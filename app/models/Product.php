@@ -15,8 +15,16 @@ class Product {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getTotalProductsCount() {
+        $query = "SELECT COUNT(*) as total FROM " . $this->table_name . " WHERE status = 1";
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return (int)($row['total'] ?? 0);
+    }
+
     public function getImportQuantityInRange($product_id, $from_date, $to_date) {
-        $sql = "SELECT SUM(pd.quantity) as total_import
+        $sql = "SELECT SUM(pd.import_quantity) as total_import
                 FROM purchase_details pd
                 JOIN purchase_receipts pr ON pd.receipt_id = pr.id
                 WHERE pd.product_id = :product_id
@@ -47,7 +55,7 @@ class Product {
     }
 
     public function getImportQuantityAfter($product_id, $dateTime) {
-        $sql = "SELECT SUM(pd.quantity) as total_import
+        $sql = "SELECT SUM(pd.import_quantity) as total_import
                 FROM purchase_details pd
                 JOIN purchase_receipts pr ON pd.receipt_id = pr.id
                 WHERE pd.product_id = :product_id
@@ -396,49 +404,119 @@ public function getAllProductsAdmin() {
 }
 // Lấy danh sách nhập hàng theo ngày cụ thể
 // 1. Hàm lấy hoặc tạo phiếu mới cho ngày hôm nay (Gom tất cả nhập hàng vào 1 ID duy nhất trong ngày)
-public function getOrCreateReceiptToday($admin_id) {
-    // Tìm xem hôm nay đã có phiếu chưa
-    $sql = "SELECT id FROM purchase_receipts WHERE DATE(receipt_date) = CURDATE() LIMIT 1";
-    $stmt = $this->conn->prepare($sql);
-    $stmt->execute();
-    $receipt = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($receipt) {
-        return $receipt['id']; // Trả về ID đang có
-    } else {
-        // Chưa có thì tạo mới 1 cái duy nhất cho ngày hôm nay
-        $sqlInsert = "INSERT INTO purchase_receipts (admin_id, receipt_date, status) VALUES (?, NOW(), 1)";
-        $stmtInsert = $this->conn->prepare($sqlInsert);
-        $stmtInsert->execute([$admin_id]);
-        return $this->conn->lastInsertId();
+public function addPurchaseReceipt($admin_id, $product_id, $qty, $price) {
+    $receipt_id = $this->createReceipt($admin_id);
+    if (!$receipt_id) {
+        return false;
     }
+
+    return $this->addImportDetail($receipt_id, $product_id, $qty, $price);
 }
 
-// 2. Hàm xử lý lưu chi tiết và cập nhật giá vốn/tồn kho
-public function addProductToReceipt($receipt_id, $product_id, $qty, $price) {
+public function createReceipt($admin_id, $receipt_date = null) {
+    $sql = "INSERT INTO purchase_receipts (admin_id, receipt_date, status) VALUES (?, ?, 1)";
+    $stmt = $this->conn->prepare($sql);
+    $dateTime = $receipt_date ? date('Y-m-d H:i:s', strtotime($receipt_date)) : date('Y-m-d H:i:s');
+    $stmt->execute([$admin_id, $dateTime]);
+    return $this->conn->lastInsertId();
+}
+
+public function getOpenReceiptsByDate($date) {
+    if (empty($date)) $date = date('Y-m-d');
+
+    $sql = "SELECT id, receipt_date FROM purchase_receipts WHERE DATE(receipt_date) = :search_date AND status = 1 ORDER BY id DESC";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['search_date' => date('Y-m-d', strtotime(str_replace('/', '-', $date)))]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function getReceiptsByDate($date) {
+    if (empty($date)) $date = date('Y-m-d');
+
+    $sql = "SELECT pr.id, pr.receipt_date, pr.status, a.username AS admin_name, COUNT(pd.id) AS item_count, SUM(pd.import_quantity * pd.import_price) AS total_amount
+            FROM purchase_receipts pr
+            LEFT JOIN purchase_details pd ON pr.id = pd.receipt_id
+            LEFT JOIN users a ON pr.admin_id = a.id
+            WHERE DATE(pr.receipt_date) = :search_date
+            GROUP BY pr.id, pr.receipt_date, pr.status, a.username
+            ORDER BY pr.id DESC";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['search_date' => date('Y-m-d', strtotime(str_replace('/', '-', $date)))]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function getReceiptById($receipt_id) {
+    $sql = "SELECT * FROM purchase_receipts WHERE id = :receipt_id LIMIT 1";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['receipt_id' => $receipt_id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
+
+public function getReceiptItems($receipt_id) {
+    $sql = "SELECT pd.id as detail_id, pd.product_id, pd.import_quantity as quantity, pd.import_price,
+                   p.name as product_name, p.unit
+            FROM purchase_details pd
+            JOIN products p ON pd.product_id = p.id
+            WHERE pd.receipt_id = :receipt_id
+            ORDER BY pd.id ASC";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['receipt_id' => $receipt_id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+public function completeReceipt($receipt_id) {
+    $receipt = $this->getReceiptById($receipt_id);
+    if (!$receipt || $receipt['status'] != 1) {
+        return false;
+    }
+
+    $sql = "SELECT pd.product_id, pd.import_quantity, pd.import_price, p.stock, p.gia_von, p.loi_nhuan
+            FROM purchase_details pd
+            JOIN products p ON pd.product_id = p.id
+            WHERE pd.receipt_id = :receipt_id";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['receipt_id' => $receipt_id]);
+    $details = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    if (empty($details)) {
+        return false;
+    }
+
+    $grouped = [];
+    foreach ($details as $detail) {
+        $pid = $detail['product_id'];
+        if (!isset($grouped[$pid])) {
+            $grouped[$pid] = [
+                'stock' => (int)$detail['stock'],
+                'cost' => (float)$detail['gia_von'],
+                'margin' => (float)$detail['loi_nhuan'],
+                'total_qty' => 0,
+                'total_amount' => 0,
+            ];
+        }
+        $grouped[$pid]['total_qty'] += (int)$detail['import_quantity'];
+        $grouped[$pid]['total_amount'] += ((int)$detail['import_quantity'] * (float)$detail['import_price']);
+    }
+
     try {
         $this->conn->beginTransaction();
 
-        // A. Lưu vào bảng chi tiết (purchase_details)
-        $sqlDetail = "INSERT INTO purchase_details (receipt_id, product_id, import_quantity, import_price) VALUES (?, ?, ?, ?)";
-        $stmtDetail = $this->conn->prepare($sqlDetail);
-        $stmtDetail->execute([$receipt_id, $product_id, $qty, $price]);
+        foreach ($grouped as $pid => $data) {
+            $new_stock = $data['stock'] + $data['total_qty'];
+            if ($new_stock <= 0) {
+                continue;
+            }
+            $new_cost = (($data['stock'] * $data['cost']) + $data['total_amount']) / $new_stock;
+            $new_selling_price = $new_cost * (1 + $data['margin'] / 100);
 
-        // B. Tính toán giá vốn bình quân gia quyền & Cập nhật tồn kho
-        $product = $this->getProductByIdAdmin($product_id);
-        $current_stock = (int)$product['stock'];
-        $current_cost = (float)$product['gia_von'];
+            $sqlUpdateProd = "UPDATE products SET stock = ?, gia_von = ?, selling_price = ? WHERE id = ?";
+            $stmtUpdateProd = $this->conn->prepare($sqlUpdateProd);
+            $stmtUpdateProd->execute([$new_stock, $new_cost, $new_selling_price, $pid]);
+        }
 
-        $new_stock = $current_stock + $qty;
-        // Công thức: ((Tồn cũ * Giá cũ) + (Nhập mới * Giá mới)) / Tổng tồn mới
-        $new_cost = (($current_stock * $current_cost) + ($qty * $price)) / $new_stock;
-        
-        // Cập nhật giá bán mới dựa trên % lợi nhuận đã thiết lập
-        $new_selling_price = $new_cost * (1 + $product['loi_nhuan'] / 100);
-
-        $sqlUpdateProd = "UPDATE products SET stock = ?, gia_von = ?, selling_price = ? WHERE id = ?";
-        $stmtUpdateProd = $this->conn->prepare($sqlUpdateProd);
-        $stmtUpdateProd->execute([$new_stock, $new_cost, $new_selling_price, $product_id]);
+        $sqlUpdateReceipt = "UPDATE purchase_receipts SET status = 2 WHERE id = ?";
+        $stmtReceipt = $this->conn->prepare($sqlUpdateReceipt);
+        $stmtReceipt->execute([$receipt_id]);
 
         $this->conn->commit();
         return true;
@@ -448,12 +526,18 @@ public function addProductToReceipt($receipt_id, $product_id, $qty, $price) {
     }
 }
 
+public function addImportDetail($receipt_id, $product_id, $qty, $price) {
+    $sqlDetail = "INSERT INTO purchase_details (receipt_id, product_id, import_quantity, import_price) VALUES (?, ?, ?, ?)";
+    $stmtDetail = $this->conn->prepare($sqlDetail);
+    return $stmtDetail->execute([$receipt_id, $product_id, $qty, $price]);
+}
+
 // 3. Hàm lấy danh sách để hiện lên bảng (JOIN 2 bảng lại mới ra dữ liệu)
 public function getImportsByDate($date) {
     // Nếu date rỗng thì lấy ngày hiện tại
     if (empty($date)) $date = date('Y-m-d');
 
-    $sql = "SELECT pd.id as detail_id, pr.id as receipt_id, pr.receipt_date,
+    $sql = "SELECT pd.id as detail_id, pr.id as receipt_id, pr.receipt_date, pr.status as receipt_status,
                    pd.import_quantity as quantity, pd.import_price,
                    p.id as product_id, p.name as product_name, p.unit
             FROM purchase_receipts pr
@@ -471,9 +555,10 @@ public function getImportsByDate($date) {
 
 public function getImportDetailById($detail_id) {
     $sql = "SELECT pd.id as detail_id, pd.receipt_id, pd.product_id, pd.import_quantity as quantity,
-                   pd.import_price, p.name as product_name, p.unit
+                   pd.import_price, p.name as product_name, p.unit, pr.status as receipt_status
             FROM purchase_details pd
             JOIN products p ON pd.product_id = p.id
+            JOIN purchase_receipts pr ON pd.receipt_id = pr.id
             WHERE pd.id = :detail_id";
     $stmt = $this->conn->prepare($sql);
     $stmt->execute(['detail_id' => $detail_id]);
@@ -482,7 +567,7 @@ public function getImportDetailById($detail_id) {
 
 public function updateImportDetail($detail_id, $qty, $price) {
     $existing = $this->getImportDetailById($detail_id);
-    if (!$existing) {
+    if (!$existing || $existing['receipt_status'] != 1) {
         return false;
     }
 
@@ -492,25 +577,30 @@ public function updateImportDetail($detail_id, $qty, $price) {
 }
 
 public function deleteImportDetail($detail_id) {
+    $existing = $this->getImportDetailById($detail_id);
+    if (!$existing || $existing['receipt_status'] != 1) {
+        return false;
+    }
+
     $sql = "DELETE FROM purchase_details WHERE id = ?";
     $stmt = $this->conn->prepare($sql);
     return $stmt->execute([$detail_id]);
 }
 
-public function addImportDetail($receipt_id, $product_id, $qty, $price) {
-    try {
-        // 1. Lưu vào bảng purchase_details (Dùng chung receipt_id)
-        $sqlDetail = "INSERT INTO purchase_details (receipt_id, product_id, import_quantity, import_price) VALUES (?, ?, ?, ?)";
-        $this->conn->prepare($sqlDetail)->execute([$receipt_id, $product_id, $qty, $price]);
+// public function addImportDetail($receipt_id, $product_id, $qty, $price) {
+//     try {
+//         // 1. Lưu vào bảng purchase_details (Dùng chung receipt_id)
+//         $sqlDetail = "INSERT INTO purchase_details (receipt_id, product_id, import_quantity, import_price) VALUES (?, ?, ?, ?)";
+//         $this->conn->prepare($sqlDetail)->execute([$receipt_id, $product_id, $qty, $price]);
 
-        // 2. Tính toán giá vốn & Cập nhật kho (Giữ nguyên logic bình quân gia quyền của mày)
-        $product = $this->getProductByIdAdmin($product_id);
-        $new_stock = $product['stock'] + $qty;
-        $new_cost = (($product['stock'] * $product['gia_von']) + ($qty * $price)) / $new_stock;
-        $new_selling_price = $new_cost * (1 + $product['loi_nhuan'] / 100);
+//         // 2. Tính toán giá vốn & Cập nhật kho (Giữ nguyên logic bình quân gia quyền của mày)
+//         $product = $this->getProductByIdAdmin($product_id);
+//         $new_stock = $product['stock'] + $qty;
+//         $new_cost = (($product['stock'] * $product['gia_von']) + ($qty * $price)) / $new_stock;
+//         $new_selling_price = $new_cost * (1 + $product['loi_nhuan'] / 100);
 
-        $sqlUp = "UPDATE products SET stock = ?, gia_von = ?, selling_price = ? WHERE id = ?";
-        return $this->conn->prepare($sqlUp)->execute([$new_stock, $new_cost, $new_selling_price, $product_id]);
-    } catch (Exception $e) { return false; }
-}
+//         $sqlUp = "UPDATE products SET stock = ?, gia_von = ?, selling_price = ? WHERE id = ?";
+//         return $this->conn->prepare($sqlUp)->execute([$new_stock, $new_cost, $new_selling_price, $product_id]);
+//     } catch (Exception $e) { return false; }
+// }
 }
