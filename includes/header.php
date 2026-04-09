@@ -47,34 +47,54 @@ if ($current_url == 'home'): ?>
             </ul>
         </nav>
 
-<div class="header-icons" style="display: flex; align-items: center; gap: 15px;">
+<div class="header-icons" style="display: flex; align-items: flex-start; gap: 20px;">
 
-
-    <?php if (isset($_SESSION['username'])): ?>
-        <div class="user-logged-in" style="display: flex; align-items: center; gap: 12px; border-left: 1px solid #ddd; padding-left: 15px;">
-            <span style="font-weight: 600; color: #d81b60; font-size: 14px;">
-                Chào, <?php echo explode(' ', $_SESSION['full_name'])[0]; ?>
-            </span>
-            
-            <a href="index.php?url=profile" title="Thông tin cá nhân" style="font-size: 14px; color: #555;">
-                <i class="fa-solid fa-address-card"></i>
+    <!-- Tài khoản -->
+    <div class="icon-box" style="display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer;">
+        <?php if (isset($_SESSION['username'])): ?>
+            <a href="index.php?url=profile" title="Quản lý tài khoản" style="font-size: 18px; color: #999;">
+                <i class="fa-solid fa-user-circle"></i>
             </a>
+            <span style="font-size: 11px; color: #666;">Tài khoản</span>
+        <?php else: ?>
+            <a href="index.php?url=login" style="font-size: 18px; color: #999;">
+                <i class="fa-solid fa-user"></i>
+            </a>
+            <span style="font-size: 11px; color: #666;">Tài khoản</span>
+        <?php endif; ?>
+    </div>
 
+    <!-- Đăng xuất -->
+    <?php if (isset($_SESSION['username'])): ?>
+        <div class="icon-box" style="display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer;">
             <a href="index.php?url=logout" 
                onclick="return confirm('Bạn có muốn đăng xuất không?')" 
                title="Đăng xuất" 
-               style="color: #ff4d4d; font-size: 14px;">
-                <i class="fa-solid fa-right-from-bracket"></i>
+               style="font-size: 18px; color: #999;">
+                <i class="fa-solid fa-sign-out-alt"></i>
             </a>
+            <span style="font-size: 11px; color: #666;">Đăng xuất</span>
         </div>
-    <?php else: ?>
-        <a href="index.php?url=login"><i class="fa-solid fa-user"></i></a>
     <?php endif; ?>
 
-    <a href="index.php?url=cart" class="cart-icon" style="position: relative;">
-        <i class="fa-solid fa-basket-shopping"></i>
-        <span class="cart-count" style="position: absolute; top: -8px; right: -10px; background: #d81b60; color: white; border-radius: 50%; padding: 2px 5px; font-size: 10px;">0</span>
-    </a>
+    <!-- Giỏ hàng -->
+    <div class="icon-box" style="display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative;">
+        <a href="index.php?url=cart" class="cart-icon" style="font-size: 18px; color: #999; position: relative;">
+            <i class="fa-solid fa-shopping-cart"></i>
+            <span class="cart-count" style="position: absolute; top: -10px; right: -24px; background: #d81b60; color: white; border-radius: 50%; width: 10px; height: 15px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2);">
+                <?php 
+                    $cart_count = 0;
+                    if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
+                        foreach ($_SESSION['cart'] as $qty) {
+                            $cart_count += $qty;
+                        }
+                    }
+                    echo $cart_count;
+                ?>
+            </span>
+        </a>
+        <span style="font-size: 11px; color: #666;">Giỏ hàng</span>
+    </div>
 </div>
 
 <style>
