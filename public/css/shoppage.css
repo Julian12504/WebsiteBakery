@@ -101,6 +101,45 @@
     background: #bc8a5f;
 }
 
+/* Nút Mua ngay - outline style viền đen */
+.btn-buy-outline {
+    background: transparent;
+    color: #333;
+    padding: 8px 16px;
+    border: 2px solid #333;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: block;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.btn-buy-outline:hover {
+    background: #f5f5f5;
+    border-color: #000;
+}
+
+/* Nút Thêm giỏ hàng - brown background */
+.btn-add-cart {
+    background: #D4A373;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    display: block;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.btn-add-cart:hover {
+    background: #c4935f;
+}
+
 /* Phân trang */
 .pagination {
     margin-top: 40px;

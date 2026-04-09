@@ -46,9 +46,9 @@
                             <span class="product-name"><?php echo $row['name']; ?></span>
                             <div class="product-price"><?php echo number_format($row['selling_price'], 0, ',', '.'); ?> đ</div>
                         </div>
-                        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                            <a href="index.php?url=add_to_cart&id=<?php echo $row['id']; ?>&qty=1" class="btn-buy" style="flex:1; text-align:center;"> <i ></i> Thêm giỏ hàng</a>
-                            <a href="index.php?url=add_to_cart&id=<?php echo $row['id']; ?>&qty=1&redirect=checkout" class="btn-buy" style="flex:1; text-align:center; background:#e74c3c;"> <i"></i> Mua ngay</a>
+                        <div style="display:flex; flex-direction:column; gap:0px;">
+                            <a href="index.php?url=add_to_cart&id=<?php echo $row['id']; ?>&qty=1&redirect=checkout" class="btn-buy-outline" style="text-align:center;">Mua ngay</a>
+                            <a href="index.php?url=add_to_cart&id=<?php echo $row['id']; ?>&qty=1" class="btn-add-cart" style="text-align:center;">Thêm vào giỏ hàng</a>
                         </div>
                     </div>
                 </div>
