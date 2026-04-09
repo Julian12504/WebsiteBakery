@@ -67,9 +67,10 @@
 
                 <select name="status" style="padding: 7px; border: 1px solid #ddd; border-radius: 4px; min-width: 150px;">
                     <option value="">Tất cả trạng thái</option>
-                    <option value="0" <?= (isset($_GET['status']) && $_GET['status'] == '0') ? 'selected' : '' ?>>Chưa xử lý</option>
-                    <option value="1" <?= (isset($_GET['status']) && $_GET['status'] == '1') ? 'selected' : '' ?>>Đã xác nhận</option>
-                    <option value="2" <?= (isset($_GET['status']) && $_GET['status'] == '2') ? 'selected' : '' ?>>Đã giao thành công</option>
+                    <option value="0" <?= (isset($_GET['status']) && $_GET['status'] == '0') ? 'selected' : '' ?>>Chờ xác nhận</option>
+                    <option value="1" <?= (isset($_GET['status']) && $_GET['status'] == '1') ? 'selected' : '' ?>>Chờ lấy hàng</option>
+                    <option value="2" <?= (isset($_GET['status']) && $_GET['status'] == '2') ? 'selected' : '' ?>>Chờ giao hàng</option>
+                    <option value="5" <?= (isset($_GET['status']) && $_GET['status'] == '5') ? 'selected' : '' ?>>Đã giao thành công</option>
                     <option value="4" <?= (isset($_GET['status']) && $_GET['status'] == '4') ? 'selected' : '' ?>>Đã hủy</option>
                 </select>
 
@@ -107,11 +108,13 @@
                                     style="padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; width: 100%; cursor: pointer;
                                     <?= $o['status']==0 ? 'border-left: 4px solid #f39c12;' : '' ?>
                                     <?= $o['status']==1 ? 'border-left: 4px solid #3498db;' : '' ?>
-                                    <?= $o['status']==2 ? 'border-left: 4px solid #27ae60;' : '' ?>
+                                    <?= $o['status']==2 ? 'border-left: 4px solid #f1c40f;' : '' ?>
+                                    <?= $o['status']==5 ? 'border-left: 4px solid #27ae60;' : '' ?>
                                     <?= $o['status']==4 ? 'border-left: 4px solid #e74c3c;' : '' ?> ">
-                                    <option value="0" <?= $o['status']==0 ? 'selected':'' ?>>🟠 Chưa xử lý</option>
-                                    <option value="1" <?= $o['status']==1 ? 'selected':'' ?>>🔵 Đã xác nhận</option>
-                                    <option value="2" <?= $o['status']==2 ? 'selected':'' ?>>🟢 Đã giao</option>
+                                    <option value="0" <?= $o['status']==0 ? 'selected':'' ?>>🟠 Chờ xác nhận</option>
+                                    <option value="1" <?= $o['status']==1 ? 'selected':'' ?>>🔵 Chờ lấy hàng</option>
+                                    <option value="2" <?= $o['status']==2 ? 'selected':'' ?>>🟡 Chờ giao hàng</option>
+                                    <option value="5" <?= $o['status']==5 ? 'selected':'' ?>>🟢 Đã giao thành công</option>
                                     <option value="4" <?= $o['status']==4 ? 'selected':'' ?>>🔴 Đã hủy</option>
                                 </select>
                             </form>
