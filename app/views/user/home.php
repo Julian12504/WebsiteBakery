@@ -9,43 +9,23 @@
         </div>
 
         <div class="product-grid">
-            <a href="index.php?url=detail&id=1" class="cake-card">
-                <div class="cake-img-wrapper">
-                    <img src="public/img/cake1.jpg" alt="Bánh">
+            <?php if (!empty($new_products)): ?>
+                <?php foreach ($new_products as $product): ?>
+                    <a href="index.php?url=detail&id=<?php echo $product['id']; ?>" class="cake-card">
+                        <div class="cake-img-wrapper">
+                            <img src="img/<?php echo htmlspecialchars(trim($product['image'])); ?>" alt="<?php echo htmlspecialchars($product['name']); ?>">
+                        </div>
+                        <div class="cake-info">
+                            <h3><?php echo htmlspecialchars($product['name']); ?></h3>
+                            <p class="cake-price"><?php echo number_format($product['selling_price'], 0, ',', '.'); ?> đ</p>
+                        </div>
+                    </a>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <div style="padding: 40px; text-align: center; color: #666; width: 100%;">
+                    Không có sản phẩm nào để hiển thị.
                 </div>
-                <div class="cake-info">
-                    <h3>Hộp 2 bánh Minibox</h3>
-                    <p class="cake-price">175.000 đ</p>
-                </div>
-            </a>
-            <a href="index.php?url=detail&id=1" class="cake-card">
-                <div class="cake-img-wrapper">
-                    <img src="public/img/cake1.jpg" alt="Bánh">
-                </div>
-                <div class="cake-info">
-                    <h3>Hộp 2 bánh Minibox</h3>
-                    <p class="cake-price">175.000 đ</p>
-                </div>
-            </a>
-            <a href="index.php?url=detail&id=1" class="cake-card">
-                <div class="cake-img-wrapper">
-                    <img src="public/img/cake1.jpg" alt="Bánh">
-                </div>
-                <div class="cake-info">
-                    <h3>Hộp 2 bánh Minibox</h3>
-                    <p class="cake-price">175.000 đ</p>
-                </div>
-            </a>
-            <a href="#" class="cake-card">
-                <div class="cake-img-wrapper">
-                    <img src="public/img/cake2.jpg" alt="Bánh">
-                </div>
-                <div class="cake-info">
-                    <h3>Minibox các vị</h3>
-                    <p class="cake-price">95.000 đ</p>
-                </div>
-            </a>
-            
-            </div>
+            <?php endif; ?>
+        </div>
     </section>
 </div>

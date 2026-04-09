@@ -112,27 +112,77 @@ class Product {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 // Hàm bổ sung để sửa lỗi ở trang chủ index.php
-    public function getProductsPaged($offset, $limit) {
-        $query = "SELECT * FROM " . $this->table_name . " 
-                  WHERE status = 1 
-                  ORDER BY id DESC 
-                  LIMIT :offset, :limit";
-        
-        $stmt = $this->conn->prepare($query);
+    public function getProductsPaged($offset, $limit, $category = '', $search = '', $min_price = '', $max_price = '') {
+        $sql = "SELECT * FROM " . $this->table_name . " WHERE status = 1";
+
+        if ($search !== '') {
+            $sql .= " AND name LIKE :search";
+        }
+        if ($category !== '') {
+            $sql .= " AND category_id = :category_id";
+        }
+        if ($min_price !== '') {
+            $sql .= " AND selling_price >= :min_price";
+        }
+        if ($max_price !== '') {
+            $sql .= " AND selling_price <= :max_price";
+        }
+
+        $sql .= " ORDER BY id DESC LIMIT :offset, :limit";
+
+        $stmt = $this->conn->prepare($sql);
+        if ($search !== '') {
+            $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+        }
+        if ($category !== '') {
+            $stmt->bindValue(':category_id', $category, PDO::PARAM_INT);
+        }
+        if ($min_price !== '') {
+            $stmt->bindValue(':min_price', $min_price, PDO::PARAM_INT);
+        }
+        if ($max_price !== '') {
+            $stmt->bindValue(':max_price', $max_price, PDO::PARAM_INT);
+        }
         $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
         $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
         $stmt->execute();
-        
+
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // Hàm đếm tổng sản phẩm cho phân trang trang chủ
-    public function countAll() {
-        $query = "SELECT COUNT(*) as total FROM " . $this->table_name . " WHERE status = 1";
-        $stmt = $this->conn->prepare($query);
+    public function countAll($category = '', $search = '', $min_price = '', $max_price = '') {
+        $sql = "SELECT COUNT(*) as total FROM " . $this->table_name . " WHERE status = 1";
+
+        if ($search !== '') {
+            $sql .= " AND name LIKE :search";
+        }
+        if ($category !== '') {
+            $sql .= " AND category_id = :category_id";
+        }
+        if ($min_price !== '') {
+            $sql .= " AND selling_price >= :min_price";
+        }
+        if ($max_price !== '') {
+            $sql .= " AND selling_price <= :max_price";
+        }
+
+        $stmt = $this->conn->prepare($sql);
+        if ($search !== '') {
+            $stmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+        }
+        if ($category !== '') {
+            $stmt->bindValue(':category_id', $category, PDO::PARAM_INT);
+        }
+        if ($min_price !== '') {
+            $stmt->bindValue(':min_price', $min_price, PDO::PARAM_INT);
+        }
+        if ($max_price !== '') {
+            $stmt->bindValue(':max_price', $max_price, PDO::PARAM_INT);
+        }
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $row['total'];
+        return (int)($row['total'] ?? 0);
     }
     // --- CÁC HÀM DÀNH CHO ADMIN SITE ---
 

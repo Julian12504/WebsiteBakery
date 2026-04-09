@@ -105,6 +105,29 @@ function renderOrderList($orders, $statusLabel) {
     </div>
 </div>
 
+<div id="editProfileModal" style="display:none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: #fff; width: 100%; max-width: 520px; margin: 30px auto; border-radius: 12px; overflow: hidden; box-shadow: 0 15px 40px rgba(0,0,0,0.2); position: relative;">
+        <div style="padding: 20px 24px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="margin:0; font-size: 20px;">Chỉnh sửa thông tin</h3>
+            <button type="button" onclick="closeModal()" style="border:none; background:none; font-size:24px; line-height:1; cursor:pointer; color:#333;">&times;</button>
+        </div>
+        <form action="index.php?url=update_profile" method="POST" style="padding: 20px; display: grid; gap: 15px;">
+            <label style="font-weight:600; font-size:14px; color:#333;">Họ và tên</label>
+            <input type="text" name="full_name" required value="<?= htmlspecialchars($_SESSION['full_name'] ?? '', ENT_QUOTES); ?>" style="width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:6px;">
+            <label style="font-weight:600; font-size:14px; color:#333;">Email</label>
+            <input type="email" name="email" required value="<?= htmlspecialchars($_SESSION['email'] ?? '', ENT_QUOTES); ?>" style="width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:6px;">
+            <label style="font-weight:600; font-size:14px; color:#333;">Số điện thoại</label>
+            <input type="text" name="phone" required value="<?= htmlspecialchars($_SESSION['phone'] ?? '', ENT_QUOTES); ?>" style="width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:6px;">
+            <label style="font-weight:600; font-size:14px; color:#333;">Địa chỉ giao hàng</label>
+            <textarea name="address_default" rows="3" required style="width:100%; padding:10px 12px; border:1px solid #ddd; border-radius:6px;"><?= htmlspecialchars($_SESSION['address_default'] ?? '', ENT_QUOTES); ?></textarea>
+            <div style="display:flex; gap:12px; justify-content:flex-end; margin-top:10px;">
+                <button type="button" onclick="closeModal()" style="padding:10px 18px; border:1px solid #ccc; background:#fff; border-radius:8px; cursor:pointer;">Hủy</button>
+                <button type="submit" style="padding:10px 18px; border:none; background:#d81b60; color:#fff; border-radius:8px; cursor:pointer;">Lưu thay đổi</button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
 function switchOrderTab(status, element) {
     // 1. Cập nhật class active cho tab
@@ -116,6 +139,6 @@ function switchOrderTab(status, element) {
     document.getElementById('tab-' + status).style.display = 'block';
 }
 
-function openModal() { document.getElementById("editProfileModal").style.display = "block"; }
+function openModal() { document.getElementById("editProfileModal").style.display = "flex"; }
 function closeModal() { document.getElementById("editProfileModal").style.display = "none"; }
 </script>

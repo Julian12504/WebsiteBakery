@@ -33,19 +33,23 @@ if ($url !== 'login' && $url !== 'register' && $url !== 'checklogin') {
 // 6. HỆ THỐNG ĐIỀU HƯỚNG (ROUTER)
 switch ($url) {
     case 'home':
+        $new_products = $productModel->getProductsPaged(0, 4);
         include '../app/views/user/home.php';
         break;
 
 case 'product':
-    $limit = 6; // Số bánh trên mỗi trang (ví dụ 8 cái)
-    $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+    $limit = 6; // Số bánh trên mỗi trang
+    $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
     $from = ($page - 1) * $limit;
     $category = $_GET['category'] ?? '';
+    $search = trim($_GET['search'] ?? '');
+    $min_price = isset($_GET['min_price']) ? trim($_GET['min_price']) : '';
+    $max_price = isset($_GET['max_price']) ? trim($_GET['max_price']) : '';
 
     // Lấy data
-    $products = $productModel->getProductsPaged($from, $limit, $category);
-    $total_products = $productModel->countAll($category);
-    $total_pages = ceil($total_products / $limit);
+    $products = $productModel->getProductsPaged($from, $limit, $category, $search, $min_price, $max_price);
+    $total_products = $productModel->countAll($category, $search, $min_price, $max_price);
+    $total_pages = $total_products > 0 ? ceil($total_products / $limit) : 1;
     
     $categories = $categoryModel->getAllCategories();
     include '../app/views/user/product.php';
@@ -84,6 +88,11 @@ case 'order_detail':
     include '../app/views/user/order_detail.php';
     break;
 case 'cart':
+    if (!isset($_SESSION['user_id'])) {
+        echo "<script>alert('Vui lòng đăng nhập để sử dụng giỏ hàng!'); window.location.href='index.php?url=login';</script>";
+        exit();
+    }
+
     $cart_data = [];
     $total_bill = 0;
     
@@ -102,18 +111,38 @@ case 'cart':
     break;
 
 case 'add_to_cart':
+    if (!isset($_SESSION['user_id'])) {
+        echo "<script>alert('Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!'); window.location.href='index.php?url=login';</script>";
+        exit();
+    }
+
     $id = $_GET['id'];
-    $qty = $_GET['qty'] ?? 1;
+    $qty = isset($_GET['qty']) ? intval($_GET['qty']) : 1;
+    if ($qty < 1) {
+        $qty = 1;
+    }
     
-    if (!isset($_SESSION['cart'])) $_SESSION['cart'] = [];
+    if (!isset($_SESSION['cart'])) {
+        $_SESSION['cart'] = [];
+    }
     
     // Nếu có rồi thì cộng dồn, chưa có thì gán mới
     $_SESSION['cart'][$id] = isset($_SESSION['cart'][$id]) ? $_SESSION['cart'][$id] + $qty : $qty;
     
-    header("Location: index.php?url=cart"); // Thêm xong đẩy sang trang giỏ hàng luôn
+    $redirect = $_GET['redirect'] ?? '';
+    if ($redirect === 'checkout') {
+        header("Location: index.php?url=checkout");
+    } else {
+        header("Location: index.php?url=cart");
+    }
     break;
 
 case 'remove_cart':
+    if (!isset($_SESSION['user_id'])) {
+        echo "<script>alert('Vui lòng đăng nhập để điều chỉnh giỏ hàng!'); window.location.href='index.php?url=login';</script>";
+        exit();
+    }
+
     $id = $_GET['id'];
     unset($_SESSION['cart'][$id]);
     header("Location: index.php?url=cart");
@@ -297,6 +326,11 @@ case 'update_profile':
     break;
 case 'process_checkout':
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (!isset($_SESSION['user_id'])) {
+            echo "<script>alert('Vui lòng đăng nhập để thanh toán!'); window.location.href='index.php?url=login';</script>";
+            exit();
+        }
+
         // 1. Kiểm tra giỏ hàng có trống không
         if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
             echo "<script>alert('Giỏ hàng trống!'); window.location.href='index.php';</script>";
@@ -362,6 +396,12 @@ case 'checkout':
     }
     include '../app/views/user/checkout.php';
     break;
+    case 'about':
+        include '../app/views/user/about.php';
+        break;
+    case 'contact':
+        include '../app/views/user/contact.php';
+        break;
     default:
         include '../app/views/user/home.php';
         break;
