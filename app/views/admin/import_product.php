@@ -13,15 +13,17 @@ if (!isset($dailyImports)) {
     <meta charset="UTF-8">
     <title>Tạo Phiếu Nhập Kho - WebsiteBakery</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css">
     <link rel="stylesheet" href="../public/css/css_admin/style.css"> 
     <link rel="stylesheet" href="../public/css/css_admin/import.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
   <div class="sidebar">
     <div class="sidebar-header"><i class="fa-solid fa-user-shield"></i> Administrator</div>
     
-    <a href="admin.php?url=dashboard" class="menu-item active"><i class="fa-solid fa-house"></i> Trang chủ Admin</a>
+    <a href="admin.php?url=dashboard" class="menu-item"><i class="fa-solid fa-house"></i> Trang chủ Admin</a>
 
     <div class="menu-item" onclick="toggleProductMenu()" style="cursor: pointer;">
         <i class="fa-solid fa-cake-candles"></i> 
@@ -36,6 +38,9 @@ if (!isset($dailyImports)) {
         <a href="admin.php?url=products" class="menu-item" style="padding-left: 40px; font-size: 13px;">
             <i class="fa-solid fa-box"></i> Tất cả sản phẩm
         </a>
+        <a href="admin.php?url=price_management" class="menu-item active" style="padding-left: 40px; font-size: 13px;">
+            <i class="fa-solid fa-tags"></i> Quản lý giá bán
+        </a>
     </div>
 
     <a href="admin.php?url=orders" class="menu-item"><i class="fa-solid fa-cart-shopping"></i> Đơn hàng</a>
@@ -46,6 +51,7 @@ if (!isset($dailyImports)) {
     <a href="admin.php?url=inventory" class="menu-item"><i class="fa-solid fa-boxes-stacked"></i> Tồn kho / Báo cáo</a>
     <a href="admin_logout.php" class="menu-item" style="color: #e74c3c;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
 </div>
+
 
 <div class="main-content">
         <div class="import-wrapper">
@@ -58,12 +64,12 @@ if (!isset($dailyImports)) {
                         <div class="card-body">
                             <div class="info-grid">
                                 <div class="form-group">
-                                    <label>Sản phẩm</label>
-                                    <select id="select_product" class="form-control">
+                                    <label>Sản phẩm </label>
+                                    <select id="select_product" class="form-control select2-search">
                                         <option value="">-- Chọn bánh --</option>
                                         <?php foreach($products as $p): ?>
-                                            <option value="<?= $p['id'] ?>" data-name="<?= $p['name'] ?>">
-                                                <?= $p['name'] ?> (Tồn: <?= $p['stock'] ?>)
+                                            <option value="<?= $p['id'] ?>" data-name="<?= $p['name'] ?>" data-sku="<?= $p['id'] ?? '' ?>">
+                                                <?= htmlspecialchars($p['name']) ?> (SKU: <?= $p['id'] ?>, Tồn: <?= $p['stock'] ?>)
                                             </option>
                                         <?php endforeach; ?>
                                     </select>
@@ -146,6 +152,78 @@ if (!isset($dailyImports)) {
                         </div>
                     <?php endif; ?>
 
+                    <?php if (!empty($viewReceipt)): ?>
+                        <div class="import-card receipt-view-card" style="margin-bottom:20px;">
+                            <div class="card-header">
+                                <h3><i class="fa-solid fa-file-invoice"></i> Phiếu nhập #<?= htmlspecialchars($viewReceipt['id']) ?></h3>
+                                <span style="font-size:14px; color:#555;">
+                                    <?= $viewReceipt['status'] == 1 ? 'Nháp' : 'Hoàn thành' ?>
+                                </span>
+                            </div>
+                            <div class="card-body">
+                                <p><strong>Ngày tạo:</strong> <?= date('d/m/Y H:i', strtotime($viewReceipt['receipt_date'])) ?></p>
+                                <ul class="list-group list-group-flush mb-3">
+                                    <?php foreach ($viewItems as $item): ?>
+                                        <li class="list-group-item px-0 d-flex justify-content-between">
+                                            <span><?= htmlspecialchars($item['product_name']) ?> x <?= (int) $item['quantity'] ?></span>
+                                            <strong><?= number_format($item['quantity'] * $item['import_price']) ?>đ</strong>
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                                <?php if ($viewReceipt['status'] == 1): ?>
+                                    <form method="post" action="admin.php?url=complete_import">
+                                        <input type="hidden" name="receipt_id" value="<?= (int) $viewReceipt['id'] ?>">
+                                        <input type="hidden" name="search_date" value="<?= htmlspecialchars($search_date) ?>">
+                                        <button type="submit" class="btn-submit"><i class="fa-solid fa-check"></i> Hoàn thành phiếu nhập</button>
+                                    </form>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="import-card receipt-list-section" style="margin-bottom:20px;">
+                        <div class="card-header">
+                            <h3><i class="fa-solid fa-list-ul"></i> Danh sách phiếu nhập</h3>
+                        </div>
+                        <div class="card-body">
+                            <?php if (!empty($receipts)): ?>
+                                <table class="history-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Phiếu</th>
+                                            <th>Trạng thái</th>
+                                            <th>Số dòng</th>
+                                            <th>Tổng tiền</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($receipts as $receipt): ?>
+                                            <tr>
+                                                <td>#<?= htmlspecialchars($receipt['id']) ?></td>
+                                                <td><?= $receipt['status'] == 1 ? 'Nháp' : 'Hoàn thành' ?></td>
+                                                <td><?= htmlspecialchars($receipt['item_count'] ?? 0) ?></td>
+                                                <td><?= number_format($receipt['total_amount'] ?? 0) ?>đ</td>
+                                                <td class="table-actions">
+                                                    <a href="admin.php?url=import_product&search_date=<?= urlencode($search_date) ?>&view=<?= (int) $receipt['id'] ?>" class="btn-submit" style="padding:6px 10px; font-size:13px;"><i class="fa-solid fa-eye"></i> Xem</a>
+                                                    <?php if ($receipt['status'] == 1): ?>
+                                                        <form method="post" action="admin.php?url=complete_import" style="display:inline-block; margin-left:4px;">
+                                                            <input type="hidden" name="receipt_id" value="<?= (int) $receipt['id'] ?>">
+                                                            <input type="hidden" name="search_date" value="<?= htmlspecialchars($search_date) ?>">
+                                                            <button type="submit" class="btn-submit" style="padding:6px 10px; font-size:13px;"><i class="fa-solid fa-check"></i> Hoàn thành</button>
+                                                        </form>
+                                                    <?php endif; ?>
+                                                </td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            <?php else: ?>
+                                <p style="color:#777;">Chưa có phiếu nhập trong ngày này.</p>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
                     <div class="import-card history-section">
                         <div class="card-header">
                             <h3><i class="fa-solid fa-list-ul"></i> Danh sách hàng đã nhập</h3>
@@ -205,11 +283,35 @@ if (!isset($dailyImports)) {
         </div>
     </div>
 
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     // 1. Khai báo biến
-    const qtyInput = document.getElementById('input_qty');     // Sửa ID cho khớp HTML
-    const priceInput = document.getElementById('input_price'); // Sửa ID cho khớp HTML
+    const qtyInput = document.getElementById('input_qty');
+    const priceInput = document.getElementById('input_price');
     let grandTotal = 0;
+
+    // Khởi tạo Select2 với tìm kiếm
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#select_product').select2({
+            placeholder: '-- Chọn bánh hoặc tìm kiếm --',
+            allowClear: true,
+            width: '100%',
+            matcher: function(params, data) {
+                if ($.trim(params.term) === '') {
+                    return data;
+                }
+
+                var term = params.term.toLowerCase();
+                var text = data.text.toLowerCase();
+
+                if (text.indexOf(term) > -1) {
+                    return data;
+                }
+
+                return null;
+            }
+        });
+    });
 
     // 2. Hàm thêm vào danh sách tạm (Queue)
     function addToTempList() {
@@ -247,7 +349,7 @@ if (!isset($dailyImports)) {
         // Reset ô nhập
         qtyInput.value = '';
         priceInput.value = '';
-        select.value = '';
+        $('#select_product').val(null).trigger('change');
     }
 
     // 3. Hàm xóa dòng khỏi danh sách tạm

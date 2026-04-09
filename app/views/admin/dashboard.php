@@ -11,7 +11,7 @@
   <div class="sidebar">
     <div class="sidebar-header"><i class="fa-solid fa-user-shield"></i> Administrator</div>
     
-    <a href="admin.php?url=dashboard" class="menu-item active"><i class="fa-solid fa-house"></i> Trang chủ Admin</a>
+    <a href="admin.php?url=dashboard" class="menu-item"><i class="fa-solid fa-house"></i> Trang chủ Admin</a>
 
     <div class="menu-item" onclick="toggleProductMenu()" style="cursor: pointer;">
         <i class="fa-solid fa-cake-candles"></i> 
@@ -26,6 +26,9 @@
         <a href="admin.php?url=products" class="menu-item" style="padding-left: 40px; font-size: 13px;">
             <i class="fa-solid fa-box"></i> Tất cả sản phẩm
         </a>
+        <a href="admin.php?url=price_management" class="menu-item active" style="padding-left: 40px; font-size: 13px;">
+            <i class="fa-solid fa-tags"></i> Quản lý giá bán
+        </a>
     </div>
 
     <a href="admin.php?url=orders" class="menu-item"><i class="fa-solid fa-cart-shopping"></i> Đơn hàng</a>
@@ -36,6 +39,7 @@
     <a href="admin.php?url=inventory" class="menu-item"><i class="fa-solid fa-boxes-stacked"></i> Tồn kho / Báo cáo</a>
     <a href="admin_logout.php" class="menu-item" style="color: #e74c3c;"><i class="fa-solid fa-right-from-bracket"></i> Đăng xuất</a>
 </div>
+
 
     <div class="main-content">
         <div class="top-nav">

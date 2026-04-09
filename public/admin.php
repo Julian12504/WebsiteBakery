@@ -45,15 +45,19 @@ switch ($url) {
     case 'update_product':
     case 'delete_product':
     case 'bulk_action':
+    case 'price_management':
+    case 'update_profit':
         require_once '../app/controllers/admin/ProductController.php';
         $controller = new ProductController($productModel);
 
-        if ($url == 'products')        $controller->index();
-        if ($url == 'save_product')    $controller->add();
-        if ($url == 'edit_product')    $controller->edit();
-        if ($url == 'update_product')  $controller->update();
-        if ($url == 'delete_product')  $controller->delete();
-        if ($url == 'bulk_action')     $controller->bulk_action();
+        if ($url == 'products')            $controller->index();
+        if ($url == 'save_product')        $controller->add();
+        if ($url == 'edit_product')        $controller->edit();
+        if ($url == 'update_product')      $controller->update();
+        if ($url == 'delete_product')      $controller->delete();
+        if ($url == 'bulk_action')         $controller->bulk_action();
+        if ($url == 'price_management')    $controller->priceManagement();
+        if ($url == 'update_profit')       $controller->updateProfit();
         break;
 
     // --- QUẢN LÝ DANH MỤC ---
@@ -107,17 +111,12 @@ switch ($url) {
         break;
 
     case 'process_import':
-    if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $admin_id = $_SESSION['admin_id']; // Lấy ID admin đang đăng nhập
-        $p_id = $_POST['product_id'];
-        $qty = $_POST['quantity'];
-        $price = $_POST['import_price'];
-
-        if ($productModel->processImport($admin_id, $p_id, $qty, $price)) {
-            header("Location: admin.php?url=products&msg=import_success");
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            require_once '../app/controllers/admin/ProductController.php';
+            $controller = new ProductController($productModel);
+            $controller->process_import();
         }
-    }
-    break;
+        break;
 
 case 'process_import_all':
     require_once '../app/controllers/admin/ProductController.php';
@@ -141,6 +140,12 @@ case 'delete_import':
     require_once '../app/controllers/admin/ProductController.php';
     $controller = new ProductController($productModel);
     $controller->deleteImport();
+    break;
+
+case 'complete_import':
+    require_once '../app/controllers/admin/ProductController.php';
+    $controller = new ProductController($productModel);
+    $controller->completeImport();
     break;
 
 case 'import_product':

@@ -9,40 +9,48 @@ class InventoryController {
     }
 
     public function index() {
-        $products = $this->productModel->getAllProducts();
-        $product_id = isset($_GET['product_id']) ? (int)$_GET['product_id'] : 0;
-        $asof = $_GET['asof'] ?? '';
-        $from_date = $_GET['from_date'] ?? '';
-        $to_date = $_GET['to_date'] ?? '';
-        $threshold = isset($_GET['threshold']) ? (int)$_GET['threshold'] : 10;
+        $productId = isset($_GET['product_id']) ? (int)$_GET['product_id'] : 0;
+        $atDatetime = $_GET['at_datetime'] ?? '';
+        $threshold = isset($_GET['threshold']) ? (int)$_GET['threshold'] : 5;
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $perPage = 20; // Số sản phẩm mỗi trang
 
-        $selectedProduct = null;
-        $stockAtTime = null;
-        $importsRange = null;
-        $exportsRange = null;
-        $netRange = null;
+        // Luôn lấy danh sách tất cả sản phẩm cho select box
+        $allProducts = $this->productModel->getProductsPagedAdmin(0, 10000, '', '', '', '', '', '', '', '');
 
-        if ($product_id) {
-            $selectedProduct = $this->productModel->getProductByIdAdmin($product_id);
-        }
+        $products = [];
+        $totalProducts = 0;
+        $totalPages = 0;
+        $inventoryResult = null;
+        $searchedProduct = null;
 
-        if ($selectedProduct && $asof) {
-            $timestamp = strtotime($asof);
+        // Tra cứu tồn kho tại thời điểm
+        if ($productId > 0 && $atDatetime !== '') {
+            $timestamp = strtotime($atDatetime);
             if ($timestamp !== false) {
                 $searchDatetime = date('Y-m-d H:i:s', $timestamp);
-                $stockAtTime = $this->productModel->getStockAtDateTime($product_id, $searchDatetime);
+                $inventoryResult = $this->productModel->getStockAtDateTime($productId, $searchDatetime);
+                
+                // Lấy thông tin sản phẩm được tra cứu
+                $searchedProduct = $this->productModel->getProductByIdAdmin($productId);
+                if ($searchedProduct) {
+                    $searchedProduct['stock_at_time'] = $inventoryResult;
+                    $products = [$searchedProduct]; // Chỉ hiện sản phẩm này trong bảng
+                    $totalProducts = 1;
+                    $totalPages = 1;
+                }
             }
+        } else {
+            // Lấy danh sách tất cả sản phẩm với phân trang
+            $offset = ($page - 1) * $perPage;
+            $products = $this->productModel->getProductsPagedAdmin($offset, $perPage, '', '', '', '', '', '', '', '');
+            $totalProducts = $this->productModel->getTotalProductsCount();
+            $totalPages = ceil($totalProducts / $perPage);
         }
 
-        if ($selectedProduct && $from_date) {
-            $fromDate = date('Y-m-d 00:00:00', strtotime($from_date));
-            $toDate = $to_date ? date('Y-m-d 23:59:59', strtotime($to_date)) : date('Y-m-d 23:59:59', strtotime($from_date));
-            $importsRange = $this->productModel->getImportQuantityInRange($product_id, $fromDate, $toDate);
-            $exportsRange = $this->productModel->getExportQuantityInRange($product_id, $fromDate, $toDate);
-            $netRange = $importsRange - $exportsRange;
-        }
-
+        // Lấy danh sách cảnh báo sắp hết hàng
         $lowStockProducts = $this->productModel->getLowStockProductsByThreshold($threshold);
+
         include '../app/views/admin/inventory.php';
     }
 }
