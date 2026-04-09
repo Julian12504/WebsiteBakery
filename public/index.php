@@ -9,6 +9,7 @@ require_once '../app/models/User.php';
 include_once '../app/models/Category.php';
 require_once '../app/models/Order.php';
 require_once '../app/models/Cart.php';
+
 // 3. KHỞI TẠO ĐỐI TƯỢNG (Bước này giải quyết lỗi Fatal Error của bạn)
 $database = new Database();
 $db = $database->getConnection();
@@ -22,8 +23,8 @@ $cartModel = new Cart($db);
 // 4. Lấy tham số 'url'
 $url = $_GET['url'] ?? 'home';
 
-// 5. HIỂN THỊ HEADER (Trừ trang login và register để giống cái ảnh hồng của bạn)
-if ($url !== 'login' && $url !== 'register' && $url !== 'checklogin') {
+// 5. HIỂN THỊ HEADER (Trừ trang login, register, và API routes)
+if ($url !== 'login' && $url !== 'register' && $url !== 'checklogin' && $url !== 'get_order_items' && $url !== 'submit_review') {
     if (file_exists('../includes/header.php')) {
         include '../includes/header.php';
     }
@@ -57,11 +58,16 @@ case 'product':
     case 'detail':
     $id = $_GET['id'] ?? 0;
     $product = $productModel->getProductById($id);
-    
+
     if (!$product) {
         echo "Sản phẩm không tồn tại!";
         exit;
     }
+
+    // Load đánh giá và thống kê rating
+    $reviews = $reviewModel->getReviewsByProduct($id, 10);
+    $rating_stats = $reviewModel->getAverageRating($id);
+
     include '../app/views/user/detail.php'; // Load file giao diện chi tiết
     break;
     // Nhớ khởi tạo session_start() ở đầu file index.php nhé!
@@ -121,14 +127,25 @@ case 'add_to_cart':
     if ($qty < 1) {
         $qty = 1;
     }
-    
+
+    $product = $productModel->getProductById($id);
+    if (!$product || !isset($product['stock']) || $product['stock'] <= 0) {
+        echo "<script>alert('Sản phẩm đã hết hàng!'); window.location.href='index.php?url=product';</script>";
+        exit();
+    }
+
     if (!isset($_SESSION['cart'])) {
         $_SESSION['cart'] = [];
     }
-    
-    // Nếu có rồi thì cộng dồn, chưa có thì gán mới
-    $_SESSION['cart'][$id] = isset($_SESSION['cart'][$id]) ? $_SESSION['cart'][$id] + $qty : $qty;
-    
+
+    $currentQty = isset($_SESSION['cart'][$id]) ? intval($_SESSION['cart'][$id]) : 0;
+    $newQty = $currentQty + $qty;
+    if ($newQty > $product['stock']) {
+        $newQty = $product['stock'];
+    }
+
+    $_SESSION['cart'][$id] = $newQty;
+
     $redirect = $_GET['redirect'] ?? '';
     if ($redirect === 'checkout') {
         header("Location: index.php?url=checkout");
@@ -147,6 +164,42 @@ case 'remove_cart':
     unset($_SESSION['cart'][$id]);
     header("Location: index.php?url=cart");
     break;
+
+case 'update_cart':
+    if (!isset($_SESSION['user_id'])) {
+        echo "<script>alert('Vui lòng đăng nhập để điều chỉnh giỏ hàng!'); window.location.href='index.php?url=login';</script>";
+        exit();
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['qty']) && is_array($_POST['qty'])) {
+        foreach ($_POST['qty'] as $product_id => $quantity) {
+            $product_id = intval($product_id);
+            $quantity = intval($quantity);
+            $product = $productModel->getProductById($product_id);
+            if (!$product) {
+                continue;
+            }
+
+            $maxStock = isset($product['stock']) ? intval($product['stock']) : 0;
+            if ($maxStock <= 0) {
+                unset($_SESSION['cart'][$product_id]);
+                continue;
+            }
+
+            if ($quantity < 1) {
+                $quantity = 1;
+            }
+            if ($quantity > $maxStock) {
+                $quantity = $maxStock;
+            }
+
+            $_SESSION['cart'][$product_id] = $quantity;
+        }
+    }
+
+    header("Location: index.php?url=cart");
+    break;
+
     case 'login':
         include '../app/views/user/login.php'; 
         break;
@@ -262,6 +315,7 @@ case 'profile':
     $pending_orders = array_filter($all_orders, fn($o) => $o['status'] == 0);
     $processing_orders = array_filter($all_orders, fn($o) => $o['status'] == 1);
     $shipping_orders = array_filter($all_orders, fn($o) => $o['status'] == 2);
+    $delivered_orders = array_filter($all_orders, fn($o) => $o['status'] == 5);
     $completed_orders = array_filter($all_orders, fn($o) => $o['status'] == 3);
     $cancelled_orders = array_filter($all_orders, fn($o) => $o['status'] == 4);
 
@@ -402,13 +456,76 @@ case 'checkout':
     case 'contact':
         include '../app/views/user/contact.php';
         break;
+
+    case 'get_order_items':
+        header('Content-Type: application/json');
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode(['error' => 'Unauthorized']);
+            exit();
+        }
+
+        $order_id = $_GET['order_id'] ?? 0;
+        $user_id = $_SESSION['user_id'];
+
+        // Kiểm tra đơn hàng có thuộc về user này không
+        $order = $orderModel->getOrderById($order_id);
+        if (!$order || $order['user_id'] != $user_id) {
+            echo json_encode(['error' => 'Order not found']);
+            exit();
+        }
+
+        $items = $orderModel->getOrderItems($order_id);
+        echo json_encode($items);
+        break;
+
+    case 'submit_review':
+        header('Content-Type: application/json');
+        if (!isset($_SESSION['user_id'])) {
+            echo json_encode(['success' => false, 'message' => 'Unauthorized']);
+            exit();
+        }
+
+        $data = json_decode(file_get_contents('php://input'), true);
+        $order_id = $data['order_id'] ?? 0;
+        $reviews = $data['reviews'] ?? [];
+
+        $user_id = $_SESSION['user_id'];
+
+        // Kiểm tra đơn hàng có thuộc về user này và ở trạng thái đã giao
+        $order = $orderModel->getOrderById($order_id);
+        if (!$order || $order['user_id'] != $user_id || $order['status'] != 5) {
+            echo json_encode(['success' => false, 'message' => 'Invalid order']);
+            exit();
+        }
+
+        // Tạo bảng product_reviews nếu chưa có
+        $reviewModel->createTable();
+
+        // Lưu đánh giá (không lưu order_id, chỉ product_id, user_id)
+        foreach ($reviews as $review) {
+            if ($review['rating'] > 0) {
+                $reviewModel->createReview(
+                    $review['product_id'],
+                    $user_id,
+                    $review['rating'],
+                    $review['comment']
+                );
+            }
+        }
+
+        // Cập nhật trạng thái đơn hàng thành đã đánh giá (status = 3)
+        $orderModel->updateStatus($order_id, 3);
+
+        echo json_encode(['success' => true, 'message' => 'Review submitted successfully']);
+        break;
+
     default:
         include '../app/views/user/home.php';
         break;
 }
 
-// 7. HIỂN THỊ FOOTER (Trừ trang login và register)
-if ($url !== 'login' && $url !== 'register' && $url !== 'checklogin') {
+// 7. HIỂN THỊ FOOTER (Trừ trang login, register, và API routes)
+if ($url !== 'login' && $url !== 'register' && $url !== 'checklogin' && $url !== 'get_order_items' && $url !== 'submit_review') {
     echo '</main>'; 
     if (file_exists('../includes/footer.php')) {
         include '../includes/footer.php';

@@ -636,7 +636,27 @@ public function deleteImportDetail($detail_id) {
     $stmt = $this->conn->prepare($sql);
     return $stmt->execute([$detail_id]);
 }
+// Lấy danh sách đánh giá của 1 sản phẩm
+public function getReviewsByProductId($product_id) {
+    $sql = "SELECT r.*, u.username 
+            FROM product_reviews r
+            JOIN users u ON r.user_id = u.id
+            WHERE r.product_id = :p_id AND r.status = 1
+            ORDER BY r.created_at DESC";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['p_id' => $product_id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
+// Tính điểm trung bình (Ví dụ: 4.5 sao)
+public function getAverageRating($product_id) {
+    $sql = "SELECT AVG(rating) as avg_rating, COUNT(*) as total_reviews 
+            FROM product_reviews 
+            WHERE product_id = :p_id AND status = 1";
+    $stmt = $this->conn->prepare($sql);
+    $stmt->execute(['p_id' => $product_id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 // public function addImportDetail($receipt_id, $product_id, $qty, $price) {
 //     try {
 //         // 1. Lưu vào bảng purchase_details (Dùng chung receipt_id)
