@@ -51,7 +51,7 @@
   </section>
 
   <!-- FORM SECTION -->
-  <section class="contact-form-section">
+  <!-- <section class="contact-form-section">
     <h2>Gửi Thông Tin Liên Hệ</h2>
     
     <form class="contact-form">
@@ -69,6 +69,6 @@
 
       <button type="submit" class="submit-btn">Gửi Liên Hệ</button>
     </form>
-  </section>
+  </section> -->
 
 </div>

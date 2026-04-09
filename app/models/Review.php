@@ -28,7 +28,7 @@ class Review {
     public function createReview($product_id, $user_id, $rating, $comment = '') {
         $query = "INSERT INTO " . $this->table_name . " 
                   (product_id, user_id, rating, comment, status) 
-                  VALUES (:product_id, :user_id, :rating, :comment, 0)";
+                  VALUES (:product_id, :user_id, :rating, :comment, 1)";
 
         $stmt = $this->conn->prepare($query);
 

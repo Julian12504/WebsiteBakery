@@ -66,22 +66,26 @@ class ProductController {
     // 2. Thêm sản phẩm mới
 public function add() {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $gia_von = (float)$_POST['gia_von'];
-        $loi_nhuan = (float)$_POST['loi_nhuan'];
+        $gia_von = (float)($_POST['gia_von'] ?? 0);
+        $loi_nhuan = (float)($_POST['loi_nhuan'] ?? 0);
         $selling_price = $gia_von + ($gia_von * $loi_nhuan / 100);
+        $category_id = (int)($_POST['category_id'] ?? 0);
+
+        if ($category_id <= 0) {
+            echo "Danh mục sản phẩm không hợp lệ.";
+            return;
+        }
 
         // Xử lý ảnh
         $image = 'default.jpg';
-// Sửa trong hàm add() VÀ update()
-if (!empty($_FILES['image']['name'])) {
-    $image = time() . '_' . $_FILES['image']['name'];
-    // Lưu vào thư mục images/ (nằm cùng cấp với admin.php)
-    move_uploaded_file($_FILES['image']['tmp_name'], "images/" . $image); 
-}
+        if (!empty($_FILES['image']['name'])) {
+            $image = time() . '_' . basename($_FILES['image']['name']);
+            move_uploaded_file($_FILES['image']['tmp_name'], "images/" . $image);
+        }
 
         $data = [
-            'name'                => $_POST['name'],
-            'category_id'         => $_POST['category_id'],
+            'name'                => $_POST['name'] ?? '',
+            'category_id'         => $category_id,
             'description'         => $_POST['description'] ?? '',
             'unit'                => $_POST['unit'] ?? 'Cái',
             'image'               => $image,
@@ -116,10 +120,16 @@ if (!empty($_FILES['image']['name'])) {
     // 4. Xử lý Cập nhật sản phẩm
     public function update() {
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $id = $_POST['id'];
+            $id = (int)($_POST['id'] ?? 0);
+            $category_id = (int)($_POST['category_id'] ?? 0);
             $gia_von = (float)($_POST['gia_von'] ?? 0);
             $loi_nhuan = (float)($_POST['loi_nhuan'] ?? 0);
             $selling_price = $gia_von + ($gia_von * $loi_nhuan / 100);
+
+            if ($id <= 0 || $category_id <= 0) {
+                header('Location: admin.php?url=products&msg=invalid_input');
+                exit();
+            }
 
             // Giữ ảnh cũ hoặc thay ảnh mới
             $currentImage = $_POST['current_image'] ?? 'default.jpg';
@@ -139,7 +149,7 @@ if (!empty($_FILES['image']['name'])) {
             $data = [
                 'id' => $id,
                 'name' => $_POST['name'] ?? '',
-                'category_id' => $_POST['category_id'] ?? 0,
+                'category_id' => $category_id,
                 'description' => $_POST['description'] ?? '',
                 'unit' => $_POST['unit'] ?? 'Cái',
                 'gia_von' => $gia_von,

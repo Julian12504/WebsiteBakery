@@ -39,7 +39,7 @@
             <?php foreach ($products as $row): ?>
                 <div class="product-item" style="min-height: 380px; display: flex; flex-direction: column;">
                 <a href="index.php?url=detail&id=<?php echo $row['id']; ?>" style="display: block; height: 200px; background: #f5f5f5; overflow: hidden; position: relative;">
-    <img src="img/<?php echo trim($row['image']); ?>" class="product-img" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.src='img/cake.png'">
+    <img src="images/<?php echo trim($row['image']); ?>" class="product-img" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.src='img/cake.png'">
 </a>
                     <div class="product-info" style="flex-grow: 1; padding: 15px; display: flex; flex-direction: column; justify-content: space-between;">
                         <div class="name-price">

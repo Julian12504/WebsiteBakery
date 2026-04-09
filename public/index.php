@@ -1,6 +1,7 @@
 <?php
 // 1. Khởi tạo session
 session_start();
+header('Content-Type: text/html; charset=utf-8');
 
 // 2. NHÚNG CÁC FILE QUAN TRỌNG (Phải nhúng trước khi sử dụng)
 require_once '../config/database.php';
@@ -9,6 +10,7 @@ require_once '../app/models/User.php';
 include_once '../app/models/Category.php';
 require_once '../app/models/Order.php';
 require_once '../app/models/Cart.php';
+require_once '../app/models/Review.php';
 
 // 3. KHỞI TẠO ĐỐI TƯỢNG (Bước này giải quyết lỗi Fatal Error của bạn)
 $database = new Database();
@@ -20,6 +22,7 @@ $userModel = new User($db); // Đã có $userModel, không còn bị null nữa!
 $categoryModel = new Category($db);
 $orderModel = new Order($db);
 $cartModel = new Cart($db);
+$reviewModel = new Review($db);
 // 4. Lấy tham số 'url'
 $url = $_GET['url'] ?? 'home';
 
@@ -33,10 +36,10 @@ if ($url !== 'login' && $url !== 'register' && $url !== 'checklogin' && $url !==
 
 // 6. HỆ THỐNG ĐIỀU HƯỚNG (ROUTER)
 switch ($url) {
-    case 'home':
-        $new_products = $productModel->getProductsPaged(0, 4);
-        include '../app/views/user/home.php';
-        break;
+case 'home':
+    $new_products = $productModel->getProductsPaged(0, 4);
+    include '../app/views/user/home.php';
+    break;
 
 case 'product':
     $limit = 6; // Số bánh trên mỗi trang

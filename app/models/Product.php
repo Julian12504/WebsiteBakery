@@ -344,7 +344,19 @@ public function insertProduct($data) {
                 stock = :stock, low_stock_threshold = :low_stock_threshold, image = :image, status = :status 
                 WHERE id = :id";
         $stmt = $this->conn->prepare($sql);
-        return $stmt->execute($data);
+        $stmt->bindValue(':name', $data['name']);
+        $stmt->bindValue(':category_id', $data['category_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':description', $data['description'] ?? '');
+        $stmt->bindValue(':unit', $data['unit'] ?? 'Cái');
+        $stmt->bindValue(':gia_von', $data['gia_von']);
+        $stmt->bindValue(':loi_nhuan', $data['loi_nhuan']);
+        $stmt->bindValue(':selling_price', $data['selling_price']);
+        $stmt->bindValue(':stock', $data['stock'], PDO::PARAM_INT);
+        $stmt->bindValue(':low_stock_threshold', $data['low_stock_threshold'], PDO::PARAM_INT);
+        $stmt->bindValue(':image', $data['image']);
+        $stmt->bindValue(':status', $data['status'], PDO::PARAM_INT);
+        $stmt->bindValue(':id', $data['id'], PDO::PARAM_INT);
+        return $stmt->execute();
     }
 
     public function updateProductPricing($id, $gia_von, $loi_nhuan, $selling_price) {

@@ -96,7 +96,7 @@ function renderDeliveredOrders($orders) {
             </div>
             <h3 class="user-name"><?= $_SESSION['full_name']; ?></h3>
             <p class="join-date">Thành viên từ: <?= date('d/m/Y'); ?></p>
-            <span class="role-badge"><?= $_SESSION['role'] == 1 ? 'Admin' : 'Khách hàng'; ?></span>
+            <!-- <span class="role-badge"><?= $_SESSION['role'] == 1 ? 'Admin' : 'Khách hàng'; ?></span> -->
         </div>
 
         <div class="profile-main">

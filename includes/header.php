@@ -6,14 +6,13 @@
     <title>Sweet Home - Tiệm Bánh Thủ Công</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<link rel="stylesheet" href="css/style.css"> 
-<?php 
-// Kiểm tra giá trị của biến url trên thanh địa chỉ
-$current_url = $_GET['url'] ?? 'home'; 
+    <link rel="stylesheet" href="css/style.css"> 
 
-if ($current_url == 'home'): ?>
-    <link rel="stylesheet" href="css/homepage.css"> 
-
+    <?php 
+    $current_url = $_GET['url'] ?? 'home'; 
+   
+    if ($current_url == 'home'): ?>
+        <link rel="stylesheet" href="css/homepage.css">
 <?php elseif ($current_url == 'product'): ?>
     <link rel="stylesheet" href="css/shoppage.css"> 
 <?php elseif ($current_url == 'checkout'): ?>
@@ -37,7 +36,7 @@ if ($current_url == 'home'): ?>
     <div class="container header-content">
         <div class="logo">
             <a href="index.php">
-                <img src="public/images/logo.png" alt="Logo" onerror="this.style.display='none'"> 
+                <img src="images/logo.png" alt="Logo" onerror="this.style.display='none'"> 
                 <span>SWEET HOME</span>
             </a>
         </div>

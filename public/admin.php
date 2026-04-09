@@ -1,5 +1,6 @@
 <?php
 session_start();
+header('Content-Type: text/html; charset=utf-8');
 
 // 1. Bật hiển thị lỗi để dễ dàng debug
 ini_set('display_errors', 1);
