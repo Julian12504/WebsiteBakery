@@ -23,7 +23,11 @@ if ($current_url == 'home'): ?>
 <?php elseif ($current_url == 'detail'): ?>
     <link rel="stylesheet" href="css/detail.css"> 
 <?php elseif ($current_url == 'cart'): ?>
-    <link rel="stylesheet" href="css/cart.css"> 
+    <link rel="stylesheet" href="css/cart.css">
+<?php elseif ($current_url == 'about'): ?>
+    <link rel="stylesheet" href="css/about.css">
+<?php elseif ($current_url == 'contact'): ?>
+    <link rel="stylesheet" href="css/contact.css">
 <?php endif; ?>
 
 </head>

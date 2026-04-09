@@ -1,0 +1,364 @@
+/* CONTACT PAGE - SCOPED CSS */
+.contact-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* HERO BANNER */
+.contact-hero {
+  height: 380px;
+  background: linear-gradient(135deg, #D4A373 0%, #8B6F47 100%);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 60px;
+  margin-top: 30px;
+}
+
+.contact-hero::before {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  top: -100px;
+  right: -50px;
+}
+
+.contact-hero::after {
+  content: '';
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 50%;
+  bottom: -80px;
+  left: -30px;
+}
+
+.hero-overlay {
+  text-align: center;
+  color: white;
+  z-index: 2;
+  position: relative;
+}
+
+.contact-hero h1 {
+  font-size: 52px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.contact-hero p {
+  font-size: 22px;
+  font-weight: 300;
+  letter-spacing: 0.5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+/* INFO & MAP */
+.contact-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 50px;
+  margin-bottom: 80px;
+  align-items: start;
+}
+
+.contact-content > h2 {
+  grid-column: 1 / -1;
+  font-size: 32px;
+  color: #D4A373;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.contact-map {
+  grid-column: 2;
+  grid-row: 2;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.contact-info {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.info-item {
+  margin-bottom: 20px;
+  padding: 15px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  border: 1px solid #f5f0eb;
+}
+
+.info-item:hover {
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transform: translateY(-3px);
+  border-color: #D4A373;
+}
+
+.info-item h4 {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+.info-item p {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+/* FORM SECTION */
+.contact-form-section {
+  background: linear-gradient(135deg, #D4A373 0%, #8B6F47 100%);
+  border-radius: 20px;
+  padding: 40px 30px;
+  margin-bottom: 60px;
+}
+
+.contact-form-section h2 {
+  text-align: center;
+  font-size: 28px;
+  color: white;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+
+.contact-form {
+  max-width: 550px;
+  margin: 0 auto;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.form-row input {
+  padding: 12px 15px;
+  border: 1px solid #E8DDD4;
+  border-radius: 10px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.form-row input:focus {
+  outline: none;
+  border-color: #D4A373;
+  box-shadow: 0 3px 12px rgba(212, 163, 115, 0.15);
+}
+
+.form-row input::placeholder {
+  color: #999;
+}
+
+textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #E8DDD4;
+  border-radius: 10px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 14px;
+  height: 120px;
+  resize: vertical;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  background: white;
+}
+
+textarea:focus {
+  outline: none;
+  border-color: #D4A373;
+  box-shadow: 0 3px 12px rgba(212, 163, 115, 0.15);
+}
+
+textarea::placeholder {
+  color: #999;
+}
+
+.submit-btn {
+  display: block;
+  margin: 0 auto;
+  background: white;
+  color: #8B6F47;
+  border: none;
+  padding: 12px 35px;
+  border-radius: 50px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.submit-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* RESPONSIVE */
+@media (max-width: 1024px) {
+  .contact-hero {
+    height: 320px;
+  }
+
+  .contact-hero h1 {
+    font-size: 42px;
+  }
+
+  .contact-content {
+    gap: 40px;
+  }
+
+  .contact-content > h2 {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .contact-container {
+    padding: 0 15px;
+  }
+
+  .contact-hero {
+    height: 280px;
+    border-radius: 15px;
+  }
+
+  .contact-hero h1 {
+    font-size: 32px;
+  }
+
+  .contact-content {
+    grid-template-columns: 1fr;
+    gap: 30px;
+    margin-bottom: 60px;
+  }
+
+  .contact-map {
+    grid-column: 1;
+    grid-row: auto;
+    height: 350px;
+  }
+
+  .contact-info {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .contact-content > h2 {
+    font-size: 24px;
+  }
+
+  .contact-form-section {
+    padding: 30px 20px;
+  }
+
+  .contact-form-section h2 {
+    font-size: 24px;
+    margin-bottom: 25px;
+  }
+
+  .contact-form {
+    max-width: 100%;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .form-row input {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  textarea {
+    padding: 10px 12px;
+    font-size: 13px;
+    height: 100px;
+  }
+
+  .submit-btn {
+    padding: 10px 30px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-container {
+    padding: 0 12px;
+  }
+
+  .contact-hero {
+    height: 240px;
+  }
+
+  .contact-hero h1 {
+    font-size: 26px;
+  }
+
+  .contact-content > h2 {
+    font-size: 22px;
+  }
+
+  .info-item {
+    margin-bottom: 15px;
+    padding: 12px 15px;
+  }
+
+  .info-item h4 {
+    font-size: 14px;
+  }
+
+  .info-item p {
+    font-size: 13px;
+  }
+
+  .contact-form-section {
+    padding: 25px 15px;
+    margin-bottom: 40px;
+  }
+
+  .contact-form-section h2 {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .form-row input {
+    padding: 10px 12px;
+    font-size: 12px;
+  }
+
+  textarea {
+    padding: 10px 12px;
+    font-size: 12px;
+    height: 80px;
+  }
+
+  .submit-btn {
+    padding: 10px 25px;
+    font-size: 13px;
+  }
+}
