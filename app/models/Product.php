@@ -377,10 +377,18 @@ public function insertProduct($data) {
     }
     // 1. Xóa sản phẩm
 public function delete($id) {
-    $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
-    $stmt = $this->conn->prepare($query);
-    $stmt->bindParam(':id', $id);
-    return $stmt->execute();
+    try {
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id);
+        return $stmt->execute();
+    } catch (PDOException $e) {
+        // Nếu có foreign key constraint (có đơn hàng) → return false
+        if (strpos($e->getMessage(), 'FOREIGN KEY') !== false) {
+            return false;
+        }
+        throw $e;
+    }
 }
 
 public function hasPurchaseHistory($id) {
@@ -397,10 +405,20 @@ public function deleteProduct($id) {
 }
 
 public function deleteOrHideProduct($id) {
+    // Nếu đã nhập hàng (purchase_details) → ẩn sản phẩm
     if ($this->hasPurchaseHistory($id)) {
         return $this->updateStatus($id, 0);
     }
-    return $this->delete($id);
+    
+    // Chưa nhập hàng → thử xoá hẳn
+    $deleteResult = $this->delete($id);
+    
+    // Nếu xoá thất bại (vì có order_details referencing) → ẩn sản phẩm
+    if (!$deleteResult) {
+        return $this->updateStatus($id, 0);
+    }
+    
+    return true;
 }
 
 // 2. Thay đổi trạng thái (Ẩn/Hiện)
