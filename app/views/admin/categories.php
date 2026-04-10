@@ -79,7 +79,7 @@
         <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px;">
             <div class="card" style="padding: 20px;">
                 <h3 style="margin-top:0;"><?= isset($category) ? 'Chỉnh sửa danh mục' : 'Thêm danh mục mới' ?></h3>
-                <form action="admin.php?url=<?= isset($category) ? 'update_category' : 'save_category' ?>" method="POST" style="display:grid; gap: 15px;">
+                <form action="admin.php?url=<?= isset($category) ? 'update_category' : 'save_category' ?>" method="POST" accept-charset="UTF-8" style="display:grid; gap: 15px;">
                     <?php if (isset($category)): ?>
                         <input type="hidden" name="id" value="<?= $category['id'] ?>">
                     <?php endif; ?>

@@ -11,7 +11,7 @@
             </div>
         </div>
 
-        <div class="footer-col">
+        <!-- <div class="footer-col">
             <h3>SẢN PHẨM</h3>
             <ul>
                 <li><a href="#">Bánh Kem</a></li>
@@ -19,8 +19,8 @@
                 <li><a href="#">Cookies</a></li>
                 <li><a href="#">Đồ Uống</a></li>
             </ul>
-        </div>
-
+        </div> -->
+<!-- 
         <div class="footer-col">
             <h3>HỖ TRỢ</h3>
             <ul>
@@ -29,21 +29,21 @@
                 <li><a href="#">Hướng dẫn mua hàng</a></li>
                 <li><a href="#">Bảo mật thông tin</a></li>
             </ul>
-        </div>
+        </div> -->
 
         <div class="footer-col">
             <h3>THÔNG TIN</h3>
-            <p><i class="fa-solid fa-location-dot"></i> 123 Nguyễn Trãi, Q.1, TP.HCM</p>
-            <p><i class="fa-solid fa-phone"></i> 090 123 4567</p>
-            <p><i class="fa-solid fa-envelope"></i> bakery@sweethome.vn</p>
+            <p><i class="fa-solid fa-location-dot"></i> 273 An Dương Vương, Quận 5, TP.HCM</p>
+            <p><i class="fa-solid fa-phone"></i> 1900 0908</p>
+            <p><i class="fa-solid fa-envelope"></i> nhom11@sapo.vn</p>
         </div>
     </div>
     
     <div class="footer-bottom">
-        <p>&copy; 2026 Sweet Home Bakery - Design by YourName</p>
+        <p>&copy; 2026 Sweet Home Bakery - Design by Nhóm 11</p>
     </div>
 </footer>
 
-<script src="public/js/main.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

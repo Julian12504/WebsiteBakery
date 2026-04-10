@@ -93,8 +93,8 @@ function handleCart(productId, action) {
     let qty = document.getElementById('quantity').value;
     
     if(action === 'buy') {
-        // Chuyển hướng thẳng tới trang thanh toán kèm thông tin sản phẩm
-        window.location.href = `index.php?url=checkout&id=${productId}&qty=${qty}`;
+        // Gửi tới xử lý thêm vào giỏ hàng rồi chuyển đến checkout
+        window.location.href = `index.php?url=add_to_cart&id=${productId}&qty=${qty}&redirect=checkout`;
     } else {
         // Gửi tới xử lý thêm vào giỏ hàng (PHP Session)
         window.location.href = `index.php?url=add_to_cart&id=${productId}&qty=${qty}`;

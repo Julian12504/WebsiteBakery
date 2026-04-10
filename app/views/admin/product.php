@@ -172,91 +172,85 @@
 <div id="productModal" class="modal">
     <div class="modal-content">
         <span class="close-btn" onclick="closeModal()">&times;</span>
-        <h2 id="modalTitle">Thêm sản phẩm mới</h2>
+        <h2 id="modalTitle">Quản lý sản phẩm</h2>
         
-        <form action="admin.php?url=save_product" method="POST" enctype="multipart/form-data" id="productForm">
+        <form action="" method="POST" enctype="multipart/form-data" id="productForm">
             <input type="hidden" name="id" id="prod_id">
             <input type="hidden" name="current_image" id="prod_current_image">
 
-            <div class="form-group" id="prod_code_group" style="display:none;">
-                <label>Mã sản phẩm:</label>
-                <div id="prod_code" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #f8f9fa;"></div>
-            </div>
+            <div class="form-grid"> 
+                <div class="form-group full-width">
+                    <label>Tên sản phẩm:</label>
+                    <input type="text" name="name" id="prod_name" required class="form-control">
+                </div>
 
-            <div class="form-group">
-                <label>Tên sản phẩm:</label>
-                <input type="text" name="name" id="prod_name" required class="form-control">
-            </div>
+                <div class="form-group">
+                    <label>Danh mục:</label>
+                    <select name="category_id" id="prod_category" class="form-control" required>
+                        <?php foreach($categories as $cat): ?>
+                            <option value="<?= $cat['id'] ?>"><?= $cat['name'] ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Đơn vị tính:</label>
+                    <input type="text" name="unit" id="prod_unit" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Hiện trạng:</label>
+                    <select name="status" id="prod_status" class="form-control">
+                        <option value="1">Đang bán</option>
+                        <option value="0">Ẩn</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label>Danh mục:</label>
-                <select name="category_id" id="prod_category" class="form-control">
-                    <?php foreach($categories as $cat): ?>
-                        <option value="<?= $cat['id'] ?>"><?= $cat['name'] ?></option>
-                    <?php endforeach; ?>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label>Số lượng tồn:</label>
+                    <input type="number" name="stock" id="prod_stock" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Cảnh báo tồn:</label>
+                    <input type="number" name="low_stock_threshold" id="prod_low_stock_threshold" class="form-control">
+                </div>
+                <div class="form-group" id="prod_code_group"> <label>Mã sản phẩm:</label>
+                    <div id="prod_code" class="form-control" style="background: #eee; min-height: 20px;"></div>
+                </div>
 
-            <div class="form-group">
-                <label>Mô tả:</label>
-                <textarea name="description" id="prod_description" class="form-control" rows="4"></textarea>
-            </div>
+                <div class="form-group">
+                    <label>Giá vốn:</label>
+                    <input type="number" name="gia_von" id="prod_gia_von" class="form-control" oninput="updateSellingPricePreview()" required>
+                </div>
+                <div class="form-group">
+                    <label>Lợi nhuận (%):</label>
+                    <input type="number" name="loi_nhuan" id="prod_loi_nhuan" class="form-control" oninput="updateSellingPricePreview()" required>
+                </div>
+                <div class="form-group">
+                    <label>Giá dự kiến:</label>
+                    <div id="prod_selling_price_preview" class="form-control" style="color:red; font-weight:bold;">0đ</div>
+                </div>
 
-            <div class="form-group">
-                <label>Đơn vị tính:</label>
-                <input type="text" name="unit" id="prod_unit" class="form-control" placeholder="Cái" required>
-            </div>
+                <div class="form-group full-width">
+                    <label>Mô tả:</label>
+                    <textarea name="description" id="prod_description" class="form-control" rows="2"></textarea>
+                </div>
 
-            <div class="form-group">
-                <label>Số lượng tồn ban đầu:</label>
-                <input type="number" name="stock" id="prod_stock" class="form-control" min="0" required>
-            </div>
+                <div class="form-group full-width" id="current_image_group"> <label>Ảnh hiện tại:</label>
+                    <div id="current_image_preview"></div>
+                    <label><input type="checkbox" id="remove_image_checkbox" name="remove_image" value="1"> Xóa ảnh</label>
+                </div>
 
-            <div class="form-group">
-                <label>Ngưỡng cảnh báo tồn kho:</label>
-                <input type="number" name="low_stock_threshold" id="prod_low_stock_threshold" class="form-control" min="0" value="5">
-            </div>
+                <div class="form-group full-width">
+                    <label>Tải ảnh mới:</label>
+                    <input type="file" name="image" class="form-control">
+                </div>
 
-            <div class="form-group">
-                <label>Giá vốn:</label>
-                <input type="number" name="gia_von" id="prod_gia_von" class="form-control" min="0" step="0.01" required>
-            </div>
-
-            <div class="form-group">
-                <label>Lợi nhuận (%):</label>
-                <input type="number" name="loi_nhuan" id="prod_loi_nhuan" class="form-control" min="0" step="0.01" required>
-            </div>
-
-            <div class="form-group">
-                <label>Giá bán dự kiến:</label>
-                <div id="prod_selling_price_preview" style="padding: 10px 12px; border: 1px solid #ddd; border-radius: 4px; background: #fafafa; color: #e74c3c; font-weight: 600;">0đ</div>
-            </div>
-
-            <div class="form-group">
-                <label>Hiện trạng:</label>
-                <select name="status" id="prod_status" class="form-control">
-                    <option value="1">Đang bán</option>
-                    <option value="0">Ẩn / Không bán</option>
-                </select>
-            </div>
-
-            <div class="form-group" id="current_image_group" style="display:none;">
-                <label>Ảnh hiện tại:</label>
-                <div id="current_image_preview" style="padding: 10px; border: 1px solid #ddd; border-radius: 4px; background: #f8f9fa;"></div>
-                <div style="margin-top: 8px;">
-                    <label style="font-weight: normal;"><input type="checkbox" id="remove_image_checkbox" name="remove_image" value="1"> Xóa ảnh hiện tại</label>
+                <div class="form-group full-width">
+                    <button type="submit" class="btn-add" style="width:100%; height:45px; background:#3498db; color:white; border:none; cursor:pointer;">LƯU DỮ LIỆU</button>
                 </div>
             </div>
-            <div class="form-group">
-                <label>Ảnh sản phẩm:</label>
-                <input type="file" name="image" class="form-control" id="prod_image_input">
-                <small id="img_preview_text"></small>
-            </div>
-            
-            <button type="submit" class="btn-add" style="width: 100%; justify-content: center;">Lưu sản phẩm</button>
         </form>
     </div>
-</div> 
+</div>
 </body>
 <script>
 function toggleProductMenu() {
@@ -310,7 +304,6 @@ function openAddModal() {
     document.getElementById("current_image_group").style.display = 'none';
     document.getElementById("current_image_preview").innerHTML = '';
     document.getElementById("remove_image_checkbox").checked = false;
-    document.getElementById("img_preview_text").innerText = "";
     document.getElementById("prod_status").value = '1';
     updateSellingPricePreview();
     modal.style.display = "block";
@@ -342,7 +335,6 @@ function openEditModal(prod) {
         document.getElementById("current_image_preview").innerHTML = '<span style="color:#888;">Chưa có ảnh</span>';
     }
     document.getElementById("remove_image_checkbox").checked = false;
-    document.getElementById("img_preview_text").innerText = prod.image ? 'Ảnh hiện tại: ' + prod.image : '';
     updateSellingPricePreview();
     modal.style.display = "block";
 }
