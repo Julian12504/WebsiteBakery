@@ -96,6 +96,39 @@
           </form>
         </div>
 
+        <!-- Báo cáo nhập-xuất -->
+        <div class="bg-white rounded-4 shadow-sm p-4 mb-4">
+          <h4 class="mb-3"><i class="fa-solid fa-chart-bar"></i> Báo cáo nhập - xuất</h4>
+          <form method="get">
+            <input type="hidden" name="url" value="inventory">
+            
+            <div class="mb-3">
+              <label class="form-label">Sản phẩm</label>
+              <select name="product_id" class="form-select select2-search" required>
+                <option value="0">Chọn sản phẩm</option>
+                <?php foreach ($allProducts ?? [] as $product): ?>
+                  <option value="<?= (int) $product['id'] ?>" <?= ($productId ?? 0) === (int) $product['id'] && ($fromDate ?? '') !== '' ? 'selected' : '' ?>>
+                    <?= htmlspecialchars($product['name'] ?? '') ?>
+                  </option>
+                <?php endforeach; ?>
+              </select>
+            </div>
+            
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <label class="form-label">Từ ngày</label>
+                <input type="date" name="from_date" class="form-control" value="<?= htmlspecialchars($fromDate ?? '') ?>" required>
+              </div>
+              <div class="col-6">
+                <label class="form-label">Đến ngày</label>
+                <input type="date" name="to_date" class="form-control" value="<?= htmlspecialchars($toDate ?? '') ?>" required>
+              </div>
+            </div>
+            
+            <button class="btn btn-success w-100" type="submit">Xem báo cáo</button>
+          </form>
+        </div>
+
         <!-- Cảnh báo sắp hết hàng -->
         <div class="bg-white rounded-4 shadow-sm p-4">
           <h5 class="mb-3"><i class="fa-solid fa-triangle-exclamation" style="color: #ff9800;"></i> Cảnh báo sắp hết hàng</h5>
@@ -128,14 +161,82 @@
         </div>
       </div>
 
-      <!-- Right Panel: Bảng tồn kho -->
+      <!-- Right Panel: Bảng tồn kho / báo cáo -->
       <div class="col-xl-7">
-        <div class="bg-white rounded-4 shadow-sm p-4">
-          <h4 class="mb-3">
-            <i class="fa-solid fa-cubes"></i> 
-            <?= isset($searchedProduct) ? 'Kết quả tra cứu tồn kho' : 'Tồn kho hiện tại' ?>
-          </h4>
-          
+        <!-- Báo cáo nhập-xuất -->
+        <?php if (!empty($reportData)): ?>
+          <div class="bg-white rounded-4 shadow-sm p-4 mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+              <h4 class="mb-0">
+                <i class="fa-solid fa-file-chart-line"></i> 
+                Báo cáo nhập - xuất
+              </h4>
+              <small class="text-muted">
+                <?= date('d/m/Y', strtotime($reportData['from_date'])) ?> - <?= date('d/m/Y', strtotime($reportData['to_date'])) ?>
+              </small>
+            </div>
+
+            <div class="alert alert-info mb-4">
+              <strong><?= htmlspecialchars($reportData['product_name']) ?></strong>
+            </div>
+
+            <div class="table-responsive mb-4">
+              <table class="table table-sm mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Chỉ tiêu</th>
+                    <th class="text-end">Số lượng</th>
+                    <th class="text-end">Giá trị (đ)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="background-color: #cee7ff;">
+                    <td><strong>Nhập</strong></td>
+                    <td class="text-end"><strong><?= number_format($reportData['import_qty'], 0, ',', '.') ?></strong></td>
+                    <td class="text-end"><strong><?= number_format($reportData['import_value'], 0, ',', '.') ?></strong></td>
+                  </tr>
+                  <tr style="background-color: #fef5de;">
+                    <td><strong>Xuất</strong></td>
+                    <td class="text-end"><strong><?= number_format($reportData['export_qty'], 0, ',', '.') ?></strong></td>
+                    <td class="text-end"><strong><?= number_format($reportData['export_value'], 0, ',', '.') ?></strong></td>
+                  </tr>
+                  <tr style="background-color: #dff0d8; border-top: 2px solid #5cb85c;">
+                    <td><strong>Lối lọc ròng</strong></td>
+                    <td class="text-end">
+                      <strong style="color: <?= $reportData['net_change'] >= 0 ? '#5cb85c' : '#d9534f' ?>;">
+                        <?= $reportData['net_change'] >= 0 ? '+' : '' ?><?= number_format($reportData['net_change'], 0, ',', '.') ?>
+                      </strong>
+                    </td>
+                    <td class="text-end">
+                      <strong style="color: <?= ($reportData['import_value'] - $reportData['export_value']) >= 0 ? '#5cb85c' : '#d9534f' ?>;">
+                        <?= ($reportData['import_value'] - $reportData['export_value']) >= 0 ? '+' : '' ?><?= number_format($reportData['import_value'] - $reportData['export_value'], 0, ',', '.') ?>
+                      </strong>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="row g-2">
+              <div class="col-6">
+                <small class="text-muted d-block">Giá vốn</small>
+                <strong><?= number_format($reportData['cost_price'], 0, ',', '.') ?> đ/cái</strong>
+              </div>
+              <div class="col-6">
+                <a href="?url=inventory" class="btn btn-outline-secondary btn-sm w-100">Xóa lọc</a>
+              </div>
+            </div>
+          </div>
+        <?php endif; ?>
+
+        <!-- Bảng tồn kho -->
+        <?php if (empty($reportData)): ?>
+          <div class="bg-white rounded-4 shadow-sm p-4">
+            <h4 class="mb-3">
+              <i class="fa-solid fa-cubes"></i> 
+              <?= isset($searchedProduct) ? 'Kết quả tra cứu tồn kho' : 'Tồn kho hiện tại' ?>
+            </h4>
+            
           <div class="table-responsive">
             <table class="table align-middle">
               <thead class="table-light">
@@ -212,6 +313,7 @@
             </nav>
           <?php endif; ?>
         </div>
+        <?php endif; ?>
       </div>
     </div>
   </div>
