@@ -9,7 +9,16 @@
 <body>
 
   <div class="sidebar">
-    <div class="sidebar-header"><i class="fa-solid fa-user-shield"></i> Administrator</div>
+    <div class="sidebar-header">
+        <i class="fa-solid fa-user-shield"></i>
+        <div style="display:inline-block; vertical-align:middle; margin-left:10px; line-height:1.2;">
+            <div style="font-weight:700;">Administrator</div>
+            <div style="font-size:0.95rem; opacity:0.85;">
+                <?= htmlspecialchars($_SESSION['admin_name'] ?? 'Admin') ?><br>
+                <span style="font-size:0.85rem; opacity:0.7;"><?= htmlspecialchars($_SESSION['admin_username'] ?? '') ?></span>
+            </div>
+        </div>
+    </div>
     
     <a href="admin.php?url=dashboard" class="menu-item"><i class="fa-solid fa-house"></i> Trang chủ Admin</a>
 

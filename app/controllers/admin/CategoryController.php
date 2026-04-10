@@ -78,6 +78,11 @@ class CategoryController {
             exit();
         }
 
+        if ($this->categoryModel->hasProducts($id)) {
+            header('Location: admin.php?url=categories&msg=delete_blocked_products');
+            exit();
+        }
+
         if ($this->categoryModel->delete($id)) {
             header('Location: admin.php?url=categories&msg=deleted');
             exit();
