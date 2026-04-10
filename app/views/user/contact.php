@@ -15,7 +15,7 @@
     <div class="contact-map">
       <iframe 
           src="https://www.google.com/maps?q=273+An+Dương+Vương+Quận+5+TPHCM&output=embed"
-          width="100%" height="400" style="border:0; border-radius: 15px;" allowfullscreen="" loading="lazy">
+          width="100%" height="550" style="border:0; border-radius: 15px;" allowfullscreen="" loading="lazy">
       </iframe>
     </div>
 
