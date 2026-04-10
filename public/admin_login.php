@@ -17,6 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($user && $user['role'] == 1) {
         $_SESSION['admin_id'] = $user['id'];
         $_SESSION['admin_name'] = $user['full_name'];
+        $_SESSION['admin_username'] = $user['username'];
+        $_SESSION['admin_email'] = $user['email'];
         $_SESSION['role'] = $user['role'];
         
         // Đăng nhập xong đẩy qua admin.php

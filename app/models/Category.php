@@ -57,13 +57,26 @@ class Category {
         return false;
     }
 
-    // 5. Xóa danh mục
+    // 5. Kiểm tra xem danh mục có sản phẩm không
+    public function hasProducts($id) {
+        $query = "SELECT COUNT(*) as total FROM products WHERE category_id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row && $row['total'] > 0;
+    }
+
+    // 6. Xóa danh mục
     public function delete($id) {
         $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':id', $id);
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
 
-        if($stmt->execute()) return true;
-        return false;
+        try {
+            return $stmt->execute();
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 }

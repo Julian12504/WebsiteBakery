@@ -10,8 +10,16 @@
 <body>
 
   <div class="sidebar">
-    <div class="sidebar-header"><i class="fa-solid fa-user-shield"></i> Administrator</div>
-    
+        <div class="sidebar-header">
+            <i class="fa-solid fa-user-shield"></i>
+            <div style="display:inline-block; vertical-align:middle; margin-left:10px; line-height:1.2;">
+                <div style="font-weight:700;">Administrator</div>
+                <div style="font-size:0.95rem; opacity:0.85;">
+                    <?= htmlspecialchars($_SESSION['admin_name'] ?? 'Admin') ?><br>
+                    <span style="font-size:0.85rem; opacity:0.7;"><?= htmlspecialchars($_SESSION['admin_username'] ?? '') ?></span>
+                </div>
+            </div>
+        </div>
     <a href="admin.php?url=dashboard" class="menu-item"><i class="fa-solid fa-house"></i> Trang chủ Admin</a>
 
     <div class="menu-item" onclick="toggleProductMenu()" style="cursor: pointer;">
@@ -67,6 +75,7 @@
                     case 'created': echo 'Thêm danh mục thành công.'; break;
                     case 'updated': echo 'Cập nhật danh mục thành công.'; break;
                     case 'deleted': echo 'Xóa danh mục thành công.'; break;
+                    case 'delete_blocked_products': echo 'Không thể xóa danh mục vì vẫn còn sản phẩm trong mục này.'; break;
                     case 'missing_name': echo 'Vui lòng nhập tên danh mục.'; break;
                     case 'invalid_id': echo 'Danh mục không hợp lệ.'; break;
                     case 'not_found': echo 'Không tìm thấy danh mục.'; break;
