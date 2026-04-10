@@ -112,18 +112,20 @@
                         <td>
                             <form action="admin.php?url=update_order_status" method="POST">
                                 <input type="hidden" name="id" value="<?= $o['id'] ?>">
-                                <select name="status" onchange="if(confirm('Cập nhật trạng thái đơn hàng?')) this.form.submit()" 
+                                <select name="status" onchange="validateStatus(this, <?= $o['status'] ?>) && confirm('Cập nhật trạng thái đơn hàng?') && this.form.submit()" 
                                     style="padding: 5px; border-radius: 4px; border: 1px solid #ccc; font-size: 13px; width: 100%; cursor: pointer;
                                     <?= $o['status']==0 ? 'border-left: 4px solid #f39c12;' : '' ?>
                                     <?= $o['status']==1 ? 'border-left: 4px solid #3498db;' : '' ?>
                                     <?= $o['status']==2 ? 'border-left: 4px solid #f1c40f;' : '' ?>
                                     <?= $o['status']==5 ? 'border-left: 4px solid #27ae60;' : '' ?>
-                                    <?= $o['status']==4 ? 'border-left: 4px solid #e74c3c;' : '' ?> ">
-                                    <option value="0" <?= $o['status']==0 ? 'selected':'' ?>>🟠 Chờ xác nhận</option>
-                                    <option value="1" <?= $o['status']==1 ? 'selected':'' ?>>🔵 Chờ lấy hàng</option>
-                                    <option value="2" <?= $o['status']==2 ? 'selected':'' ?>>🟡 Chờ giao hàng</option>
-                                    <option value="5" <?= $o['status']==5 ? 'selected':'' ?>>🟢 Đã giao thành công</option>
-                                    <option value="4" <?= $o['status']==4 ? 'selected':'' ?>>🔴 Đã hủy</option>
+                                    <?= $o['status']==4 ? 'border-left: 4px solid #e74c3c;' : '' ?>
+                                    <?= ($o['status']==5 || $o['status']==4 || $o['status']==3) ? 'opacity: 0.6; pointer-events: none;' : '' ?> ">
+                                    <option value="0" <?= $o['status']==0 ? 'selected':'' ?> <?= ($o['status']!=0) ? 'disabled' : '' ?>>🟠 Chờ xác nhận</option>
+                                    <option value="1" <?= $o['status']==1 ? 'selected':'' ?> <?= !in_array($o['status'], [0,1]) ? 'disabled' : '' ?>>🔵 Chờ lấy hàng</option>
+                                    <option value="2" <?= $o['status']==2 ? 'selected':'' ?> <?= !in_array($o['status'], [1,2]) ? 'disabled' : '' ?>>🟡 Chờ giao hàng</option>
+                                    <option value="5" <?= $o['status']==5 ? 'selected':'' ?> <?= !in_array($o['status'], [2,5]) ? 'disabled' : '' ?>>🟢 Đã giao thành công</option>
+                                    <option value="4" <?= $o['status']==4 ? 'selected':'' ?> <?= ($o['status']==4) ? '' : '' ?> <?= in_array($o['status'], [5,3]) ? 'disabled' : '' ?>>🔴 Đã hủy</option>
+                                    <option value="3" <?= $o['status']==3 ? 'selected':'' ?> disabled>✅ Hoàn tất</option>
                                 </select>
                             </form>
                         </td>
@@ -148,6 +150,47 @@ function toggleProductMenu() {
     const arrow = document.getElementById("arrow-icon");
     submenu.classList.toggle("show");
     arrow.classList.toggle("rotate");
+}
+
+// Validate status transitions
+function validateStatus(selectElement, currentStatus) {
+    const newStatus = parseInt(selectElement.value);
+    
+    // Trạng thái cuối (không thay đổi)
+    if (currentStatus === 5 || currentStatus === 4 || currentStatus === 3) {
+        alert('❌ Trạng thái này không thể thay đổi!');
+        selectElement.value = currentStatus;
+        return false;
+    }
+    
+    // Status 0 (Chờ xác nhận): có thể chọn 0, 1, 4
+    if (currentStatus === 0) {
+        if (![0, 1, 4].includes(newStatus)) {
+            alert('❌ Từ "Chờ xác nhận" chỉ có thể chuyển sang "Chờ lấy hàng" hoặc "Hủy"');
+            selectElement.value = currentStatus;
+            return false;
+        }
+    }
+    
+    // Status 1 (Chờ lấy hàng): có thể chọn 1, 2, 4
+    if (currentStatus === 1) {
+        if (![1, 2, 4].includes(newStatus)) {
+            alert('❌ Từ "Chờ lấy hàng" chỉ có thể chuyển sang "Chờ giao hàng" hoặc "Hủy"');
+            selectElement.value = currentStatus;
+            return false;
+        }
+    }
+    
+    // Status 2 (Chờ giao hàng): có thể chọn 2, 5, 4
+    if (currentStatus === 2) {
+        if (![2, 5, 4].includes(newStatus)) {
+            alert('❌ Từ "Chờ giao hàng" chỉ có thể chuyển sang "Đã giao thành công" hoặc "Hủy"');
+            selectElement.value = currentStatus;
+            return false;
+        }
+    }
+    
+    return true;
 }
 
 window.onload = function() {

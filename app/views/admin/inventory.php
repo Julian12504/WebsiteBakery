@@ -102,13 +102,13 @@
           
           <form method="get" class="row g-3 mb-3">
             <input type="hidden" name="url" value="inventory">
-            <div class="col-md-8">
+            <!-- <div class="col-md-8">
               <label class="form-label">Ngưỡng cảnh báo</label>
               <input type="number" name="threshold" class="form-control" min="0" value="<?= (int) ($threshold ?? 5) ?>">
-            </div>
-            <div class="col-md-4 d-flex align-items-end">
+            </div> -->
+            <!-- <div class="col-md-4 d-flex align-items-end">
               <button class="btn btn-outline-warning w-100" type="submit">Áp dụng</button>
-            </div>
+            </div> -->
           </form>
 
           <ul class="list-group list-group-flush">
