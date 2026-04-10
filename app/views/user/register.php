@@ -39,7 +39,7 @@
                 </div>
             <?php endif; ?>
             
-            <form action="index.php?url=register" method="POST">
+            <form action="index.php?url=register" method="POST" onsubmit="return validateForm()">
                 <div class="input-group">
                     <label>Họ và tên:</label>
                     <input type="text" name="fullname" placeholder="Nguyễn Văn A" 
@@ -49,13 +49,18 @@
                 <div class="input-group">
                     <label>Email:</label>
                     <input type="email" name="email" placeholder="example@email.com" 
-                           value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" required>
+                           pattern="^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                           value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>" 
+                           required title="Email không hợp lệ (ví dụ: user@example.com)">
                 </div>
 
                 <div class="input-group">
                     <label>Số điện thoại:</label>
                     <input type="text" name="phone" placeholder="090xxxxxxx" 
-                           value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>" required>
+                           pattern="\d{10}"
+                           maxlength="10"
+                           value="<?php echo isset($_POST['phone']) ? htmlspecialchars($_POST['phone']) : ''; ?>" 
+                           required title="Số điện thoại phải đủ 10 chữ số">
                 </div>
                 <div class="input-group">
     <label>Tên đăng nhập:</label>
@@ -196,6 +201,35 @@ document.addEventListener('DOMContentLoaded', function() {
     wardSelect.addEventListener('change', updateAddress);
     document.getElementById('address_detail').addEventListener('input', updateAddress);
 });
+
+// Validation function
+function validateForm() {
+    const email = document.querySelector('input[name="email"]').value.trim();
+    const phone = document.querySelector('input[name="phone"]').value.trim();
+    
+    // Regex pattern cho email
+    const emailRegex = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    
+    // Regex pattern cho số điện thoại (10 số)
+    const phoneRegex = /^\d{10}$/;
+    
+    // Kiểm tra email
+    if (!emailRegex.test(email)) {
+        alert('❌ Email không hợp lệ!\nVí dụ: user@example.com');
+        document.querySelector('input[name="email"]').focus();
+        return false;
+    }
+    
+    // Kiểm tra số điện thoại
+    if (!phoneRegex.test(phone)) {
+        alert('❌ Số điện thoại phải đúng 10 chữ số!\nVí dụ: 0901234567');
+        document.querySelector('input[name="phone"]').focus();
+        return false;
+    }
+    
+    return true;
+}
+
 </script>
 
 </body>

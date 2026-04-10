@@ -261,6 +261,10 @@ case 'update_cart':
             $error = "Vui lòng nhập đầy đủ địa chỉ giao hàng mặc định!";
         } elseif ($password !== $confirm_password) {
             $error = "Mật khẩu nhập lại không chính xác!";
+        } elseif (!preg_match('/^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/', $email)) {
+            $error = "❌ Email không hợp lệ! (Ví dụ: user@example.com)";
+        } elseif (!preg_match('/^\d{10}$/', $phone)) {
+            $error = "❌ Số điện thoại phải đúng 10 chữ số! (Ví dụ: 0912345678)";
         } elseif ($userModel->emailExists($email)) {
             $error = "Email này đã được sử dụng!";
         } elseif ($userModel->phoneExists($phone)) {
